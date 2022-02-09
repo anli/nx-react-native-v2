@@ -75,8 +75,14 @@
         "coverage/apps/habit-app"
       ],
       "options": {
+        "coverageDirectory": "coverage/apps-habit-app",
         "jestConfig": "apps/habit-app/jest.config.js",
         "passWithNoTests": true
+      },
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
       }
     },
     "type-check": {
