@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strictNullChecks": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,

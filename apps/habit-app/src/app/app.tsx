@@ -1,12 +1,12 @@
-import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import React from 'react'
+import { SafeAreaView, Text } from 'react-native'
 
-const App = () => {
+const App = (): JSX.Element => {
   return (
     <SafeAreaView>
       <Text>Welcome</Text>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default App;
+export default App

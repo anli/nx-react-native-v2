@@ -1,6 +1,6 @@
-import { device } from 'detox';
+import { device } from 'detox'
 
 beforeAll(async () => {
-  await device.launchApp();
-  await device.disableSynchronization();
-});
+  await device.launchApp()
+  await device.disableSynchronization()
+})
