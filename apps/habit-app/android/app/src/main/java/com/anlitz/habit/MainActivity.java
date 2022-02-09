@@ -1,4 +1,4 @@
-package com.habitapp;
+package com.anlitz.habit;
 
 import com.facebook.react.ReactActivity;
 
