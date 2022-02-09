@@ -9,7 +9,8 @@
     "build": "nx build",
     "lint": "nx affected:lint",
     "test": "nx affected:test",
-    "type-check": "nx affected --target=type-check"
+    "type-check": "nx affected --target=type-check",
+    "test-coverage": "rm -rf coverage && npx nx run-many --all --target=test --configuration=coverage --skip-nx-cache && node tools/combine-coverage-final.js && nyc merge coverage coverage/combine-coverage/coverage.json && nyc report -t coverage/combine-coverage --report-dir coverage/combine-coverage --reporter=html --reporter=lcov"
   },
   "private": true,
   "devDependencies": {
@@ -49,6 +50,7 @@
     "metro": "0.66.2",
     "metro-react-native-babel-preset": "0.66.2",
     "metro-resolver": "0.66.2",
+    "nyc": "^15.1.0",
     "prettier": "^2.5.1",
     "react-native-config": "1.4.5",
     "react-native-svg": "12.1.1",
