@@ -21,7 +21,9 @@
     },
     "bundle-ios": {
       "executor": "@nrwl/react-native:bundle",
-      "outputs": ["apps/habit-app/build"],
+      "outputs": [
+        "apps/habit-app/build"
+      ],
       "options": {
         "entryFile": "apps/habit-app/src/main.tsx",
         "platform": "ios",
@@ -58,17 +60,31 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/habit-app/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/habit-app/**/*.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/habit-app"],
+      "outputs": [
+        "coverage/apps/habit-app"
+      ],
       "options": {
         "jestConfig": "apps/habit-app/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "apps/habit-app"
       }
     }
   },

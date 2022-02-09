@@ -53,12 +53,26 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/habit-app-e2e/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/habit-app-e2e/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "apps/habit-app-e2e"
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["habit-app"]
+  "implicitDependencies": [
+    "habit-app"
+  ]
 }
