@@ -7,7 +7,8 @@
     "android": "nx run-android",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "lint": "nx affected:lint",
+    "test": "nx affected:test"
   },
   "private": true,
   "devDependencies": {
