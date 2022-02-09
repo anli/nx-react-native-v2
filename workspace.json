@@ -1,4 +1,7 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "habit-app": "apps/habit-app",
+    "habit-app-e2e": "apps/habit-app-e2e"
+  }
 }
