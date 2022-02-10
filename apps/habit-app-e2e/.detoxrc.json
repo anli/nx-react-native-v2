@@ -4,13 +4,13 @@
   "apps": {
     "ios.debug": {
       "type": "ios.app",
-      "build": "cd ../habit-app/ios && xcodebuild -workspace HabitApp.xcworkspace -scheme HabitApp -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
-      "binaryPath": "../habit-app/ios/build/Build/Products/Debug-iphonesimulator/HabitApp.app"
+      "build": "cd ../habit-app/ios && xcodebuild -workspace Habit.xcworkspace -scheme Habit -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' -derivedDataPath ./build -quiet",
+      "binaryPath": "../habit-app/ios/build/Build/Products/Debug-iphonesimulator/Habit.app"
     },
     "ios.release": {
       "type": "ios.app",
-      "build": "cd ../habit-app/ios && xcodebuild -workspace HabitApp.xcworkspace -scheme HabitApp -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
-      "binaryPath": "../habit-app/ios/build/Build/Products/Release-iphonesimulator/HabitApp.app"
+      "build": "cd ../habit-app/ios && xcodebuild -workspace Habit.xcworkspace -scheme Habit -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' -derivedDataPath ./build -quiet",
+      "binaryPath": "../habit-app/ios/build/Build/Products/Release-iphonesimulator/Habit.app"
     },
     "android.debug": {
       "type": "android.apk",
@@ -27,7 +27,7 @@
     "simulator": {
       "type": "ios.simulator",
       "device": {
-        "type": "iPhone 13"
+        "type": "iPhone 12"
       }
     },
     "emulator": {

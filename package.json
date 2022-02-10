@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "e2e-build-ios": "nx affected --target=e2e-build-ios",
+    "e2e-test-ios": "nx affected --target=e2e-test-ios",
     "e2e-build-android": "nx affected --target=e2e-build-android",
     "e2e-test-android": "nx affected --target=e2e-test-android",
     "ios": "nx run-ios",
