@@ -4,6 +4,8 @@ require_relative '../node_modules/@nrwl/react-native/nx_post_install'
 
 platform :ios, '11.0'
 
+install! 'cocoapods', :disable_input_output_paths => true
+
 target 'Habit' do
   config = use_native_modules!
 
