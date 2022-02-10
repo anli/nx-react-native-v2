@@ -235,7 +235,10 @@ dependencies {
     }
 
     
-    androidTestImplementation('com.wix:detox:+')
+    androidTestImplementation('com.wix:detox:+') {
+        exclude group: 'com.google.android.material'
+        exclude group: 'androidx.legacy'
+    }
     
 }
 
