@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "e2e-build-android": "nx affected --target=e2e-build-android",
+    "e2e-test-android": "nx affected --target=e2e-test-android",
     "ios": "nx run-ios",
     "android": "nx run-android",
     "start": "nx serve",
@@ -71,7 +73,7 @@
     "@react-navigation/native-stack": "^6.5.0",
     "react": "17.0.2",
     "react-native": "0.66.4",
-    "react-native-safe-area-context": "^3.3.2",
+    "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^3.11.0",
     "tslib": "^2.0.0"
   }
