@@ -100,3 +100,6 @@ apps/habit-app-e2e/artifacts
 **/node_modules
 
 **/coverage
+.gitsecret/keys/random_seed
+!*.secret
+apps/habit-app/.env

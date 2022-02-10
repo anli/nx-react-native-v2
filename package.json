@@ -11,7 +11,8 @@
     "test": "nx affected:test",
     "type-check": "nx affected --target=type-check",
     "test-coverage": "rm -rf coverage && npx nx run-many --all --target=test --configuration=coverage --skip-nx-cache && node tools/combine-coverage-final.js && nyc merge coverage coverage/combine-coverage/coverage.json && nyc report -t coverage/combine-coverage --report-dir coverage/combine-coverage --reporter=html --reporter=lcov",
-    "pod-install": "nx affected --target=pod-install"
+    "pod-install": "nx affected --target=pod-install",
+    "prepare": "husky install"
   },
   "private": true,
   "devDependencies": {
@@ -48,6 +49,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "7.27.0",
     "eslint-plugin-react-hooks": "4.3.0",
+    "husky": "^7.0.4",
     "jest": "27.2.3",
     "jest-circus": "27.2.3",
     "jest-react-native": "18.0.0",
