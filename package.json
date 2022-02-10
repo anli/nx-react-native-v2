@@ -10,7 +10,8 @@
     "lint": "nx affected:lint",
     "test": "nx affected:test",
     "type-check": "nx affected --target=type-check",
-    "test-coverage": "rm -rf coverage && npx nx run-many --all --target=test --configuration=coverage --skip-nx-cache && node tools/combine-coverage-final.js && nyc merge coverage coverage/combine-coverage/coverage.json && nyc report -t coverage/combine-coverage --report-dir coverage/combine-coverage --reporter=html --reporter=lcov"
+    "test-coverage": "rm -rf coverage && npx nx run-many --all --target=test --configuration=coverage --skip-nx-cache && node tools/combine-coverage-final.js && nyc merge coverage coverage/combine-coverage/coverage.json && nyc report -t coverage/combine-coverage --report-dir coverage/combine-coverage --reporter=html --reporter=lcov",
+    "pod-install": "nx affected --target=pod-install"
   },
   "private": true,
   "devDependencies": {

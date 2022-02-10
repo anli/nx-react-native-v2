@@ -69,6 +69,14 @@
         "command": "tsc -b",
         "cwd": "apps/habit-app-e2e"
       }
+    },
+    "pod-install": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "pod install",
+        "cwd": "apps/habit-app/ios"
+      }
     }
   },
   "tags": [],
