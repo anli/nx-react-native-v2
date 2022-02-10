@@ -1,0 +1,126 @@
+name: E2E iOS
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: E2E iOS
+    runs-on: macos-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: BuildCache
+        uses: mikehardy/buildcache-action@v1
+
+      - name: Setup git
+        run: |
+          git fetch origin $GITHUB_BASE_REF
+
+      - name: Import GPG key
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Setup Git Secret env
+        run: |
+          brew install git-secret
+          git secret reveal
+
+      - name: Setup detox
+        run: |
+          # workaround for issue
+          # https://stackoverflow.com/questions/24952683/git-push-error-rpc-failed-result-56-http-code-200-fatal-the-remote-end-hun/36843260#36843260
+          git config http.postBuffer 524288000
+
+          brew tap wix/brew
+          brew install applesimutils
+
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - uses: actions/setup-node@v2
+
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Cache Pods
+        id: cache-pods
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install Dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Install app node modules
+        run: |
+          npx nx ensure-symlink
+
+      - name: Install Pods
+        if: steps.cache-pods.outputs.cache-hit != 'true'
+        run: npm run pod-install -- --base=origin/$GITHUB_BASE_REF --skip-nx-cache
+
+      - name: Rebuild detox
+        run: |
+          npx detox clean-framework-cache && npx detox build-framework-cache
+
+      - name: Build iOS app
+        run: |
+          npm run e2e-build-ios -- --configuration=production --base=origin/$GITHUB_BASE_REF --skip-nx-cache
+
+      - name: Test iOS app
+        run: |
+          npm run e2e-test-ios -- --configuration=production --base=origin/$GITHUB_BASE_REF --cleanup
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: failing-tests-videos
+          path: artifacts/
