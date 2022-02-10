@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "habit-app": "apps/habit-app",
-    "habit-app-e2e": "apps/habit-app-e2e"
+    "habit-app-e2e": "apps/habit-app-e2e",
+    "shared-ui": "libs/shared/ui"
   }
 }

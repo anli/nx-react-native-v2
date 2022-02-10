@@ -73,6 +73,8 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "@shopify/polaris-tokens": "^4.0.0",
+    "@shopify/restyle": "^1.6.1",
     "react": "17.0.2",
     "react-native": "0.66.4",
     "react-native-safe-area-context": "^3.1.9",
