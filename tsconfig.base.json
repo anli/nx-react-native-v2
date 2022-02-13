@@ -16,7 +16,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-react-native/shared/ui": ["libs/shared/ui/src/index.ts"]
+      "@nx-react-native/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@nx-react-native/shared/utils-testing": [
+        "libs/shared/utils-testing/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -3,17 +3,21 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@react-navigation/bottom-tabs": "*",
+    "@react-navigation/native": "*",
+    "@react-navigation/native-stack": "*",
+    "@shopify/polaris-tokens": "*",
+    "@shopify/restyle": "*",
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
     "react": "*",
     "react-native": "*",
     "react-native-config": "*",
-    "react-native-svg": "*",
-    "@react-navigation/native": "*",
-    "@react-navigation/native-stack": "*",
+    "react-native-paper": "*",
     "react-native-safe-area-context": "*",
     "react-native-screens": "*",
-    "@shopify/restyle": "*",
-    "@shopify/polaris-tokens": "*"
+    "react-native-svg": "*",
+    "react-native-typography": "*",
+    "react-native-vector-icons": "*"
   }
 }

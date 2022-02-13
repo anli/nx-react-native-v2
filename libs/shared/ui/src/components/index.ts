@@ -1,3 +1,6 @@
+export * from './button'
 export * from './screen'
-export * from './view'
+export * from './tab-bar-icon'
 export * from './text'
+export * from './text-input'
+export * from './view'

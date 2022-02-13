@@ -1,41 +1,29 @@
-import { Screen, Text, View } from '@nx-react-native/shared/ui'
+import { TabBarIcon, ThemeProvider } from '@nx-react-native/shared/ui'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons'
+import { Provider as PaperProvider } from 'react-native-paper'
+import { HomeScreen, LoginScreen } from '../screens'
 
-const TabBarIcon = ({
-  name,
-  color,
-  size
-}: {
-  name: string
-  color: string
-  size: number
-}): JSX.Element => <Icon name={name} size={size} color={color} />
-
-const HomeScreen = (): JSX.Element => {
-  return (
-    <Screen>
-      <View>
-        <Text>Welcome</Text>
-      </View>
-    </Screen>
-  )
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type RootStackParamList = {
+  AppTabs: undefined
+  LoginScreen: undefined
 }
 
-const Stack = createNativeStackNavigator()
+const RootStack = createNativeStackNavigator<RootStackParamList>()
 
 const Tab = createBottomTabNavigator()
 
-export const HomeTabs = (): JSX.Element => {
+export const AppTabs = (): JSX.Element => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeScreen"
+        component={HomeScreen.Container}
         options={{
+          ...HomeScreen.options,
           tabBarIcon: ({ color, size }) => (
             <TabBarIcon name="home-variant" color={color} size={size} />
           )
@@ -46,13 +34,22 @@ export const HomeTabs = (): JSX.Element => {
 }
 
 export const App = (): JSX.Element => (
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen
-        name="HomeTabs"
-        component={HomeTabs}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  </NavigationContainer>
+  <ThemeProvider>
+    <PaperProvider>
+      <NavigationContainer>
+        <RootStack.Navigator initialRouteName="LoginScreen">
+          <RootStack.Screen
+            name="AppTabs"
+            component={AppTabs}
+            options={{ headerShown: false }}
+          />
+          <RootStack.Screen
+            name="LoginScreen"
+            component={LoginScreen.Container}
+            options={LoginScreen.options}
+          />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  </ThemeProvider>
 )
