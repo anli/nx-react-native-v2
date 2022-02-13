@@ -1,5 +1,6 @@
 import * as tokens from '@shopify/polaris-tokens'
 import { createTheme } from '@shopify/restyle'
+import { iOSUIKit } from 'react-native-typography'
 
 const pxToNumber = (px: string): number => {
   return parseInt(px.replace('px', ''), 10)
@@ -43,7 +44,15 @@ const base = {
   textVariants: {
     // https://github.com/hectahertz/react-native-typography/blob/master/src/collections/iOSUIKit.js
     defaults: {
-      fontSize: 18,
+      ...iOSUIKit.bodyObject,
+      color: 'text'
+    },
+    largeTitleEmphasized: {
+      ...iOSUIKit.largeTitleEmphasizedObject,
+      color: 'text'
+    },
+    body: {
+      ...iOSUIKit.bodyObject,
       color: 'text'
     }
   },
@@ -52,6 +61,14 @@ const base = {
       flex: 1,
       backgroundColor: 'surface'
     }
+  },
+  textInputVariants: {
+    defaults: {
+      backgroundColor: 'surface'
+    }
+  },
+  buttonVariants: {
+    defaults: {}
   }
 }
 

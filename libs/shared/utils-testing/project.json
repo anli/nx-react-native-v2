@@ -1,0 +1,43 @@
+{
+  "root": "libs/shared/utils-testing",
+  "sourceRoot": "libs/shared/utils-testing/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/utils-testing/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/shared/utils-testing"
+      ],
+      "options": {
+        "coverageDirectory": "coverage/libs-shared-utils-testing",
+        "jestConfig": "libs/shared/utils-testing/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "libs/shared/utils-testing"
+      }
+    }
+  }
+}
