@@ -1,23 +1,33 @@
 import { Screen } from '@nx-react-native/shared/ui'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { Suspense } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RootStackParamList } from '../../app'
 import { Login } from './ui'
+
+// const useSomething = () => {
+//   throw new Promise(() => {
+//     return true
+//   })
+// }
 
 const Component = (): JSX.Element => {
   const { navigate } =
     useNavigation<NavigationProp<RootStackParamList, 'LoginScreen'>>()
+  const { t } = useTranslation('LoginScreen')
+
+  // useSomething()
 
   const handleLogin = (): void => {
     navigate('AppTabs')
   }
 
   return (
-    <Login
-      title="Login title"
-      subtitle="Login subtitle"
-      buttonTitle="Login"
-      buttonAccessibilityLabel="Login Button"
+    <Login.Component
+      title={t('title')}
+      subtitle={t('subtitle')}
+      buttonTitle={t('buttonTitle')}
+      buttonAccessibilityLabel={t('buttonLabel')}
       onPress={handleLogin}
     />
   )
@@ -25,9 +35,16 @@ const Component = (): JSX.Element => {
 
 const Container = (): JSX.Element => {
   return (
-    <Screen testID="LoginScreen">
-      <Component />
-    </Screen>
+    <Suspense
+      fallback={
+        <Screen testID="LoginScreenSkeleton">
+          <Login.Skeleton />
+        </Screen>
+      }>
+      <Screen testID="LoginScreen">
+        <Component />
+      </Screen>
+    </Suspense>
   )
 }
 

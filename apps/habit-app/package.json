@@ -18,6 +18,13 @@
     "react-native-screens": "*",
     "react-native-svg": "*",
     "react-native-typography": "*",
-    "react-native-vector-icons": "*"
+    "react-native-vector-icons": "*",
+    "i18next": "*",
+    "i18next-http-backend": "*",
+    "react-i18next": "*",
+    "react-native-localize": "*",
+    "react-native-skeleton-placeholder": "*",
+    "@react-native-masked-view/masked-view": "*",
+    "react-native-linear-gradient": "*"
   }
 }

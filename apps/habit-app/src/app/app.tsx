@@ -1,10 +1,14 @@
+import { init as I18nInit } from '@nx-react-native/shared/i18n'
 import { TabBarIcon, ThemeProvider } from '@nx-react-native/shared/ui'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
+import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { HomeScreen, LoginScreen } from '../screens'
+
+void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {

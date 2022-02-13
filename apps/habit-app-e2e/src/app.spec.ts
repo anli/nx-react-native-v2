@@ -5,12 +5,12 @@ describe('Habit App', () => {
     await device.reloadReactNative()
     await waitFor(element(by.id('LoginScreen')))
       .toBeVisible()
-      .withTimeout(2000)
+      .withTimeout(10000)
   })
 
   it('Given I am at Login Screen, When I press Login, Then I am at Home Screen', async () => {
-    await expect(element(by.text('Login title'))).toBeVisible()
-    await expect(element(by.text('Login subtitle'))).toBeVisible()
+    await expect(element(by.text('My title'))).toBeVisible()
+    await expect(element(by.text('My subtitle'))).toBeVisible()
 
     const button = element(by.label('Login Button')).atIndex(0)
     await expect(button).toBeVisible()
@@ -18,7 +18,7 @@ describe('Habit App', () => {
 
     await waitFor(element(by.id('HomeScreen')))
       .toBeVisible()
-      .withTimeout(2000)
+      .withTimeout(10000)
     await expect(element(by.text('Welcome'))).toBeVisible()
   })
 })
