@@ -1,25 +1,15 @@
+import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen } from '@nx-react-native/shared/ui'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
 import React, { Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RootStackParamList } from '../../app'
 import { Login } from './ui'
 
-// const useSomething = () => {
-//   throw new Promise(() => {
-//     return true
-//   })
-// }
-
 const Component = (): JSX.Element => {
-  const { navigate } =
-    useNavigation<NavigationProp<RootStackParamList, 'LoginScreen'>>()
   const { t } = useTranslation('LoginScreen')
+  const { login } = useAuth()
 
-  // useSomething()
-
-  const handleLogin = (): void => {
-    navigate('AppTabs')
+  const handleLogin = async (): Promise<void> => {
+    await login?.()
   }
 
   return (

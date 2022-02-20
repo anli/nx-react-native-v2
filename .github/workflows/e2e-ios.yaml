@@ -84,7 +84,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json', 'patches') }}
 
       - name: Cache Pods
         id: cache-pods

@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nx-react-native/shared/auth": ["libs/shared/auth/src/index.ts"],
       "@nx-react-native/shared/i18n": ["libs/shared/i18n/src/index.ts"],
       "@nx-react-native/shared/ui": ["libs/shared/ui/src/index.ts"],
       "@nx-react-native/shared/utils-testing": [
