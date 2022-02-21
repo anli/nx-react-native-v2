@@ -92,6 +92,14 @@
         "command": "tsc -b",
         "cwd": "apps/habit-app"
       }
+    },
+    "code-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx graphql-codegen --config codegen.yaml",
+        "cwd": "apps/habit-app"
+      }
     }
   },
   "tags": []
