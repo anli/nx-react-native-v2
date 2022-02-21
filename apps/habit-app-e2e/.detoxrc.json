@@ -4,22 +4,22 @@
   "apps": {
     "ios.debug": {
       "type": "ios.app",
-      "build": "cd ../habit-app/ios && xcodebuild -workspace Habit.xcworkspace -scheme Habit -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' -derivedDataPath ./build -quiet",
+      "build": "cd ../habit-app/ios && RN_SRC_EXT=e2e.ts,e2e.tsx xcodebuild -workspace Habit.xcworkspace -scheme Habit -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
       "binaryPath": "../habit-app/ios/build/Build/Products/Debug-iphonesimulator/Habit.app"
     },
     "ios.release": {
       "type": "ios.app",
-      "build": "cd ../habit-app/ios && xcodebuild -workspace Habit.xcworkspace -scheme Habit -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12' -derivedDataPath ./build -quiet",
+      "build": "cd ../habit-app/ios && RN_SRC_EXT=e2e.ts,e2e.tsx xcodebuild -workspace Habit.xcworkspace -scheme Habit -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
       "binaryPath": "../habit-app/ios/build/Build/Products/Release-iphonesimulator/Habit.app"
     },
     "android.debug": {
       "type": "android.apk",
-      "build": "cd ../habit-app/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
+      "build": "cd ../habit-app/android && RN_SRC_EXT=e2e.ts,e2e.tsx ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
       "binaryPath": "../habit-app/android/app/build/outputs/apk/debug/app-debug.apk"
     },
     "android.release": {
       "type": "android.apk",
-      "build": "cd ../habit-app/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
+      "build": "cd ../habit-app/android && RN_SRC_EXT=e2e.ts,e2e.tsx ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
       "binaryPath": "../habit-app/android/app/build/outputs/apk/release/app-release.apk"
     }
   },
@@ -27,7 +27,7 @@
     "simulator": {
       "type": "ios.simulator",
       "device": {
-        "type": "iPhone 12"
+        "type": "iPhone 13"
       }
     },
     "emulator": {

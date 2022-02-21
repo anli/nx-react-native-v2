@@ -1,7 +1,7 @@
-import { render as testingRender } from '@nx-react-native/shared/utils-testing'
+import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@testing-library/react-native'
 import React from 'react'
-import { App, AppTabs } from './app'
+import { App } from './app'
 
 describe('App', () => {
   it('Then I should see Login Screen', () => {
@@ -10,7 +10,10 @@ describe('App', () => {
   })
 
   it('Then I should see App Tabs', () => {
-    const { getByTestId } = testingRender(<AppTabs />)
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      user: { email: 'USER@email.com' }
+    })
+    const { getByTestId } = render(<App />)
     expect(getByTestId('HomeScreen')).toBeDefined()
   })
 })

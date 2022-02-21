@@ -1,5 +1,5 @@
+import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
-import reactNavigation from '@react-navigation/native'
 import { fireEvent } from '@testing-library/react-native'
 import React from 'react'
 import reactI18next from 'react-i18next'
@@ -15,16 +15,13 @@ describe('LoginScreen', () => {
   })
 
   it('When I login successfully, Then I should see Authenticated Screen', () => {
-    const mockNavigate = jest.fn()
-    jest.spyOn(reactNavigation, 'useNavigation').mockReturnValue({
-      navigate: mockNavigate
-    })
+    const mockLogin = jest.fn()
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({ login: mockLogin })
     const { getByText } = render(<LoginScreen.Container />)
 
     fireEvent.press(getByText('buttonTitle'))
 
-    expect(mockNavigate).toBeCalledTimes(1)
-    expect(mockNavigate).toBeCalledWith('AppTabs')
+    expect(mockLogin).toBeCalledTimes(1)
   })
 
   it('When initial load, Then I should see Skeleton Screen', () => {

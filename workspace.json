@@ -3,6 +3,7 @@
   "projects": {
     "habit-app": "apps/habit-app",
     "habit-app-e2e": "apps/habit-app-e2e",
+    "shared-auth": "libs/shared/auth",
     "shared-i18n": "libs/shared/i18n",
     "shared-ui": "libs/shared/ui",
     "shared-utils-testing": "libs/shared/utils-testing"
