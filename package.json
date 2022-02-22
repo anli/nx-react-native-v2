@@ -18,10 +18,17 @@
     "test-coverage": "rm -rf coverage && npx nx run-many --all --target=test --configuration=coverage --skip-nx-cache && node tools/combine-coverage-final.js && nyc merge coverage coverage/combine-coverage/coverage.json && nyc report -t coverage/combine-coverage --report-dir coverage/combine-coverage --reporter=html --reporter=lcov",
     "pod-install": "nx affected --target=pod-install",
     "prepare": "husky install",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "code-generate": "nx code-generate"
   },
   "private": true,
   "devDependencies": {
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/near-operation-file-preset": "^2.2.6",
+    "@graphql-codegen/typescript": "2.4.5",
+    "@graphql-codegen/typescript-operations": "^2.3.2",
+    "@graphql-codegen/typescript-react-apollo": "3.2.8",
     "@nrwl/cli": "13.8.0",
     "@nrwl/detox": "13.8.0",
     "@nrwl/eslint-plugin-nx": "13.8.0",
@@ -76,12 +83,14 @@
     "typescript": "~4.5.2"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.9",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@shopify/polaris-tokens": "^4.0.0",
     "@shopify/restyle": "^1.6.1",
+    "graphql": "^16.3.0",
     "i18next": "^21.6.11",
     "i18next-http-backend": "^1.3.2",
     "patch-package": "^6.4.7",
@@ -98,6 +107,7 @@
     "react-native-skeleton-placeholder": "^5.0.0",
     "react-native-typography": "^1.4.1",
     "react-native-vector-icons": "^9.0.0",
+    "subscriptions-transport-ws": "^0.11.0",
     "tslib": "^2.0.0"
   }
 }

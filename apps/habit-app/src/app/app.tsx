@@ -10,6 +10,7 @@ import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { HomeScreen, LoginScreen } from '../screens'
+import { ApolloProvider } from '../utils'
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
@@ -46,27 +47,29 @@ export const AppTabs = (): JSX.Element => {
 }
 
 const Navigation = (): JSX.Element => {
-  const { user } = useAuth()
+  const { user, idToken } = useAuth()
   const isAuthenticated = Boolean(user)
 
   return (
-    <NavigationContainer>
-      <RootStack.Navigator>
-        {isAuthenticated ? (
-          <RootStack.Screen
-            name="AppTabs"
-            component={AppTabs}
-            options={{ headerShown: false }}
-          />
-        ) : (
-          <RootStack.Screen
-            name="LoginScreen"
-            component={LoginScreen.Container}
-            options={LoginScreen.options}
-          />
-        )}
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <ApolloProvider url={Config.GRAPHQL_URL} authToken={idToken}>
+      <NavigationContainer>
+        <RootStack.Navigator>
+          {isAuthenticated ? (
+            <RootStack.Screen
+              name="AppTabs"
+              component={AppTabs}
+              options={{ headerShown: false }}
+            />
+          ) : (
+            <RootStack.Screen
+              name="LoginScreen"
+              component={LoginScreen.Container}
+              options={LoginScreen.options}
+            />
+          )}
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </ApolloProvider>
   )
 }
 

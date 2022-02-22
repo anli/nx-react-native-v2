@@ -2,3 +2,6 @@
 
 /dist
 /coverage
+
+# graphql codegen
+**/*.generated.ts*
