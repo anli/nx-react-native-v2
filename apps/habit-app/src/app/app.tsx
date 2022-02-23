@@ -2,6 +2,7 @@
 import { AuthProvider, useAuth } from '@nx-react-native/shared/auth'
 import { init as I18nInit } from '@nx-react-native/shared/i18n'
 import { TabBarIcon, ThemeProvider } from '@nx-react-native/shared/ui'
+import { ApolloProvider } from '@nx-react-native/shared/utils-apollo-provider'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -10,7 +11,6 @@ import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { HomeScreen, LoginScreen } from '../screens'
-import { ApolloProvider } from '../utils'
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
