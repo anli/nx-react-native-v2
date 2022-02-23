@@ -1,0 +1,43 @@
+{
+  "root": "libs/shared/utils-apollo-provider",
+  "sourceRoot": "libs/shared/utils-apollo-provider/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/utils-apollo-provider/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/shared/utils-apollo-provider"
+      ],
+      "options": {
+        "coverageDirectory": "coverage/libs-shared-utils-apollo-provider",
+        "jestConfig": "libs/shared/utils-apollo-provider/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "libs/shared/utils-apollo-provider"
+      }
+    }
+  }
+}

@@ -3,10 +3,6 @@ import { render } from '@testing-library/react-native'
 import React from 'react'
 import { App } from './app'
 
-jest.mock('../utils', () => ({
-  ApolloProvider: ({ children }) => children
-}))
-
 describe('App', () => {
   it('Then I should see Login Screen', () => {
     const { getByTestId } = render(<App />)
