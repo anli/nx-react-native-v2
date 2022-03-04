@@ -16,9 +16,8 @@ describe('Habit App', () => {
     await expect(button).toBeVisible()
     await button.tap()
 
-    await waitFor(element(by.id('HomeScreen')))
+    await waitFor(element(by.id('HabitsScreen')))
       .toBeVisible()
       .withTimeout(10000)
-    await expect(element(by.text('Welcome'))).toBeVisible()
   })
 })

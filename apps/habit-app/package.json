@@ -35,6 +35,9 @@
     "@graphql-codegen/typescript": "*",
     "@graphql-codegen/typescript-operations": "*",
     "@graphql-codegen/typescript-react-apollo": "*",
-    "@graphql-codegen/introspection": "*"
+    "@graphql-codegen/introspection": "*",
+    "react-error-boundary": "*",
+    "@faker-js/faker": "*",
+    "date-fns": "*"
   }
 }

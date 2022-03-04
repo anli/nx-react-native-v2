@@ -10,7 +10,7 @@ import React from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { HomeScreen, LoginScreen } from '../screens'
+import { HabitsScreen, LoginScreen } from '../screens'
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
@@ -33,10 +33,10 @@ export const AppTabs = (): JSX.Element => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="HomeScreen"
-        component={HomeScreen.Container}
+        name="HabitsScreen"
+        component={HabitsScreen.Container}
         options={{
-          ...HomeScreen.options,
+          ...HabitsScreen.options,
           tabBarIcon: ({ color, size }) => (
             <TabBarIcon name="home-variant" color={color} size={size} />
           )
