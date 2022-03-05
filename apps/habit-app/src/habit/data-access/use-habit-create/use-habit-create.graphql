@@ -1,0 +1,5 @@
+mutation HabitCreate($input: [AddHabitInput!]!) {
+  addHabit(input: $input) {
+    numUids
+  }
+}

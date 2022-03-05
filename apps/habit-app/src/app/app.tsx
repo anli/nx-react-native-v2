@@ -10,7 +10,7 @@ import React from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
-import { HabitsScreen, LoginScreen } from '../screens'
+import { HabitCreateScreen, HabitsScreen, LoginScreen } from '../screens'
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
@@ -23,6 +23,8 @@ const auth0 = new Auth0({
 export type RootStackParamList = {
   AppTabs: undefined
   LoginScreen: undefined
+  HabitsScreen: undefined
+  HabitCreateScreen: undefined
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -36,7 +38,6 @@ export const AppTabs = (): JSX.Element => {
         name="HabitsScreen"
         component={HabitsScreen.Container}
         options={{
-          ...HabitsScreen.options,
           tabBarIcon: ({ color, size }) => (
             <TabBarIcon name="home-variant" color={color} size={size} />
           )
@@ -55,11 +56,18 @@ const Navigation = (): JSX.Element => {
       <NavigationContainer>
         <RootStack.Navigator>
           {isAuthenticated ? (
-            <RootStack.Screen
-              name="AppTabs"
-              component={AppTabs}
-              options={{ headerShown: false }}
-            />
+            <>
+              <RootStack.Screen
+                name="AppTabs"
+                component={AppTabs}
+                options={{ headerShown: false }}
+              />
+              <RootStack.Screen
+                name="HabitCreateScreen"
+                component={HabitCreateScreen.Container}
+                options={HabitCreateScreen.options}
+              />
+            </>
           ) : (
             <RootStack.Screen
               name="LoginScreen"

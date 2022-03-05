@@ -1,4 +1,4 @@
-import * as Types from '../../utils/graphql-types';
+import * as Types from '../../../utils/graphql-types';
 
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
@@ -818,49 +818,44 @@ export type WithinFilter = {
   polygon: PolygonRef;
 };
 
-export type HabitsSubscriptionVariables = Types.Exact<{
-  minDate: Types.Scalars['DateTime'];
-  maxDate: Types.Scalars['DateTime'];
+export type HabitCreateMutationVariables = Types.Exact<{
+  input: Array<Types.AddHabitInput> | Types.AddHabitInput;
 }>;
 
 
-export type HabitsSubscription = { __typename?: 'Subscription', queryHabit?: Array<{ __typename?: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename?: 'HabitActivity', id: string, count: number, date: any }> | null } | null> | null };
+export type HabitCreateMutation = { __typename?: 'Mutation', addHabit?: { __typename?: 'AddHabitPayload', numUids?: number | null } | null };
 
 
-export const HabitsDocument = gql`
-    subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
-  queryHabit {
-    habitActivities(filter: {date: {between: {min: $minDate, max: $maxDate}}}) {
-      id
-      count
-      date
-    }
-    id
-    name
+export const HabitCreateDocument = gql`
+    mutation HabitCreate($input: [AddHabitInput!]!) {
+  addHabit(input: $input) {
+    numUids
   }
 }
     `;
+export type HabitCreateMutationFn = Apollo.MutationFunction<HabitCreateMutation, HabitCreateMutationVariables>;
 
 /**
- * __useHabitsSubscription__
+ * __useHabitCreateMutation__
  *
- * To run a query within a React component, call `useHabitsSubscription` and pass it any options that fit your needs.
- * When your component renders, `useHabitsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useHabitCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useHabitCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useHabitsSubscription({
+ * const [habitCreateMutation, { data, loading, error }] = useHabitCreateMutation({
  *   variables: {
- *      minDate: // value for 'minDate'
- *      maxDate: // value for 'maxDate'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useHabitsSubscription(baseOptions: Apollo.SubscriptionHookOptions<HabitsSubscription, HabitsSubscriptionVariables>) {
+export function useHabitCreateMutation(baseOptions?: Apollo.MutationHookOptions<HabitCreateMutation, HabitCreateMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<HabitsSubscription, HabitsSubscriptionVariables>(HabitsDocument, options);
+        return Apollo.useMutation<HabitCreateMutation, HabitCreateMutationVariables>(HabitCreateDocument, options);
       }
-export type HabitsSubscriptionHookResult = ReturnType<typeof useHabitsSubscription>;
-export type HabitsSubscriptionResult = Apollo.SubscriptionResult<HabitsSubscription>;
+export type HabitCreateMutationHookResult = ReturnType<typeof useHabitCreateMutation>;
+export type HabitCreateMutationResult = Apollo.MutationResult<HabitCreateMutation>;
+export type HabitCreateMutationOptions = Apollo.BaseMutationOptions<HabitCreateMutation, HabitCreateMutationVariables>;
