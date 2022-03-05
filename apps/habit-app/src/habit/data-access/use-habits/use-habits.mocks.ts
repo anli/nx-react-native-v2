@@ -59,3 +59,15 @@ export const useHabitsMockQueryError: Array<{
     error: new Error('An error occurred')
   }
 ]
+
+export const useHabitsMockQueryEmptyData: Array<{
+  request: { query: DocumentNode }
+  result: { data: HabitsSubscription }
+}> = [
+  {
+    request,
+    result: {
+      data: { queryHabit: null }
+    }
+  }
+]

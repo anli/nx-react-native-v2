@@ -1,5 +1,6 @@
+import { useActionSheet } from '@expo/react-native-action-sheet'
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Screen } from '@nx-react-native/shared/ui'
+import { Screen, Text } from '@nx-react-native/shared/ui'
 import { useNavigation } from '@react-navigation/native'
 import {
   NativeStackNavigationOptions,
@@ -9,11 +10,12 @@ import { endOfWeek, formatISO, startOfToday, startOfWeek } from 'date-fns'
 import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
-import { FlatList } from 'react-native'
+import { Alert, FlatList } from 'react-native'
 import { FAB, List } from 'react-native-paper'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
-import { useHabitsSubscription } from '../../habit'
+import { useHabitDeleteMutation, useHabitsSubscription } from '../../habit'
+import { filterNullable } from '../../utils/filter-nullable'
 import { Suspender } from '../../utils/suspender'
 import { HabitsList } from './ui'
 
@@ -22,6 +24,7 @@ const options: NativeStackNavigationOptions = {
 }
 
 const Component = (): JSX.Element => {
+  const { showActionSheetWithOptions } = useActionSheet()
   const { t } = useTranslation('HabitsScreen')
   const periodStartDate = startOfWeek(startOfToday(), { weekStartsOn: 1 })
   const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
@@ -33,10 +36,13 @@ const Component = (): JSX.Element => {
       maxDate: formatISO(periodEndDate)
     }
   })
+  const [habitDeleteMutation] = useHabitDeleteMutation()
 
   useEffect(() => {
-    setOptions(options)
-  }, [setOptions])
+    setOptions({
+      title: t('title')
+    })
+  })
 
   if (error !== undefined) {
     throw Error(error?.message)
@@ -50,12 +56,44 @@ const Component = (): JSX.Element => {
     navigate('HabitCreateScreen')
   }
 
+  const handleHabitOptions = (id: string): void => {
+    showActionSheetWithOptions(
+      {
+        options: [t('deleteButtonLabel'), t('cancelButtonLabel')],
+        cancelButtonIndex: 1,
+        destructiveButtonIndex: 0
+      },
+      async (buttonIndex) => {
+        if (buttonIndex === 0) {
+          try {
+            await habitDeleteMutation({
+              variables: {
+                filter: {
+                  id: [id]
+                }
+              }
+            })
+            return Alert.alert(t('deleteSuccess'))
+          } catch (_error) {
+            return Alert.alert(t('errorTitle', _error.message))
+          }
+        }
+      }
+    )
+  }
+
   return (
     <Screen>
       <FlatList
-        data={data?.queryHabit}
+        ListEmptyComponent={<Text>{t('emptyData')}</Text>}
+        data={filterNullable(data?.queryHabit ?? [])}
         renderItem={({ item }) => {
-          return <List.Item title={item?.name} />
+          return (
+            <List.Item
+              onPress={() => handleHabitOptions(item.id)}
+              title={item.name}
+            />
+          )
         }}
       />
       <FAB

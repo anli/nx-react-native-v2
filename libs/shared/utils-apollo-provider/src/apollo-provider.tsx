@@ -63,7 +63,9 @@ export const ApolloProvider: FC<Props> = ({ children, url, authToken }) => {
         Query: {
           fields: {
             queryHabit: {
-              merge: true
+              merge (existing, incoming, { mergeObjects }) {
+                return mergeObjects(existing, incoming)
+              }
             }
           }
         }

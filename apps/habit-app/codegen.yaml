@@ -12,7 +12,6 @@ generates:
       extension: .generated.tsx
       baseTypesPath: utils/graphql-types
     plugins:
-      - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
     config:
