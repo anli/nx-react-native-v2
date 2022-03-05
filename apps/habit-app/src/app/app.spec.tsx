@@ -1,3 +1,4 @@
+import { MockedProvider } from '@apollo/client/testing'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@testing-library/react-native'
 import React from 'react'
@@ -13,7 +14,12 @@ describe('App', () => {
     jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
       user: { email: 'user@email.com' }
     })
-    const { getByTestId } = render(<App />)
-    expect(getByTestId('HomeScreen')).toBeDefined()
+    const { getByTestId } = render(
+      <MockedProvider>
+        <App />
+      </MockedProvider>
+    )
+
+    expect(getByTestId('HabitsScreen')).toBeDefined()
   })
 })
