@@ -71,8 +71,7 @@ const Component = (): JSX.Element => {
           <Controller
             control={control}
             rules={{
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-              required: t('nameInputValidationRequired') as string
+              required: `${t('nameInputValidationRequired')}`
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput

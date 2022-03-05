@@ -1,0 +1,5 @@
+mutation HabitDelete($filter: HabitFilter!) {
+  deleteHabit(filter: $filter) {
+    numUids
+  }
+}

@@ -1,4 +1,5 @@
 /* eslint-disable multiline-ternary */
+import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import { AuthProvider, useAuth } from '@nx-react-native/shared/auth'
 import { init as I18nInit } from '@nx-react-native/shared/i18n'
 import { TabBarIcon, ThemeProvider } from '@nx-react-native/shared/ui'
@@ -85,7 +86,9 @@ export const App = (): JSX.Element => (
   <ThemeProvider>
     <PaperProvider>
       <AuthProvider client={auth0}>
-        <Navigation />
+        <ActionSheetProvider>
+          <Navigation />
+        </ActionSheetProvider>
       </AuthProvider>
     </PaperProvider>
   </ThemeProvider>
