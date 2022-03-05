@@ -38,6 +38,8 @@
     "@graphql-codegen/introspection": "*",
     "react-error-boundary": "*",
     "@faker-js/faker": "*",
-    "date-fns": "*"
+    "date-fns": "*",
+    "@react-navigation/elements": "*",
+    "react-hook-form": "*"
   }
 }

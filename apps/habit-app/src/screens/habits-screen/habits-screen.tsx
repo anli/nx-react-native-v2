@@ -1,25 +1,32 @@
 import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen } from '@nx-react-native/shared/ui'
-import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
+import {
+  NativeStackNavigationOptions,
+  NativeStackNavigationProp
+} from '@react-navigation/native-stack'
 import { endOfWeek, formatISO, startOfToday, startOfWeek } from 'date-fns'
 import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { useTranslation } from 'react-i18next'
 import { FlatList } from 'react-native'
-import { List } from 'react-native-paper'
+import { FAB, List } from 'react-native-paper'
 import { ErrorScreen } from '..'
-import { useHabitsSubscription } from '../../data-access'
+import { RootStackParamList } from '../../app'
+import { useHabitsSubscription } from '../../habit'
 import { Suspender } from '../../utils/suspender'
 import { HabitsList } from './ui'
 
-const options: BottomTabNavigationOptions = {
+const options: NativeStackNavigationOptions = {
   title: ''
 }
 
 const Component = (): JSX.Element => {
+  const { t } = useTranslation('HabitsScreen')
   const periodStartDate = startOfWeek(startOfToday(), { weekStartsOn: 1 })
   const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
-  const { setOptions } = useNavigation()
+  const { setOptions, navigate } =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const { data, loading, error } = useHabitsSubscription({
     variables: {
       minDate: formatISO(periodStartDate),
@@ -39,6 +46,10 @@ const Component = (): JSX.Element => {
     return <Suspender />
   }
 
+  const handleCreateHabit = (): void => {
+    navigate('HabitCreateScreen')
+  }
+
   return (
     <Screen>
       <FlatList
@@ -46,6 +57,17 @@ const Component = (): JSX.Element => {
         renderItem={({ item }) => {
           return <List.Item title={item?.name} />
         }}
+      />
+      <FAB
+        style={{
+          position: 'absolute',
+          margin: 16,
+          right: 0,
+          bottom: 0
+        }}
+        icon="plus"
+        accessibilityLabel={t('createHabitButtonAccessibilityLabel')}
+        onPress={handleCreateHabit}
       />
     </Screen>
   )
