@@ -56,15 +56,23 @@ const Component = (): JSX.Element => {
     navigate('HabitCreateScreen')
   }
 
-  const handleHabitOptions = (id: string): void => {
+  const handleHabitOptions = (id: string, name: string): void => {
     showActionSheetWithOptions(
       {
-        options: [t('deleteButtonLabel'), t('cancelButtonLabel')],
-        cancelButtonIndex: 1,
-        destructiveButtonIndex: 0
+        options: [
+          t('updateButtonLabel'),
+          t('deleteButtonLabel'),
+          t('cancelButtonLabel')
+        ],
+        cancelButtonIndex: 2,
+        destructiveButtonIndex: 1
       },
       async (buttonIndex) => {
         if (buttonIndex === 0) {
+          return navigate('HabitUpdateScreen', { id, name })
+        }
+
+        if (buttonIndex === 1) {
           try {
             await habitDeleteMutation({
               variables: {
@@ -90,7 +98,7 @@ const Component = (): JSX.Element => {
         renderItem={({ item }) => {
           return (
             <List.Item
-              onPress={() => handleHabitOptions(item.id)}
+              onPress={() => handleHabitOptions(item.id, item.name)}
               title={item.name}
             />
           )

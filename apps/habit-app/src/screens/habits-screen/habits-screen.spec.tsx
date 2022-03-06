@@ -34,6 +34,10 @@ jest.mock('@react-navigation/native', () => {
 })
 
 describe('Given I am at Habits Screen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('When loaded, Then I should see Habits', async () => {
     const { getByTestId, getByText } = render(
       <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
@@ -150,12 +154,13 @@ describe('Given I am at Habits Screen', () => {
     const actionSheetCallback = mockShowActionSheetWithOptions.mock.calls[0][1]
 
     expect(actionSheetConfig.options).toEqual([
+      'updateButtonLabel',
       'deleteButtonLabel',
       'cancelButtonLabel'
     ])
 
     void act(() => {
-      actionSheetCallback(1)
+      actionSheetCallback(2)
     })
   })
 
@@ -187,7 +192,7 @@ describe('Given I am at Habits Screen', () => {
     const actionSheetCallback = mockShowActionSheetWithOptions.mock.calls[0][1]
 
     void act(() => {
-      actionSheetCallback(0)
+      actionSheetCallback(1)
     })
 
     await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
@@ -219,10 +224,47 @@ describe('Given I am at Habits Screen', () => {
     const actionSheetCallback = mockShowActionSheetWithOptions.mock.calls[0][1]
 
     void act(() => {
-      actionSheetCallback(0)
+      actionSheetCallback(1)
     })
 
     await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
     expect(Alert.alert).toHaveBeenCalledWith('errorTitle')
+  })
+
+  it('When I update Habit Item, Then I see Habit Update Screen', async () => {
+    const mockShowActionSheetWithOptions = jest.fn()
+    jest.spyOn(ExpoActionSheet, 'useActionSheet').mockReturnValue({
+      showActionSheetWithOptions: mockShowActionSheetWithOptions
+    })
+
+    const { getByTestId, getByText } = render(
+      <MockedProvider
+        mocks={[
+          ...useHabitsMockQueryHasData,
+          ...useHabitDeleteMockQuerySuccess
+        ]}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    fireEvent.press(getByText(useHabitsMockData[0].name))
+
+    await waitFor(() =>
+      expect(mockShowActionSheetWithOptions).toBeCalledTimes(1)
+    )
+    const actionSheetCallback = mockShowActionSheetWithOptions.mock.calls[0][1]
+
+    void act(() => {
+      actionSheetCallback(0)
+    })
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+    expect(mockNavigate).toHaveBeenCalledWith('HabitUpdateScreen', {
+      id: useHabitsMockData[0].id,
+      name: useHabitsMockData[0].name
+    })
   })
 })
