@@ -1,0 +1,5 @@
+mutation HabitUpdate($input: UpdateHabitInput!) {
+  updateHabit(input: $input) {
+    numUids
+  }
+}

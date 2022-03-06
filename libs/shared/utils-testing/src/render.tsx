@@ -10,7 +10,10 @@ import { Provider as PaperProvider } from 'react-native-paper'
 
 const Stack = createNativeStackNavigator()
 
-export const render = (Component: JSX.Element): RenderAPI => {
+export const render = (
+  Component: JSX.Element,
+  options?: { params?: Partial<object> }
+): RenderAPI => {
   // eslint-disable-next-line react/jsx-no-useless-fragment
   const ScreenComponent = (): JSX.Element => <>{Component}</>
 
@@ -19,7 +22,11 @@ export const render = (Component: JSX.Element): RenderAPI => {
       <PaperProvider>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Component" component={ScreenComponent} />
+            <Stack.Screen
+              name="Component"
+              component={ScreenComponent}
+              initialParams={options?.params}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

@@ -12,6 +12,7 @@ import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { HabitCreateScreen, HabitsScreen, LoginScreen } from '../screens'
+import { HabitUpdateScreen } from '../screens/habit-update-screen'
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   LoginScreen: undefined
   HabitsScreen: undefined
   HabitCreateScreen: undefined
+  HabitUpdateScreen: { id: string, name: string }
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -67,6 +69,11 @@ const Navigation = (): JSX.Element => {
                 name="HabitCreateScreen"
                 component={HabitCreateScreen.Container}
                 options={HabitCreateScreen.options}
+              />
+              <RootStack.Screen
+                name="HabitUpdateScreen"
+                component={HabitUpdateScreen.Container}
+                options={HabitUpdateScreen.options}
               />
             </>
           ) : (

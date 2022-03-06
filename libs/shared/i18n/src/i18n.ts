@@ -10,21 +10,16 @@ export const init = async ({
   loadPath: string
   useSuspense: boolean
 }): Promise<void> => {
-  await i18n
-    .use(HttpBackend)
-    .use(initReactI18next)
-    .init({
-      react: {
-        useSuspense
-      },
-      compatibilityJSON: 'v3',
-      lng: getLocales()[0].languageCode,
-      fallbackLng: 'en',
-      backend: {
-        loadPath
-      },
-      debug: false,
-      ns: ['default'],
-      defaultNS: 'default'
-    })
+  await i18n.use(HttpBackend).use(initReactI18next).init({
+    react: {
+      useSuspense
+    },
+    compatibilityJSON: 'v3',
+    lng: getLocales()[0].languageCode,
+    fallbackLng: 'en',
+    backend: {
+      loadPath
+    },
+    debug: false
+  })
 }

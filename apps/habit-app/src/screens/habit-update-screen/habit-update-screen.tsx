@@ -1,16 +1,16 @@
-import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen } from '@nx-react-native/shared/ui'
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
+import { RootStackParamList } from '../../app'
 import {
   FormData,
   HabitForm,
   HabitFormSkeleton,
-  useHabitCreateMutation
+  useHabitUpdateMutation
 } from '../../habit'
 
 const options: NativeStackNavigationOptions = {
@@ -18,19 +18,25 @@ const options: NativeStackNavigationOptions = {
 }
 
 const Component = (): JSX.Element => {
-  const { user } = useAuth()
   const { t } = useTranslation([
-    'HabitCreateScreen',
+    'HabitUpdateScreen',
     'HabitForm',
     'ErrorScreen'
   ])
   const { setOptions, canGoBack, goBack } = useNavigation()
+  const { params: defaultValues } =
+    useRoute<RouteProp<RootStackParamList, 'HabitUpdateScreen'>>()
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<FormData>()
-  const [habitCreateMutation, { loading }] = useHabitCreateMutation()
+  const [habitUpdateMutation, { loading }] = useHabitUpdateMutation()
+
+  useEffect(() => {
+    reset({ name: defaultValues?.name })
+  }, [defaultValues, reset])
 
   useEffect(() => {
     setOptions({
@@ -38,35 +44,29 @@ const Component = (): JSX.Element => {
     })
   })
 
-  const handleHabitCreateButton = async (data: FormData): Promise<void> => {
-    if (user != null) {
-      try {
-        await habitCreateMutation({
-          variables: {
-            input: {
-              ...data,
-              user: { email: user.email }
-            }
+  const handleHabitUpdateButton = async (data: FormData): Promise<void> => {
+    try {
+      await habitUpdateMutation({
+        variables: {
+          input: {
+            filter: { id: [defaultValues.id] },
+            set: data
           }
-        })
-        canGoBack() && goBack()
-        return
-      } catch (error) {
-        return Alert.alert(
-          t('errorTitle', { ns: 'ErrorScreen' }),
-          error.message
-        )
-      }
-    }
+        }
+      })
 
-    return Alert.alert(t('errorTitle', { ns: 'ErrorScreen' }), 'user is null')
+      canGoBack() && goBack()
+      return
+    } catch (error) {
+      return Alert.alert(t('errorTitle', { ns: 'ErrorScreen' }), error.message)
+    }
   }
 
   return (
     <HabitForm
       control={control}
       loading={loading}
-      onPress={handleSubmit(handleHabitCreateButton)}
+      onPress={handleSubmit(handleHabitUpdateButton)}
       errors={errors}
       nameInputValidationRequired={`${t('nameInputValidationRequired', {
         ns: 'HabitForm'
@@ -85,18 +85,18 @@ const Container = (): JSX.Element => {
   return (
     <Suspense
       fallback={
-        <Screen testID="HabitCreateScreenSkeleton">
+        <Screen testID="HabitUpdateScreenSkeleton">
           <HabitFormSkeleton />
         </Screen>
       }>
-      <Screen testID="HabitCreateScreen">
+      <Screen testID="HabitUpdateScreen">
         <Component />
       </Screen>
     </Suspense>
   )
 }
 
-export const HabitCreateScreen = {
+export const HabitUpdateScreen = {
   Container,
   options
 }
