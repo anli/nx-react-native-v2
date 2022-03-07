@@ -54,6 +54,18 @@ const base = {
     body: {
       ...iOSUIKit.bodyObject,
       color: 'text'
+    },
+    subhead: {
+      ...iOSUIKit.subheadObject,
+      color: 'text'
+    },
+    callout: {
+      ...iOSUIKit.calloutObject,
+      color: 'text'
+    },
+    footnote: {
+      ...iOSUIKit.footnoteObject,
+      color: 'text'
     }
   },
   screenVariants: {

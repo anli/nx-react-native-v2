@@ -41,6 +41,8 @@
     "date-fns": "*",
     "@react-navigation/elements": "*",
     "react-hook-form": "*",
-    "@expo/react-native-action-sheet": "*"
+    "@expo/react-native-action-sheet": "*",
+    "@welldone-software/why-did-you-render": "*",
+    "react-native-toast-message": "*"
   }
 }
