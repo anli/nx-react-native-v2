@@ -6,18 +6,32 @@ import {
   NativeStackNavigationOptions,
   NativeStackNavigationProp
 } from '@react-navigation/native-stack'
-import { endOfWeek, formatISO, startOfToday, startOfWeek } from 'date-fns'
-import React, { Suspense, useEffect } from 'react'
+import {
+  eachDayOfInterval,
+  endOfWeek,
+  format,
+  formatISO,
+  startOfToday,
+  startOfWeek
+} from 'date-fns'
+import React, { Suspense, useCallback, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { Alert, FlatList } from 'react-native'
 import { FAB, List } from 'react-native-paper'
+import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
-import { useHabitDeleteMutation, useHabitsSubscription } from '../../habit'
+import {
+  useHabitActivityCreateMutation,
+  useHabitActivityDeleteMutation,
+  useHabitDeleteMutation,
+  useHabitsSubscription
+} from '../../habit'
 import { filterNullable } from '../../utils/filter-nullable'
+import { formatDateRange } from '../../utils/format-date-range'
 import { Suspender } from '../../utils/suspender'
-import { HabitsList } from './ui'
+import { HabitsListItem, HabitsListItemProps, HabitsListSkeleton } from './ui'
 
 const options: NativeStackNavigationOptions = {
   title: ''
@@ -37,12 +51,51 @@ const Component = (): JSX.Element => {
     }
   })
   const [habitDeleteMutation] = useHabitDeleteMutation()
+  const [habitActivityCreateMutation] = useHabitActivityCreateMutation()
+  const [habitActivityDeleteMutation] = useHabitActivityDeleteMutation()
 
   useEffect(() => {
     setOptions({
       title: t('title')
     })
-  })
+  }, [t, setOptions])
+
+  const handleDayPress: HabitsListItemProps['onDayPress'] = useCallback(
+    async ({ id, habitId, habitActivityId }) => {
+      try {
+        if (habitActivityId !== undefined) {
+          await habitActivityDeleteMutation({
+            variables: {
+              filter: {
+                id: [habitActivityId]
+              }
+            }
+          })
+          return Toast.show({
+            type: 'success',
+            text1: t('habitActivityDeletedSuccess')
+          })
+        }
+
+        await habitActivityCreateMutation({
+          variables: {
+            input: {
+              count: 1,
+              date: id,
+              habit: { id: habitId }
+            }
+          }
+        })
+        return Toast.show({
+          type: 'success',
+          text1: t('habitActivityCreatedSuccess')
+        })
+      } catch (_error) {
+        return Alert.alert(t('errorTitle', _error.message))
+      }
+    },
+    [habitActivityCreateMutation, habitActivityDeleteMutation, t]
+  )
 
   if (error !== undefined) {
     throw Error(error?.message)
@@ -90,16 +143,45 @@ const Component = (): JSX.Element => {
     )
   }
 
+  const mappedData = filterNullable(data?.queryHabit ?? []).map((_item) => {
+    const weekData = eachDayOfInterval({
+      start: periodStartDate,
+      end: periodEndDate
+    }).map((_date) => {
+      const activity = _item?.habitActivities?.find((_activity) => {
+        return _activity.date.substring(0, 10) === format(_date, 'yyyy-MM-dd')
+      })
+
+      return {
+        date: _date,
+        count: activity?.count ?? 0,
+        habitActivityId: activity?.id,
+        habitId: _item.id
+      }
+    })
+
+    return {
+      ..._item,
+      weekData
+    }
+  })
+
   return (
     <Screen>
       <FlatList
+        ListHeaderComponent={
+          <List.Subheader>
+            {formatDateRange(periodStartDate, periodEndDate)}
+          </List.Subheader>
+        }
         ListEmptyComponent={<Text>{t('emptyData')}</Text>}
-        data={filterNullable(data?.queryHabit ?? [])}
+        data={mappedData}
         renderItem={({ item }) => {
           return (
-            <List.Item
-              onPress={() => handleHabitOptions(item.id, item.name)}
-              title={item.name}
+            <HabitsListItem
+              item={item}
+              onDayPress={handleDayPress}
+              onItemPress={handleHabitOptions}
             />
           )
         }}
@@ -137,7 +219,7 @@ const Container = (): JSX.Element => {
       <Suspense
         fallback={
           <Screen testID="HabitsScreenSkeleton">
-            <HabitsList.Skeleton />
+            <HabitsListSkeleton />
           </Screen>
         }>
         <Screen testID="HabitsScreen">

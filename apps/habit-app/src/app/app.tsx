@@ -11,6 +11,7 @@ import React from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
+import Toast from 'react-native-toast-message'
 import { HabitCreateScreen, HabitsScreen, LoginScreen } from '../screens'
 import { HabitUpdateScreen } from '../screens/habit-update-screen'
 
@@ -90,13 +91,16 @@ const Navigation = (): JSX.Element => {
 }
 
 export const App = (): JSX.Element => (
-  <ThemeProvider>
-    <PaperProvider>
-      <AuthProvider client={auth0}>
-        <ActionSheetProvider>
-          <Navigation />
-        </ActionSheetProvider>
-      </AuthProvider>
-    </PaperProvider>
-  </ThemeProvider>
+  <>
+    <ThemeProvider>
+      <PaperProvider>
+        <AuthProvider client={auth0}>
+          <ActionSheetProvider>
+            <Navigation />
+          </ActionSheetProvider>
+        </AuthProvider>
+      </PaperProvider>
+    </ThemeProvider>
+    <Toast />
+  </>
 )

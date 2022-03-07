@@ -4,7 +4,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 const skeletonData = Array.from({ length: 10 }, (_, key) => ({ key }))
 
-const Skeleton = (): JSX.Element => {
+export const HabitsListSkeleton = (): JSX.Element => {
   return (
     <View>
       <SkeletonPlaceholder>
@@ -21,8 +21,4 @@ const Skeleton = (): JSX.Element => {
       </SkeletonPlaceholder>
     </View>
   )
-}
-
-export const HabitsList = {
-  Skeleton
 }

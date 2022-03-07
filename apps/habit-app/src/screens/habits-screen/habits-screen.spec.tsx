@@ -10,7 +10,11 @@ import {
 } from '@testing-library/react-native'
 import React from 'react'
 import { Alert } from 'react-native'
+import Toast from 'react-native-toast-message'
 import {
+  useHabitActivityCreateMockQuerySuccess,
+  useHabitActivityDeleteMockQueryError,
+  useHabitActivityDeleteMockQuerySuccess,
   useHabitDeleteMockData,
   useHabitDeleteMockQueryError,
   useHabitDeleteMockQuerySuccess,
@@ -39,7 +43,7 @@ describe('Given I am at Habits Screen', () => {
   })
 
   it('When loaded, Then I should see Habits', async () => {
-    const { getByTestId, getByText } = render(
+    const { getByTestId, getByText, getAllByTestId } = render(
       <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
         <HabitsScreen.Container />
       </MockedProvider>
@@ -48,6 +52,10 @@ describe('Given I am at Habits Screen', () => {
     await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
 
     expect(getByText(useHabitsMockData[0].name)).toBeDefined()
+
+    expect(getAllByTestId('HabitWeekDay.Checkbox')).toHaveLength(
+      useHabitsMockData.length * 7
+    )
   })
 
   it('When Empty Data, Then I should see Habits', async () => {
@@ -265,6 +273,95 @@ describe('Given I am at Habits Screen', () => {
     expect(mockNavigate).toHaveBeenCalledWith('HabitUpdateScreen', {
       id: useHabitsMockData[0].id,
       name: useHabitsMockData[0].name
+    })
+  })
+
+  it('When I press checked Habit Week Day, Then I should see Habit Week Day unchecked', async () => {
+    const spyToastShow = jest.spyOn(Toast, 'show')
+
+    const { getByTestId, getByText, getAllByTestId } = render(
+      <MockedProvider
+        mocks={[
+          ...useHabitsMockQueryHasData,
+          ...useHabitActivityDeleteMockQuerySuccess
+        ]}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(getByText(useHabitsMockData[0].name)).toBeDefined()
+
+    const habitWeekDayCheckbox = getAllByTestId('HabitWeekDay.Checkbox')[0]
+
+    expect(habitWeekDayCheckbox.props.accessibilityState).toBeTruthy()
+
+    fireEvent.press(habitWeekDayCheckbox)
+
+    await waitFor(() => expect(spyToastShow).toBeCalledTimes(1))
+    expect(spyToastShow).toBeCalledWith({
+      text1: 'habitActivityDeletedSuccess',
+      type: 'success'
+    })
+  })
+
+  it('And API has Error, When I press checked Habit Week Day, Then I should see Error Message', async () => {
+    jest.spyOn(Alert, 'alert')
+    const { getByTestId, getByText, getAllByTestId } = render(
+      <MockedProvider
+        mocks={[
+          ...useHabitsMockQueryHasData,
+          ...useHabitActivityDeleteMockQueryError
+        ]}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(getByText(useHabitsMockData[0].name)).toBeDefined()
+
+    const habitWeekDayCheckbox = getAllByTestId('HabitWeekDay.Checkbox')[0]
+
+    expect(habitWeekDayCheckbox.props.accessibilityState).toBeTruthy()
+
+    fireEvent.press(habitWeekDayCheckbox)
+
+    await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
+    expect(Alert.alert).toHaveBeenCalledWith('errorTitle')
+  })
+
+  it('When I press unchecked Habit Week Day, Then I should see Habit Week Day checked', async () => {
+    const spyToastShow = jest.spyOn(Toast, 'show')
+
+    const { getByTestId, getByText, getAllByTestId } = render(
+      <MockedProvider
+        mocks={[
+          ...useHabitsMockQueryHasData,
+          ...useHabitActivityCreateMockQuerySuccess
+        ]}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(getByText(useHabitsMockData[0].name)).toBeDefined()
+
+    const habitWeekDayCheckbox = getAllByTestId('HabitWeekDay.Checkbox')[1]
+
+    expect(habitWeekDayCheckbox.props.accessibilityState).toBeTruthy()
+
+    fireEvent.press(habitWeekDayCheckbox)
+
+    await waitFor(() => expect(spyToastShow).toBeCalledTimes(1))
+    expect(spyToastShow).toBeCalledWith({
+      text1: 'habitActivityCreatedSuccess',
+      type: 'success'
     })
   })
 })
