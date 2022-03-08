@@ -37,6 +37,10 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Install app node modules
+        run: |
+          npx nx ensure-symlink
+
       - name: Typescript Compile
         run: |
           npm run type-check -- --base=origin/$GITHUB_BASE_REF
