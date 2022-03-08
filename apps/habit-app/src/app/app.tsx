@@ -12,7 +12,12 @@ import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { Provider as PaperProvider } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
-import { HabitCreateScreen, HabitsScreen, LoginScreen } from '../screens'
+import {
+  HabitCreateScreen,
+  HabitsScreen,
+  LoginScreen,
+  ProfileScreen
+} from '../screens'
 import { HabitUpdateScreen } from '../screens/habit-update-screen'
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
@@ -42,8 +47,19 @@ export const AppTabs = (): JSX.Element => {
         name="HabitsScreen"
         component={HabitsScreen.Container}
         options={{
+          ...HabitsScreen.options,
           tabBarIcon: ({ color, size }) => (
             <TabBarIcon name="home-variant" color={color} size={size} />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="ProfileScreen"
+        component={ProfileScreen.Container}
+        options={{
+          ...ProfileScreen.options,
+          tabBarIcon: ({ color, size }) => (
+            <TabBarIcon name="account-circle" color={color} size={size} />
           )
         }}
       />

@@ -1,0 +1,14 @@
+diff --git a/node_modules/@nrwl/detox/src/executors/test/test.impl.js b/node_modules/@nrwl/detox/src/executors/test/test.impl.js
+index f32f9b6..807f435 100644
+--- a/node_modules/@nrwl/detox/src/executors/test/test.impl.js
++++ b/node_modules/@nrwl/detox/src/executors/test/test.impl.js
+@@ -64,6 +64,9 @@ function createDetoxTestOptions(options) {
+         else if (k === 'appLaunchArgs') {
+             acc.push(`--app-launch-argss="${propertyValue}"`); // the value must be specified after an equal sign (=) and inside quotes.
+         }
++        else if (k === 'customPattern') {
++            acc.push(`${propertyValue}`);
++            }    
+         else {
+             const propertyName = (0, devkit_2.names)(k).fileName; // convert camelCase to kebab-case
+             acc.push(`--${propertyName}`, propertyValue);
