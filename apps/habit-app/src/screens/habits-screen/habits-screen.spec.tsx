@@ -8,6 +8,13 @@ import {
   waitFor,
   waitForElementToBeRemoved
 } from '@testing-library/react-native'
+import {
+  addWeeks,
+  endOfWeek,
+  startOfToday,
+  startOfWeek,
+  subWeeks
+} from 'date-fns'
 import React from 'react'
 import { Alert } from 'react-native'
 import Toast from 'react-native-toast-message'
@@ -21,8 +28,11 @@ import {
   useHabitsMockData,
   useHabitsMockQueryEmptyData,
   useHabitsMockQueryError,
-  useHabitsMockQueryHasData
+  useHabitsMockQueryHasData,
+  useHabitsMockQueryHasNextWeekData,
+  useHabitsMockQueryHasPreviousWeekData
 } from '../../habit'
+import { formatDateRange } from '../../utils/format-date-range'
 import { HabitsScreen } from './habits-screen'
 
 const mockNavigate = jest.fn()
@@ -363,5 +373,71 @@ describe('Given I am at Habits Screen', () => {
       text1: 'habitActivityCreatedSuccess',
       type: 'success'
     })
+  })
+
+  it('When I press Previous Period Button, Then I should see previous period', async () => {
+    const periodStartDate = startOfWeek(startOfToday(), { weekStartsOn: 1 })
+    const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
+
+    const { getByTestId, getByText, getByA11yLabel, findByText } = render(
+      <MockedProvider
+        mocks={[
+          ...useHabitsMockQueryHasData,
+          ...useHabitsMockQueryHasPreviousWeekData
+        ]}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(
+      getByText(formatDateRange(periodStartDate, periodEndDate))
+    ).toBeDefined()
+
+    fireEvent.press(getByA11yLabel('previousPeriodButtonAccessibilityLabel'))
+
+    expect(
+      await findByText(
+        formatDateRange(
+          subWeeks(periodStartDate, 1),
+          subWeeks(periodEndDate, 1)
+        )
+      )
+    ).toBeDefined()
+  })
+
+  it('When I press Next Period Button, Then I should see next period', async () => {
+    const periodStartDate = startOfWeek(startOfToday(), { weekStartsOn: 1 })
+    const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
+
+    const { getByTestId, getByText, getByA11yLabel, findByText } = render(
+      <MockedProvider
+        mocks={[
+          ...useHabitsMockQueryHasData,
+          ...useHabitsMockQueryHasNextWeekData
+        ]}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(
+      getByText(formatDateRange(periodStartDate, periodEndDate))
+    ).toBeDefined()
+
+    fireEvent.press(getByA11yLabel('nextPeriodButtonAccessibilityLabel'))
+
+    expect(
+      await findByText(
+        formatDateRange(
+          addWeeks(periodStartDate, 1),
+          addWeeks(periodEndDate, 1)
+        )
+      )
+    ).toBeDefined()
   })
 })

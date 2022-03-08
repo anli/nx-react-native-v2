@@ -31,7 +31,7 @@ export const HabitsListItem = ({
   }
 
   return (
-    <>
+    <View>
       <List.Item onPress={handleItemPress} title={item.name} />
       <View flexDirection="row" justifyContent="space-around">
         {item.weekData.map(({ date, count, habitActivityId, habitId }) => {
@@ -50,6 +50,6 @@ export const HabitsListItem = ({
           )
         })}
       </View>
-    </>
+    </View>
   )
 }

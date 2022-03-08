@@ -1,5 +1,12 @@
 import faker from '@faker-js/faker'
-import { endOfWeek, formatISO, startOfToday, startOfWeek } from 'date-fns'
+import {
+  addWeeks,
+  endOfWeek,
+  formatISO,
+  startOfToday,
+  startOfWeek,
+  subWeeks
+} from 'date-fns'
 import { DocumentNode } from 'graphql'
 import { HabitsDocument, HabitsSubscription } from './use-habits.generated'
 
@@ -68,6 +75,54 @@ export const useHabitsMockQueryEmptyData: Array<{
     request,
     result: {
       data: { queryHabit: null }
+    }
+  }
+]
+
+const previousWeekRequest = {
+  query: HabitsDocument,
+  variables: {
+    minDate: formatISO(
+      subWeeks(startOfWeek(startOfToday(), { weekStartsOn: 1 }), 1)
+    ),
+    maxDate: formatISO(
+      subWeeks(endOfWeek(startOfToday(), { weekStartsOn: 1 }), 1)
+    )
+  }
+}
+
+export const useHabitsMockQueryHasPreviousWeekData: Array<{
+  request: { query: DocumentNode }
+  result: { data: HabitsSubscription }
+}> = [
+  {
+    request: previousWeekRequest,
+    result: {
+      data: { queryHabit: useHabitsMockData }
+    }
+  }
+]
+
+const nextWeekRequest = {
+  query: HabitsDocument,
+  variables: {
+    minDate: formatISO(
+      addWeeks(startOfWeek(startOfToday(), { weekStartsOn: 1 }), 1)
+    ),
+    maxDate: formatISO(
+      addWeeks(endOfWeek(startOfToday(), { weekStartsOn: 1 }), 1)
+    )
+  }
+}
+
+export const useHabitsMockQueryHasNextWeekData: Array<{
+  request: { query: DocumentNode }
+  result: { data: HabitsSubscription }
+}> = [
+  {
+    request: nextWeekRequest,
+    result: {
+      data: { queryHabit: useHabitsMockData }
     }
   }
 ]

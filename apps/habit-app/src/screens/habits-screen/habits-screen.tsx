@@ -1,22 +1,24 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Screen, Text } from '@nx-react-native/shared/ui'
+import { Screen, Text, View } from '@nx-react-native/shared/ui'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import {
+  addWeeks,
   eachDayOfInterval,
   endOfWeek,
   format,
   formatISO,
   startOfToday,
-  startOfWeek
+  startOfWeek,
+  subWeeks
 } from 'date-fns'
-import React, { Suspense, useCallback, useEffect } from 'react'
+import React, { Suspense, useCallback, useEffect, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { Alert, FlatList } from 'react-native'
-import { FAB, List } from 'react-native-paper'
+import { Appbar, FAB, List } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
@@ -39,7 +41,9 @@ const options: BottomTabNavigationOptions = {
 const Component = (): JSX.Element => {
   const { showActionSheetWithOptions } = useActionSheet()
   const { t } = useTranslation('HabitsScreen')
-  const periodStartDate = startOfWeek(startOfToday(), { weekStartsOn: 1 })
+  const [periodStartDate, setPeriodStartDate] = useState<Date>(
+    startOfWeek(startOfToday(), { weekStartsOn: 1 })
+  )
   const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
@@ -54,10 +58,30 @@ const Component = (): JSX.Element => {
   const [habitActivityDeleteMutation] = useHabitActivityDeleteMutation()
 
   useEffect(() => {
+    const handlePreviousPeriod = (): void =>
+      setPeriodStartDate(subWeeks(periodStartDate, 1))
+
+    const handleNextPeriod = (): void =>
+      setPeriodStartDate(addWeeks(periodStartDate, 1))
+
     setOptions({
-      title: t('title')
+      title: t('title'),
+      headerRight: () => (
+        <View flex={1} flexDirection="row" paddingEnd="tight">
+          <Appbar.Action
+            icon="chevron-left"
+            onPress={handlePreviousPeriod}
+            accessibilityLabel={t('previousPeriodButtonAccessibilityLabel')}
+          />
+          <Appbar.Action
+            icon="chevron-right"
+            onPress={handleNextPeriod}
+            accessibilityLabel={t('nextPeriodButtonAccessibilityLabel')}
+          />
+        </View>
+      )
     })
-  }, [t, setOptions])
+  }, [t, setOptions, setPeriodStartDate, periodStartDate])
 
   const handleDayPress: HabitsListItemProps['onDayPress'] = useCallback(
     async ({ id, habitId, habitActivityId }) => {
