@@ -100,6 +100,14 @@
         "command": "npx graphql-codegen --config codegen.yaml",
         "cwd": "apps/habit-app"
       }
+    },
+    "alpha-build-ios": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "bundle exec fastlane alpha",
+        "cwd": "apps/habit-app/ios"
+      }
     }
   },
   "tags": []

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "alpha-build-ios": "nx affected --target=alpha-build-ios",
     "e2e-start": "RN_SRC_EXT=e2e.ts,e2e.tsx nx serve",
     "e2e-build-ios": "nx affected --target=e2e-build-ios",
     "e2e-test-ios": "nx affected --target=e2e-test-ios",
