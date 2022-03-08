@@ -101,12 +101,20 @@
         "cwd": "apps/habit-app"
       }
     },
-    "alpha-build-ios": {
+    "alpha-release-ios": {
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
         "command": "bundle exec fastlane alpha",
         "cwd": "apps/habit-app/ios"
+      }
+    },
+    "alpha-release-android": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "bundle exec fastlane alpha",
+        "cwd": "apps/habit-app/android"
       }
     }
   },

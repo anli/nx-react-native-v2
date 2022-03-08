@@ -1,0 +1,67 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+skip_docs
+
+fastlane_require 'dotenv'
+
+default_platform(:android)
+
+platform :android do
+  lane :alpha do
+    Dotenv.overload '../.env'
+
+    file = getFolderPath().concat(ENV['ANDROID_STORE_FILE'])
+
+    android_set_version_name(
+      version_name: load_json(json_path: "../package.json")["version"],
+      gradle_file: "app/build.gradle"
+    )
+
+    android_set_version_code(
+      version_code: google_play_track_version_codes(
+        track: 'internal'
+      ).max + 1,
+      gradle_file: "app/build.gradle"
+    )
+
+    gradle(
+      task: 'clean',
+      print_command_output: false,
+      print_command: false
+    )
+
+    gradle(      
+      task: 'bundle',
+      build_type: 'Release',
+      properties: {
+        "android.injected.signing.store.file" => file,
+        "android.injected.signing.store.password" => ENV['ANDROID_STORE_PASSWORD'],
+        "android.injected.signing.key.alias" => ENV['ANDROID_KEY_ALIAS'],
+        "android.injected.signing.key.password" => ENV['ANDROID_KEY_PASSWORD'],
+      },
+      print_command_output: true,
+      print_command: true
+    )
+
+    upload_to_play_store(track: 'internal')
+  end
+end
+
+lane :getFolderPath do
+  sh(
+    command: 'cd ../ && pwd',
+    log: true
+  ).chomp.concat('/')
+end
