@@ -4,7 +4,7 @@ import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
-import reactI18next from 'react-i18next'
+import ReactI18next from 'react-i18next'
 import { Alert } from 'react-native'
 import {
   useHabitCreateMockData,
@@ -42,7 +42,7 @@ describe('Given I am at Habit Create Screen', () => {
   it('When initial load, Then I should see Skeleton Screen', () => {
     jest
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .spyOn<any, 'useTranslation'>(reactI18next, 'useTranslation')
+      .spyOn<any, 'useTranslation'>(ReactI18next, 'useTranslation')
       .mockImplementationOnce(() => {
         // eslint-disable-next-line @typescript-eslint/no-throw-literal
         throw new Promise(() => null)

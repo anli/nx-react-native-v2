@@ -1,11 +1,9 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen, Text } from '@nx-react-native/shared/ui'
+import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
-import {
-  NativeStackNavigationOptions,
-  NativeStackNavigationProp
-} from '@react-navigation/native-stack'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import {
   eachDayOfInterval,
   endOfWeek,
@@ -33,8 +31,9 @@ import { formatDateRange } from '../../utils/format-date-range'
 import { Suspender } from '../../utils/suspender'
 import { HabitsListItem, HabitsListItemProps, HabitsListSkeleton } from './ui'
 
-const options: NativeStackNavigationOptions = {
-  title: ''
+const options: BottomTabNavigationOptions = {
+  title: '',
+  tabBarShowLabel: false
 }
 
 const Component = (): JSX.Element => {

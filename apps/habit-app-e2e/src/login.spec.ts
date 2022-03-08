@@ -1,13 +1,13 @@
 import { by, device, element, expect } from 'detox'
-import { LoginScreen } from './helper'
+import { LoginScreen } from './utils'
 
-describe('Habit App', () => {
+describe('Given I am at Login Screen', () => {
   beforeEach(async () => {
     await device.reloadReactNative()
     await LoginScreen.iAmAtLoginScreen()
   })
 
-  it('Given I am at Login Screen, When I press Login, Then I am at Habits Screen', async () => {
+  it('When I press Login, Then I am at Habits Screen', async () => {
     await expect(element(by.text('My title'))).toBeVisible()
     await expect(element(by.text('My subtitle'))).toBeVisible()
 

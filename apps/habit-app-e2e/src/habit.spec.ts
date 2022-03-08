@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { by, device, element } from 'detox'
-import { LoginScreen } from './helper'
+import { LoginScreen } from './utils'
 
-describe('Habit App', () => {
+describe('Given I am at Habits Screen', () => {
   const habitData = {
     name: faker.lorem.word(),
     updateName: faker.lorem.word()
@@ -11,11 +11,10 @@ describe('Habit App', () => {
   beforeEach(async () => {
     await device.reloadReactNative()
     await LoginScreen.iAmAtLoginScreen()
+    await LoginScreen.goToHabitsScreen()
   })
 
-  it('Given I am at Habits Screen, When I create, update, delete Habit, Then I should see Habit created, updated, deleted', async () => {
-    await LoginScreen.goToHabitsScreen()
-
+  it('When I create, update, delete Habit, Then I should see Habit created, updated, deleted', async () => {
     // create
     await element(by.label('Create Habit Button')).atIndex(0).tap()
 

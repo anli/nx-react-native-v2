@@ -16,7 +16,18 @@ const goToHabitsScreen = async (): Promise<void> => {
     .withTimeout(TIMEOUT_MILLISECONDS)
 }
 
+const goToProfileScreen = async (): Promise<void> => {
+  await goToHabitsScreen()
+
+  await element(by.id('ProfileBottomTabButton')).atIndex(0).tap()
+
+  await waitFor(element(by.id('ProfileScreen')))
+    .toBeVisible()
+    .withTimeout(TIMEOUT_MILLISECONDS)
+}
+
 export const LoginScreen = {
   iAmAtLoginScreen,
-  goToHabitsScreen
+  goToHabitsScreen,
+  goToProfileScreen
 }
