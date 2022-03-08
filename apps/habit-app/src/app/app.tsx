@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
-import { Provider as PaperProvider } from 'react-native-paper'
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import {
   HabitCreateScreen,
@@ -108,8 +108,8 @@ const Navigation = (): JSX.Element => {
 
 export const App = (): JSX.Element => (
   <>
-    <ThemeProvider>
-      <PaperProvider>
+    <ThemeProvider mode="light">
+      <PaperProvider theme={DefaultTheme}>
         <AuthProvider client={auth0}>
           <ActionSheetProvider>
             <Navigation />
