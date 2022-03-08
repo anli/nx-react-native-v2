@@ -26,15 +26,7 @@ jobs:
 
       - uses: actions/setup-node@v2
 
-      - name: Cache Node Modules
-        id: cache-node-modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json', 'patches') }}
-
       - name: Install Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Install app node modules
