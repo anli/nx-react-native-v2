@@ -1,5 +1,5 @@
 import { Text, View } from '@nx-react-native/shared/ui'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Checkbox } from 'react-native-paper'
 
 export interface HabitWeekDayProps {
@@ -28,7 +28,17 @@ export const HabitWeekDay = React.memo(
     habitId,
     onPress
   }: HabitWeekDayProps): JSX.Element => {
+    const [isChecked, setIsChecked] = useState<boolean>(false)
+
+    useEffect(() => {
+      if (Boolean(count) !== isChecked) {
+        setIsChecked(!(count === 0))
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [count])
+
     const handlePress = (): void => {
+      setIsChecked(!isChecked)
       void onPress({
         id,
         habitActivityId,
@@ -42,7 +52,7 @@ export const HabitWeekDay = React.memo(
         <Checkbox.Android
           testID="HabitWeekDay.Checkbox"
           onPress={handlePress}
-          status={count > 0 ? 'checked' : 'unchecked'}
+          status={isChecked ? 'checked' : 'unchecked'}
         />
       </View>
     )
