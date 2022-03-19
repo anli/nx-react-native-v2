@@ -43,6 +43,7 @@
     "react-hook-form": "*",
     "@expo/react-native-action-sheet": "*",
     "@welldone-software/why-did-you-render": "*",
-    "react-native-toast-message": "*"
+    "react-native-toast-message": "*",
+    "react-native-keychain": "*"
   }
 }

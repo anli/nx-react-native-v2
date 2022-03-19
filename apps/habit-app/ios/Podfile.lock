@@ -367,6 +367,8 @@ PODS:
     - React-perflogger (= 0.66.4)
   - RNCMaskedView (0.2.6):
     - React-Core
+  - RNKeychain (8.0.0):
+    - React-Core
   - RNLocalize (2.1.9):
     - React-Core
   - RNScreens (3.11.0):
@@ -441,6 +443,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../../../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
   - "RNCMaskedView (from `../../../node_modules/@react-native-masked-view/masked-view`)"
+  - RNKeychain (from `../../../node_modules/react-native-keychain`)
   - RNLocalize (from `../../../node_modules/react-native-localize`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNSVG (from `../../../node_modules/react-native-svg`)
@@ -536,6 +539,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon"
   RNCMaskedView:
     :path: "../../../node_modules/@react-native-masked-view/masked-view"
+  RNKeychain:
+    :path: "../../../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../../../node_modules/react-native-localize"
   RNScreens:
@@ -597,6 +602,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
+  RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
   RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
@@ -606,4 +612,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a5a6acf77390aeae819d600028bd79771df8b951
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
