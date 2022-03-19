@@ -60,11 +60,20 @@ export const ApolloProvider: FC<Props> = ({ children, url, authToken }) => {
   const client = new ApolloClient({
     cache: new InMemoryCache({
       typePolicies: {
-        Query: {
+        Subscription: {
           fields: {
             queryHabit: {
-              merge (existing, incoming, { mergeObjects }) {
-                return mergeObjects(existing, incoming)
+              merge (_, incoming) {
+                return incoming
+              }
+            }
+          }
+        },
+        Habit: {
+          fields: {
+            habitActivities: {
+              merge (_, incoming) {
+                return incoming
               }
             }
           }

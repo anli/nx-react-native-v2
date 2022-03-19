@@ -9,17 +9,19 @@ export type HabitsSubscriptionVariables = Types.Exact<{
 }>;
 
 
-export type HabitsSubscription = { __typename?: 'Subscription', queryHabit?: Array<{ __typename?: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename?: 'HabitActivity', id: string, count: number, date: any }> | null } | null> | null };
+export type HabitsSubscription = { __typename?: 'Subscription', queryHabit?: Array<{ __typename: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename: 'HabitActivity', id: string, count: number, date: any }> | null } | null> | null };
 
 
 export const HabitsDocument = gql`
     subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
   queryHabit {
     habitActivities(filter: {date: {between: {min: $minDate, max: $maxDate}}}) {
+      __typename
       id
       count
       date
     }
+    __typename
     id
     name
   }
