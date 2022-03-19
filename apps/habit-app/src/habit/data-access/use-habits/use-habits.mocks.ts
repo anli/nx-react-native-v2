@@ -21,10 +21,12 @@ const request = {
 export const useHabitsMockData = Array.from({ length: 3 }, (_, i) => {
   faker.seed(i)
   return {
+    __typename: 'Habit' as const,
     id: faker.datatype.uuid(),
     name: faker.lorem.word(),
     habitActivities: [
       {
+        __typename: 'HabitActivity' as const,
         id: faker.datatype.uuid(),
         date: formatISO(startOfWeek(startOfToday(), { weekStartsOn: 1 })),
         count: 1

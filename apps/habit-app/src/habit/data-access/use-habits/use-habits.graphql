@@ -3,10 +3,12 @@ subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
     habitActivities(
       filter: { date: { between: { min: $minDate, max: $maxDate } } }
     ) {
+      __typename
       id
       count
       date
     }
+    __typename
     id
     name
   }
