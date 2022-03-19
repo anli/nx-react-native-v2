@@ -275,8 +275,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEVELOPMENT_TEAM = 6KG436XCF6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Habit/Info.plist;
@@ -291,7 +292,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.anlitz.habit;
 				PRODUCT_NAME = Habit;
-				PROVISIONING_PROFILE_SPECIFIER = "XC Wildcard";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.anlitz.habit";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -304,8 +305,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEVELOPMENT_TEAM = 6KG436XCF6;
 				INFOPLIST_FILE = Habit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -319,7 +321,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.anlitz.habit;
 				PRODUCT_NAME = Habit;
-				PROVISIONING_PROFILE_SPECIFIER = "XC Wildcard";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.anlitz.habit";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

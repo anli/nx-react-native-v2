@@ -105,7 +105,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "bundle exec fastlane alpha",
+        "command": "bundle install && bundle exec fastlane alpha",
         "cwd": "apps/habit-app/ios"
       }
     },
@@ -113,7 +113,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "bundle exec fastlane alpha",
+        "command": "bundle install && bundle exec fastlane alpha",
         "cwd": "apps/habit-app/android"
       }
     }
