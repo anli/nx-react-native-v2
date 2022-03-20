@@ -1,3 +1,9 @@
+import { useHabitCreateMutation } from '@nx-react-native/habit/data-access'
+import {
+  FormData,
+  HabitForm,
+  HabitFormSkeleton
+} from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen } from '@nx-react-native/shared/ui'
 import { useNavigation } from '@react-navigation/native'
@@ -6,12 +12,6 @@ import React, { Suspense, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
-import {
-  FormData,
-  HabitForm,
-  HabitFormSkeleton,
-  useHabitCreateMutation
-} from '../../habit'
 
 const options: NativeStackNavigationOptions = {
   title: ''

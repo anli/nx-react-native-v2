@@ -16,11 +16,22 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nx-react-native/habit/data-access": [
+        "libs/habit/data-access/src/index.ts"
+      ],
+      "@nx-react-native/habit/ui": ["libs/habit/ui/src/index.ts"],
       "@nx-react-native/shared/auth": ["libs/shared/auth/src/index.ts"],
       "@nx-react-native/shared/i18n": ["libs/shared/i18n/src/index.ts"],
       "@nx-react-native/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@nx-react-native/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@nx-react-native/shared/utils-apollo-provider": [
         "libs/shared/utils-apollo-provider/src/index.ts"
+      ],
+      "@nx-react-native/shared/utils-date": [
+        "libs/shared/utils-date/src/index.ts"
+      ],
+      "@nx-react-native/shared/utils-suspense": [
+        "libs/shared/utils-suspense/src/index.ts"
       ],
       "@nx-react-native/shared/utils-testing": [
         "libs/shared/utils-testing/src/index.ts"

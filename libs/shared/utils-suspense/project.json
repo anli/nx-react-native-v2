@@ -1,0 +1,43 @@
+{
+  "root": "libs/shared/utils-suspense",
+  "sourceRoot": "libs/shared/utils-suspense/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/utils-suspense/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/shared/utils-suspense"
+      ],
+      "options": {
+        "coverageDirectory": "coverage/libs-shared-utils-suspense",
+        "jestConfig": "libs/shared/utils-suspense/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "libs/shared/utils-suspense"
+      }
+    }
+  }
+}
