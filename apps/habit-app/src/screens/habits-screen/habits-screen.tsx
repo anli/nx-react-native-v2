@@ -241,7 +241,7 @@ const Container = (): JSX.Element => {
         />
       )}
       onReset={() => {
-        logout?.()
+        logout?.(false)
       }}>
       <Suspense
         fallback={

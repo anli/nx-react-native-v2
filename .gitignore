@@ -104,7 +104,7 @@ apps/habit-app-e2e/artifacts
 **/coverage
 .gitsecret/keys/random_seed
 !*.secret
-apps/habit-app/.env
+**/.env
 
 ## E2E
-artifacts/libs/habit/data-access/.env
+artifacts/
