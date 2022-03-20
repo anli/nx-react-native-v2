@@ -52,9 +52,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
     setUser({ email: userInfo.email })
   }
 
-  const logout = async (): Promise<void> => {
-    await client.webAuth.clearSession()
-    await Keychain.resetGenericPassword()
+  const logout = async (clear = true): Promise<void> => {
+    clear && (await client.webAuth.clearSession())
+    clear && (await Keychain.resetGenericPassword())
     setIdToken(undefined)
     setUser(undefined)
   }
