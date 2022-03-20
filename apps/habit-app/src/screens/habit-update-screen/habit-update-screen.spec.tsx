@@ -1,15 +1,15 @@
 import { MockedProvider } from '@apollo/client/testing'
+import {
+  useHabitUpdateMockData,
+  useHabitUpdateMockQueryError,
+  useHabitUpdateMockQuerySuccess
+} from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import reactI18next from 'react-i18next'
 import { Alert } from 'react-native'
-import {
-  useHabitUpdateMockData,
-  useHabitUpdateMockQueryError,
-  useHabitUpdateMockQuerySuccess
-} from '../../habit'
 import { HabitUpdateScreen } from './habit-update-screen'
 
 const mockGoBack = jest.fn()

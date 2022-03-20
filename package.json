@@ -21,7 +21,7 @@
     "pod-install": "nx affected --target=pod-install",
     "prepare": "husky install",
     "postinstall": "patch-package",
-    "code-generate": "nx code-generate"
+    "code-generate": "nx affected --target=code-generate"
   },
   "private": true,
   "devDependencies": {

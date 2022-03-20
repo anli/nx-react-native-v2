@@ -107,4 +107,4 @@ apps/habit-app-e2e/artifacts
 apps/habit-app/.env
 
 ## E2E
-artifacts/
+artifacts/libs/habit/data-access/.env

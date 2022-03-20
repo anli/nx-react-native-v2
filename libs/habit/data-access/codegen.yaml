@@ -1,0 +1,22 @@
+overwrite: true
+schema: ${GRAPHQL_SCHEMA_URL}
+documents:
+  - 'src/**/*.graphql'
+generates:
+  src/graphql-types/graphql-types.generated.ts:
+    plugins:
+      - 'typescript'
+  src:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: graphql-types
+    plugins:
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      enumsAsConst: true
+      withHOC: false
+      withHooks: true
+      withComponent: false
+      nonOptionalTypename: true

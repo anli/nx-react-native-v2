@@ -1,6 +1,21 @@
 import { MockedProvider } from '@apollo/client/testing'
 import ExpoActionSheet from '@expo/react-native-action-sheet'
+import {
+  useHabitActivityCreateMockQuerySuccess,
+  useHabitActivityDeleteMockQueryError,
+  useHabitActivityDeleteMockQuerySuccess,
+  useHabitDeleteMockData,
+  useHabitDeleteMockQueryError,
+  useHabitDeleteMockQuerySuccess,
+  useHabitsMockData,
+  useHabitsMockQueryEmptyData,
+  useHabitsMockQueryError,
+  useHabitsMockQueryHasData,
+  useHabitsMockQueryHasNextWeekData,
+  useHabitsMockQueryHasPreviousWeekData
+} from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
+import { formatDateRange } from '@nx-react-native/shared/utils-date'
 import { render } from '@nx-react-native/shared/utils-testing'
 import {
   act,
@@ -18,21 +33,6 @@ import {
 import React from 'react'
 import { Alert } from 'react-native'
 import Toast from 'react-native-toast-message'
-import {
-  useHabitActivityCreateMockQuerySuccess,
-  useHabitActivityDeleteMockQueryError,
-  useHabitActivityDeleteMockQuerySuccess,
-  useHabitDeleteMockData,
-  useHabitDeleteMockQueryError,
-  useHabitDeleteMockQuerySuccess,
-  useHabitsMockData,
-  useHabitsMockQueryEmptyData,
-  useHabitsMockQueryError,
-  useHabitsMockQueryHasData,
-  useHabitsMockQueryHasNextWeekData,
-  useHabitsMockQueryHasPreviousWeekData
-} from '../../habit'
-import { formatDateRange } from '../../utils/format-date-range'
 import { HabitsScreen } from './habits-screen'
 
 const mockNavigate = jest.fn()
