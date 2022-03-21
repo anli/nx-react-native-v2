@@ -44,6 +44,7 @@
     "@expo/react-native-action-sheet": "*",
     "@welldone-software/why-did-you-render": "*",
     "react-native-toast-message": "*",
-    "react-native-keychain": "*"
+    "react-native-keychain": "*",
+    "@sentry/react-native": "*"
   }
 }
