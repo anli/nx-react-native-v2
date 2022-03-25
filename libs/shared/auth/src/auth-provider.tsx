@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import Auth0 from 'react-native-auth0'
 import * as Keychain from 'react-native-keychain'
 import { AuthContext } from './auth-context'
@@ -13,27 +13,28 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
   const [idToken, setIdToken] = useState<string | undefined>(undefined)
   const [user, setUser] = useState<{ email: string } | undefined>(undefined)
 
-  useEffect(() => {
-    const autoLogin = async (): Promise<void> => {
-      const credentials = await Keychain.getGenericPassword()
+  const reLogin = useCallback(async (): Promise<void> => {
+    const credentials = await Keychain.getGenericPassword()
 
-      if (credentials !== false) {
-        const refreshToken = credentials.password
+    if (credentials !== false) {
+      const refreshToken = credentials.password
 
-        const { idToken: _idToken, accessToken } =
-          await client.auth.refreshToken({ refreshToken })
+      const { idToken: _idToken, accessToken } = await client.auth.refreshToken(
+        { refreshToken }
+      )
 
-        const userInfo = await client.auth.userInfo({
-          token: accessToken
-        })
+      const userInfo = await client.auth.userInfo({
+        token: accessToken
+      })
 
-        setIdToken(_idToken)
-        setUser({ email: userInfo.email })
-      }
+      setIdToken(_idToken)
+      setUser({ email: userInfo.email })
     }
-
-    void autoLogin()
   }, [client.auth])
+
+  useEffect(() => {
+    void reLogin()
+  }, [client.auth, reLogin])
 
   const login = async (): Promise<void> => {
     const {
@@ -64,6 +65,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
       value={{
         login,
         logout,
+        reLogin,
         idToken,
         user
       }}>

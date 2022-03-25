@@ -1,3 +1,4 @@
+import { useAuth } from '@nx-react-native/shared/auth'
 import { Button, Screen, Text, View } from '@nx-react-native/shared/ui'
 import { useNavigation } from '@react-navigation/native'
 import React, { Suspense, useEffect } from 'react'
@@ -43,9 +44,32 @@ export const Component: React.ComponentType<FallbackProps> = ({
 
 const Skeleton = Login.Skeleton
 
+type KnownError = 'TOKEN_EXPIRED' | 'UNKNOWN'
+
+const getErrorType = (error: Error): KnownError => {
+  if (error.message.includes('unable to parse jwt token:token is expired by')) {
+    return 'TOKEN_EXPIRED'
+  }
+  return 'UNKNOWN'
+}
+
 export const ErrorScreen: React.ComponentType<
 FallbackProps & { testID?: string }
 > = ({ testID = 'ErrorScreen', error, resetErrorBoundary }) => {
+  const { logout, reLogin } = useAuth()
+
+  const type = getErrorType(error)
+
+  const handleResetErrorBoundary = async (): Promise<void> => {
+    if (type === 'TOKEN_EXPIRED') {
+      await reLogin?.()
+    } else {
+      logout?.()
+    }
+
+    resetErrorBoundary()
+  }
+
   return (
     <Suspense
       fallback={
@@ -54,7 +78,10 @@ FallbackProps & { testID?: string }
         </Screen>
       }>
       <Screen testID={testID}>
-        <Component error={error} resetErrorBoundary={resetErrorBoundary} />
+        <Component
+          error={error}
+          resetErrorBoundary={handleResetErrorBoundary}
+        />
       </Screen>
     </Suspense>
   )

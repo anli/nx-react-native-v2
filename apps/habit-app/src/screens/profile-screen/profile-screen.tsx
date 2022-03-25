@@ -55,8 +55,6 @@ const ProfileScreenSkeleton = (): JSX.Element => {
 }
 
 const Container = (): JSX.Element => {
-  const { logout } = useAuth()
-
   return (
     <ErrorBoundary
       fallbackRender={({ error, resetErrorBoundary }) => (
@@ -65,10 +63,7 @@ const Container = (): JSX.Element => {
           error={error}
           resetErrorBoundary={resetErrorBoundary}
         />
-      )}
-      onReset={() => {
-        logout?.()
-      }}>
+      )}>
       <Suspense
         fallback={
           <Screen testID="ProfileScreenSkeleton">
