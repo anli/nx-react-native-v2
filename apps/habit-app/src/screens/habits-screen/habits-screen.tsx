@@ -10,7 +10,6 @@ import {
   HabitsListItemProps,
   HabitsListSkeleton
 } from '@nx-react-native/habit/ui'
-import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen, Text, View } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
@@ -69,6 +68,7 @@ const Component = (): JSX.Element => {
       setPeriodStartDate(addWeeks(periodStartDate, 1))
 
     setOptions({
+      headerShown: true,
       title: t('title'),
       headerRight: () => (
         <View flex={1} flexDirection="row" paddingEnd="tight">
@@ -229,8 +229,6 @@ const Component = (): JSX.Element => {
 }
 
 const Container = (): JSX.Element => {
-  const { logout } = useAuth()
-
   return (
     <ErrorBoundary
       fallbackRender={({ error, resetErrorBoundary }) => (
@@ -239,10 +237,7 @@ const Container = (): JSX.Element => {
           error={error}
           resetErrorBoundary={resetErrorBoundary}
         />
-      )}
-      onReset={() => {
-        logout?.(false)
-      }}>
+      )}>
       <Suspense
         fallback={
           <Screen testID="HabitsScreenSkeleton">
