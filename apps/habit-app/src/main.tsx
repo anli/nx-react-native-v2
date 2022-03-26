@@ -6,7 +6,9 @@ import { App } from './app'
 import './wdyr'
 
 LogBox.ignoreLogs([
-  'Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/whatwg-fetch/dist/fetch.umd.js -> node_modules/react-native/Libraries/Network/fetch.js'
+  'Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/whatwg-fetch/dist/fetch.umd.js -> node_modules/react-native/Libraries/Network/fetch.js',
+  'Setting a timer', // split library
+  "EventEmitter.removeListener('appStateDidChange', ...): Method has been deprecated" // split library
 ])
 
 if (!__DEV__ || (__DEV__ && Config.SENTRY_INIT_IN_DEV === 'true')) {

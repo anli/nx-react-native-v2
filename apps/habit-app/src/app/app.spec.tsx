@@ -1,6 +1,7 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { useHabitsMockQueryHasData } from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
+import * as FeatureFlag from '@nx-react-native/shared/feature-flag'
 import {
   render,
   waitForElementToBeRemoved
@@ -11,6 +12,7 @@ import { App } from './app'
 describe('App', () => {
   it('Then I should see Login Screen', () => {
     const { getByTestId } = render(<App />)
+
     expect(getByTestId('LoginScreen')).toBeDefined()
   })
 
@@ -27,5 +29,41 @@ describe('App', () => {
     await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
 
     expect(getByTestId('HabitsScreen')).toBeDefined()
+  })
+
+  it('When feature flag Group is on, Then I should see Group Tab', async () => {
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      user: { email: 'user@email.com' }
+    })
+    jest.spyOn(FeatureFlag, 'useSplit').mockReturnValue({
+      getTreatment: jest.fn().mockReturnValue('on')
+    })
+    const { getByTestId } = render(
+      <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
+        <App />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(getByTestId('GroupsTabButton')).toBeDefined()
+  })
+
+  it('When feature flag Group is off, Then I should not see Group Tab', async () => {
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      user: { email: 'user@email.com' }
+    })
+    jest.spyOn(FeatureFlag, 'useSplit').mockReturnValue({
+      getTreatment: jest.fn().mockReturnValue('off')
+    })
+    const { queryByTestId, getByTestId } = render(
+      <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
+        <App />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(queryByTestId('GroupsTabButton')).toBeNull()
   })
 })
