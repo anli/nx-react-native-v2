@@ -1,3 +1,4 @@
+import Heap from '@heap/react-native-heap'
 import * as Sentry from '@sentry/react-native'
 import { AppRegistry, LogBox } from 'react-native'
 import Config from 'react-native-config'
@@ -14,6 +15,10 @@ if (!__DEV__ || (__DEV__ && Config.SENTRY_INIT_IN_DEV === 'true')) {
     tracesSampleRate: __DEV__ ? 1.0 : 0.2,
     environment: __DEV__ ? 'develop' : 'production'
   })
+}
+
+if (!__DEV__ || (__DEV__ && Config.HEAP_INIT_IN_DEV === 'true')) {
+  Heap.setAppId(__DEV__ ? Config.HEAP_APP_ID_DEV : Config.HEAP_APP_ID_PROD)
 }
 
 AppRegistry.registerComponent('main', () => Sentry.wrap(App))
