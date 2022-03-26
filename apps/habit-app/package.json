@@ -45,6 +45,7 @@
     "@welldone-software/why-did-you-render": "*",
     "react-native-toast-message": "*",
     "react-native-keychain": "*",
-    "@sentry/react-native": "*"
+    "@sentry/react-native": "*",
+    "@heap/react-native-heap": "*"
   }
 }

@@ -1,5 +1,6 @@
 /* eslint-disable multiline-ternary */
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
+import Heap from '@heap/react-native-heap'
 import { AuthProvider, useAuth } from '@nx-react-native/shared/auth'
 import { init as I18nInit } from '@nx-react-native/shared/i18n'
 import { TabBarIcon, ThemeProvider } from '@nx-react-native/shared/ui'
@@ -19,6 +20,14 @@ import {
   ProfileScreen
 } from '../screens'
 import { HabitUpdateScreen } from '../screens/habit-update-screen'
+
+// KNOWN ISSUE: type error is caused by '@heap/react-native-heap'
+// See https://github.com/heap/react-native-heap/issues/277
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const HeapNavigationContainer = Heap.withReactNavigationAutotrack<any>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  NavigationContainer as any
+)
 
 void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
 
@@ -73,7 +82,7 @@ const Navigation = (): JSX.Element => {
 
   return (
     <ApolloProvider url={Config.GRAPHQL_URL} authToken={idToken}>
-      <NavigationContainer>
+      <HeapNavigationContainer>
         <RootStack.Navigator>
           {isAuthenticated ? (
             <>
@@ -101,7 +110,7 @@ const Navigation = (): JSX.Element => {
             />
           )}
         </RootStack.Navigator>
-      </NavigationContainer>
+      </HeapNavigationContainer>
     </ApolloProvider>
   )
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Habit</string>
+    <string name="com.heapanalytics.android.buildConfigPkgName">com.anlitz.habit</string>
 </resources>
