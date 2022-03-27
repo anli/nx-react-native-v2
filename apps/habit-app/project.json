@@ -3,11 +3,107 @@
   "sourceRoot": "apps/habit-app/src",
   "projectType": "application",
   "targets": {
-    "start": {
-      "executor": "@nrwl/react-native:start",
+    "alpha-release-android": {
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "port": 8081
+        "command": "bundle install && ENVFILE=.env.production bundle exec fastlane alpha",
+        "cwd": "apps/habit-app/android"
+      },
+      "outputs": []
+    },
+    "alpha-release-ios": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "bundle install && ENVFILE=.env.production bundle exec fastlane alpha",
+        "cwd": "apps/habit-app/ios"
+      },
+      "outputs": []
+    },
+    "android": {
+      "configurations": {
+        "production": {
+          "command": "ENVFILE=.env.production nx run-android"
+        }
+      },
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "nx run-android"
+      },
+      "outputs": []
+    },
+    "build-android": {
+      "executor": "@nrwl/react-native:build-android",
+      "options": {},
+      "outputs": [
+        "apps/habit-app/android/app/build/outputs/bundle",
+        "apps/habit-app/android/app/build/outputs/apk"
+      ]
+    },
+    "bundle-android": {
+      "executor": "@nrwl/react-native:bundle",
+      "options": {
+        "bundleOutput": "dist/apps/habit-app/android/main.jsbundle",
+        "entryFile": "apps/habit-app/src/main.tsx",
+        "platform": "android"
       }
+    },
+    "bundle-ios": {
+      "executor": "@nrwl/react-native:bundle",
+      "options": {
+        "bundleOutput": "dist/apps/habit-app/ios/main.jsbundle",
+        "entryFile": "apps/habit-app/src/main.tsx",
+        "platform": "ios"
+      },
+      "outputs": [
+        "apps/habit-app/build"
+      ]
+    },
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "(cd ios && xcodebuild clean -workspace Habit.xcworkspace -scheme Habit)",
+          "(cd android && ./gradlew clean)"
+        ],
+        "cwd": "apps/habit-app",
+        "parallel": true
+      },
+      "outputs": []
+    },
+    "ensure-symlink": {
+      "executor": "@nrwl/react-native:ensure-symlink",
+      "options": {}
+    },
+    "ios": {
+      "configurations": {
+        "production": {
+          "command": "ENVFILE=.env.production nx run-ios"
+        }
+      },
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "nx run-ios"
+      },
+      "outputs": []
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/habit-app/**/*.{ts,tsx,js,jsx}"
+        ]
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "run-android": {
+      "executor": "@nrwl/react-native:run-android",
+      "options": {}
+    },
+    "run-ios": {
+      "executor": "@nrwl/react-native:run-ios",
+      "options": {}
     },
     "serve": {
       "executor": "@nrwl/workspace:run-commands",
@@ -15,123 +111,39 @@
         "command": "nx start habit-app"
       }
     },
-    "run-ios": {
-      "executor": "@nrwl/react-native:run-ios",
-      "options": {}
-    },
-    "bundle-ios": {
-      "executor": "@nrwl/react-native:bundle",
-      "outputs": [
-        "apps/habit-app/build"
-      ],
+    "start": {
+      "executor": "@nrwl/react-native:start",
       "options": {
-        "entryFile": "apps/habit-app/src/main.tsx",
-        "platform": "ios",
-        "bundleOutput": "dist/apps/habit-app/ios/main.jsbundle"
-      }
-    },
-    "run-android": {
-      "executor": "@nrwl/react-native:run-android",
-      "options": {}
-    },
-    "build-android": {
-      "executor": "@nrwl/react-native:build-android",
-      "outputs": [
-        "apps/habit-app/android/app/build/outputs/bundle",
-        "apps/habit-app/android/app/build/outputs/apk"
-      ],
-      "options": {}
-    },
-    "bundle-android": {
-      "executor": "@nrwl/react-native:bundle",
-      "options": {
-        "entryFile": "apps/habit-app/src/main.tsx",
-        "platform": "android",
-        "bundleOutput": "dist/apps/habit-app/android/main.jsbundle"
+        "port": 8081
       }
     },
     "sync-deps": {
       "executor": "@nrwl/react-native:sync-deps",
       "options": {}
     },
-    "ensure-symlink": {
-      "executor": "@nrwl/react-native:ensure-symlink",
-      "options": {}
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
-      "options": {
-        "lintFilePatterns": [
-          "apps/habit-app/**/*.{ts,tsx,js,jsx}"
-        ]
-      }
-    },
     "test": {
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
+      },
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/habit-app"
-      ],
       "options": {
         "coverageDirectory": "coverage/apps-habit-app",
         "jestConfig": "apps/habit-app/jest.config.js",
         "passWithNoTests": true
       },
-      "configurations": {
-        "coverage": {
-          "codeCoverage": true
-        }
-      }
+      "outputs": [
+        "coverage/apps/habit-app"
+      ]
     },
     "type-check": {
       "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
       "options": {
         "command": "tsc -b",
         "cwd": "apps/habit-app"
-      }
-    },
-    "alpha-release-ios": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "bundle install && ENVFILE=.env.production bundle exec fastlane alpha",
-        "cwd": "apps/habit-app/ios"
-      }
-    },
-    "alpha-release-android": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "bundle install && ENVFILE=.env.production bundle exec fastlane alpha",
-        "cwd": "apps/habit-app/android"
-      }
-    },
-    "ios": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "nx run-ios"
       },
-      "configurations": {
-        "production": {
-          "command": "ENVFILE=.env.production nx run-ios"
-        }
-      }
-    },
-    "android": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "nx run-android"
-      },
-      "configurations": {
-        "production": {
-          "command": "ENVFILE=.env.production nx run-android"
-        }
-      }
+      "outputs": []
     }
   },
   "tags": []
