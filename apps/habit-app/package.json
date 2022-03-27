@@ -46,6 +46,8 @@
     "react-native-toast-message": "*",
     "react-native-keychain": "*",
     "@sentry/react-native": "*",
-    "@heap/react-native-heap": "*"
+    "@heap/react-native-heap": "*",
+    "@splitsoftware/splitio-react-native": "*",
+    "react-native-device-info": "*"
   }
 }
