@@ -105,6 +105,9 @@ apps/habit-app-e2e/artifacts
 .gitsecret/keys/random_seed
 !*.secret
 **/.env
+**/.env.*
+!**/.env.sample
+!**/.env.*.secret
 
 ## E2E
 artifacts/

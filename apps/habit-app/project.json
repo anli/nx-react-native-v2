@@ -97,7 +97,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "bundle install && bundle exec fastlane alpha",
+        "command": "bundle install && ENVFILE=.env.production bundle exec fastlane alpha",
         "cwd": "apps/habit-app/ios"
       }
     },
@@ -105,8 +105,32 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "bundle install && bundle exec fastlane alpha",
+        "command": "bundle install && ENVFILE=.env.production bundle exec fastlane alpha",
         "cwd": "apps/habit-app/android"
+      }
+    },
+    "ios": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run-ios"
+      },
+      "configurations": {
+        "production": {
+          "command": "ENVFILE=.env.production nx run-ios"
+        }
+      }
+    },
+    "android": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run-android"
+      },
+      "configurations": {
+        "production": {
+          "command": "ENVFILE=.env.production nx run-android"
+        }
       }
     }
   },

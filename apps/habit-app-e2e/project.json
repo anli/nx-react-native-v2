@@ -15,6 +15,18 @@
       }
     },
     "e2e-test-ios": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx test-ios habit-app-e2e"
+      },
+      "configurations": {
+        "production": {
+          "command": "ENVFILE=.env.production nx test-ios habit-app-e2e --configuration=production"
+        }
+      }
+    },
+    "test-ios": {
       "executor": "@nrwl/detox:test",
       "options": {
         "detoxConfiguration": "ios.sim.debug",
@@ -42,6 +54,18 @@
       }
     },
     "e2e-test-android": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx test-android habit-app-e2e"
+      },
+      "configurations": {
+        "production": {
+          "command": "ENVFILE=.env.production nx test-android habit-app-e2e --configuration=production"
+        }
+      }
+    },
+    "test-android": {
       "executor": "@nrwl/detox:test",
       "options": {
         "detoxConfiguration": "android.emu.debug",

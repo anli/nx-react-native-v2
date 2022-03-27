@@ -20,7 +20,8 @@ default_platform(:ios)
 
 platform :ios do
   lane :alpha do
-    Dotenv.overload '../.env'
+    Dotenv.overload '../../.env.production'
+    puts 'LOADED ENV: ' + ENV['ENVIRONMENT']    
 
     increment_version_number(
       version_number: load_json(json_path: "../package.json")["version"],      
