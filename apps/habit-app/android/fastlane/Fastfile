@@ -20,8 +20,9 @@ default_platform(:android)
 
 platform :android do
   lane :alpha do
-    Dotenv.overload '../.env'
-
+    Dotenv.overload '../../.env.production'
+    puts 'LOADED ENV: ' + ENV['ENVIRONMENT']    
+    
     file = getFolderPath().concat(ENV['ANDROID_STORE_FILE'])
 
     android_set_version_name(
