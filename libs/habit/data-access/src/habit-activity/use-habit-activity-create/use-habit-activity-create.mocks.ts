@@ -1,6 +1,6 @@
 import { addDays, formatISO, startOfToday, startOfWeek } from 'date-fns'
 import { DocumentNode } from 'graphql'
-import { useHabitsMockData } from '../use-habits'
+import { useHabitsMockData } from '../../habit'
 import {
   HabitActivityCreateDocument,
   HabitActivityCreateMutation

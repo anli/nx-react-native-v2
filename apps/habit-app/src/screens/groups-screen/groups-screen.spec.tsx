@@ -1,5 +1,11 @@
 import { MockedProvider } from '@apollo/client/testing'
+import {
+  useGroupsMockData,
+  useGroupsMockQueryEmptyData,
+  useGroupsMockQueryHasData
+} from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { waitForElementToBeRemoved } from '@testing-library/react-native'
 import React from 'react'
 import reactI18next from 'react-i18next'
 import { GroupsScreen } from './groups-screen'
@@ -21,14 +27,16 @@ describe('Given I am at Groups Screen', () => {
     jest.clearAllMocks()
   })
 
-  it('When loaded, Then I should see Groups Screen', async () => {
-    const { getByTestId } = render(
-      <MockedProvider addTypename={false}>
+  it('When loaded, Then I should see Groups', async () => {
+    const { getByTestId, getByText } = render(
+      <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
         <GroupsScreen.Container />
       </MockedProvider>
     )
 
-    expect(getByTestId('GroupsScreen')).toBeDefined()
+    await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
+
+    expect(getByText(useGroupsMockData[0].name)).toBeDefined()
   })
 
   it('When loading, Then I should see Skeleton Screen', () => {
@@ -44,18 +52,28 @@ describe('Given I am at Groups Screen', () => {
     expect(getByTestId('GroupsScreenSkeleton')).toBeDefined()
   })
 
-  it('When error, Then I should see Error Screen', () => {
+  it('When Error, Then I should see Groups Screen Error', async () => {
     jest.spyOn(console, 'error').mockImplementationOnce(() => null)
-    jest
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .spyOn<any, 'useTranslation'>(reactI18next, 'useTranslation')
-      .mockImplementationOnce(() => {
-        // eslint-disable-next-line @typescript-eslint/no-throw-literal
-        throw new Error()
-      })
+    const { getByTestId } = render(
+      <MockedProvider addTypename={false}>
+        <GroupsScreen.Container />
+      </MockedProvider>
+    )
 
-    const { getByTestId } = render(<GroupsScreen.Container />)
+    await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
 
     expect(getByTestId('GroupsScreenError')).toBeDefined()
+  })
+
+  it('When Empty Data, Then I should see Empty Groups Text', async () => {
+    const { getByTestId, getByText } = render(
+      <MockedProvider mocks={useGroupsMockQueryEmptyData} addTypename={false}>
+        <GroupsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
+
+    expect(getByText('emptyData')).toBeDefined()
   })
 })
