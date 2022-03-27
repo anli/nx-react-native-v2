@@ -1,5 +1,5 @@
 import { DocumentNode } from 'graphql'
-import { useHabitsMockData } from '../use-habits'
+import { useHabitsMockData } from '../../habit'
 import {
   HabitActivityDeleteDocument,
   HabitActivityDeleteMutation

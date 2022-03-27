@@ -1,11 +1,16 @@
+import { useGroupsSubscription } from '@nx-react-native/habit/data-access'
 import { HabitsListSkeleton } from '@nx-react-native/habit/ui'
-import { Screen } from '@nx-react-native/shared/ui'
+import { Screen, Text } from '@nx-react-native/shared/ui'
+import { filterNullable } from '@nx-react-native/shared/utils'
+import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
+import { FlatList } from 'react-native'
+import { List } from 'react-native-paper'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
 
@@ -18,6 +23,7 @@ const Component = (): JSX.Element => {
   const { t } = useTranslation('GroupsScreen')
   const { setOptions } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const { data, loading, error } = useGroupsSubscription()
 
   useEffect(() => {
     setOptions({
@@ -26,7 +32,27 @@ const Component = (): JSX.Element => {
     })
   }, [t, setOptions])
 
-  return <Screen></Screen>
+  if (error !== undefined) {
+    throw Error(error?.message)
+  }
+
+  if (loading === true) {
+    return <Suspender />
+  }
+
+  const mappedData = filterNullable(data?.queryGroup ?? [])
+
+  return (
+    <Screen>
+      <FlatList
+        ListEmptyComponent={<Text>{t('emptyData')}</Text>}
+        data={mappedData}
+        renderItem={({ item }) => {
+          return <List.Item title={item.name} />
+        }}
+      />
+    </Screen>
+  )
 }
 
 const Container = (): JSX.Element => {

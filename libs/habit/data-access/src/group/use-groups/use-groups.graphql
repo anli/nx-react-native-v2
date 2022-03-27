@@ -1,0 +1,6 @@
+subscription Groups {
+  queryGroup {
+    id
+    name
+  }
+}

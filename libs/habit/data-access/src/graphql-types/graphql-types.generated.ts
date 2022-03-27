@@ -22,6 +22,26 @@ export type Scalars = {
   Int64: any;
 };
 
+export type AddGroupInput = {
+  adminUsers?: InputMaybe<Array<UserRef>>;
+  habits?: InputMaybe<Array<HabitRef>>;
+  name: Scalars['String'];
+};
+
+export type AddGroupPayload = {
+  __typename?: 'AddGroupPayload';
+  group?: Maybe<Array<Maybe<Group>>>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type AddGroupPayloadGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GroupOrder>;
+};
+
 export type AddHabitActivityInput = {
   count: Scalars['Int'];
   date: Scalars['DateTime'];
@@ -43,6 +63,7 @@ export type AddHabitActivityPayloadHabitActivityArgs = {
 };
 
 export type AddHabitInput = {
+  group?: InputMaybe<GroupRef>;
   habitActivities?: InputMaybe<Array<HabitActivityRef>>;
   name: Scalars['String'];
   user: UserRef;
@@ -63,6 +84,7 @@ export type AddHabitPayloadHabitArgs = {
 };
 
 export type AddUserInput = {
+  adminGroups?: InputMaybe<Array<InputMaybe<GroupRef>>>;
   email: Scalars['String'];
   habits?: InputMaybe<Array<HabitRef>>;
 };
@@ -118,6 +140,21 @@ export type DateTimeFilter = {
 export type DateTimeRange = {
   max: Scalars['DateTime'];
   min: Scalars['DateTime'];
+};
+
+export type DeleteGroupPayload = {
+  __typename?: 'DeleteGroupPayload';
+  group?: Maybe<Array<Maybe<Group>>>;
+  msg?: Maybe<Scalars['String']>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type DeleteGroupPayloadGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GroupOrder>;
 };
 
 export type DeleteHabitActivityPayload = {
@@ -211,6 +248,87 @@ export type GenerateQueryParams = {
   query?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type Group = {
+  __typename?: 'Group';
+  adminUsers?: Maybe<Array<User>>;
+  adminUsersAggregate?: Maybe<UserAggregateResult>;
+  habits?: Maybe<Array<Habit>>;
+  habitsAggregate?: Maybe<HabitAggregateResult>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type GroupAdminUsersArgs = {
+  filter?: InputMaybe<UserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<UserOrder>;
+};
+
+
+export type GroupAdminUsersAggregateArgs = {
+  filter?: InputMaybe<UserFilter>;
+};
+
+
+export type GroupHabitsArgs = {
+  filter?: InputMaybe<HabitFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<HabitOrder>;
+};
+
+
+export type GroupHabitsAggregateArgs = {
+  filter?: InputMaybe<HabitFilter>;
+};
+
+export type GroupAggregateResult = {
+  __typename?: 'GroupAggregateResult';
+  count?: Maybe<Scalars['Int']>;
+  nameMax?: Maybe<Scalars['String']>;
+  nameMin?: Maybe<Scalars['String']>;
+};
+
+export type GroupFilter = {
+  and?: InputMaybe<Array<InputMaybe<GroupFilter>>>;
+  has?: InputMaybe<Array<InputMaybe<GroupHasFilter>>>;
+  id?: InputMaybe<Array<Scalars['ID']>>;
+  name?: InputMaybe<StringFullTextFilter>;
+  not?: InputMaybe<GroupFilter>;
+  or?: InputMaybe<Array<InputMaybe<GroupFilter>>>;
+};
+
+export enum GroupHasFilter {
+  AdminUsers = 'adminUsers',
+  Habits = 'habits',
+  Name = 'name'
+}
+
+export type GroupOrder = {
+  asc?: InputMaybe<GroupOrderable>;
+  desc?: InputMaybe<GroupOrderable>;
+  then?: InputMaybe<GroupOrder>;
+};
+
+export enum GroupOrderable {
+  Name = 'name'
+}
+
+export type GroupPatch = {
+  adminUsers?: InputMaybe<Array<UserRef>>;
+  habits?: InputMaybe<Array<HabitRef>>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type GroupRef = {
+  adminUsers?: InputMaybe<Array<UserRef>>;
+  habits?: InputMaybe<Array<HabitRef>>;
+  id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
 export enum HttpMethod {
   Delete = 'DELETE',
   Get = 'GET',
@@ -221,11 +339,17 @@ export enum HttpMethod {
 
 export type Habit = {
   __typename?: 'Habit';
+  group?: Maybe<Group>;
   habitActivities?: Maybe<Array<HabitActivity>>;
   habitActivitiesAggregate?: Maybe<HabitActivityAggregateResult>;
   id: Scalars['ID'];
   name: Scalars['String'];
   user: User;
+};
+
+
+export type HabitGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
 };
 
 
@@ -326,6 +450,7 @@ export type HabitFilter = {
 };
 
 export enum HabitHasFilter {
+  Group = 'group',
   HabitActivities = 'habitActivities',
   Name = 'name',
   User = 'user'
@@ -342,12 +467,14 @@ export enum HabitOrderable {
 }
 
 export type HabitPatch = {
+  group?: InputMaybe<GroupRef>;
   habitActivities?: InputMaybe<Array<HabitActivityRef>>;
   name?: InputMaybe<Scalars['String']>;
   user?: InputMaybe<UserRef>;
 };
 
 export type HabitRef = {
+  group?: InputMaybe<GroupRef>;
   habitActivities?: InputMaybe<Array<HabitActivityRef>>;
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
@@ -405,15 +532,23 @@ export type MultiPolygonRef = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addGroup?: Maybe<AddGroupPayload>;
   addHabit?: Maybe<AddHabitPayload>;
   addHabitActivity?: Maybe<AddHabitActivityPayload>;
   addUser?: Maybe<AddUserPayload>;
+  deleteGroup?: Maybe<DeleteGroupPayload>;
   deleteHabit?: Maybe<DeleteHabitPayload>;
   deleteHabitActivity?: Maybe<DeleteHabitActivityPayload>;
   deleteUser?: Maybe<DeleteUserPayload>;
+  updateGroup?: Maybe<UpdateGroupPayload>;
   updateHabit?: Maybe<UpdateHabitPayload>;
   updateHabitActivity?: Maybe<UpdateHabitActivityPayload>;
   updateUser?: Maybe<UpdateUserPayload>;
+};
+
+
+export type MutationAddGroupArgs = {
+  input: Array<AddGroupInput>;
 };
 
 
@@ -433,6 +568,11 @@ export type MutationAddUserArgs = {
 };
 
 
+export type MutationDeleteGroupArgs = {
+  filter: GroupFilter;
+};
+
+
 export type MutationDeleteHabitArgs = {
   filter: HabitFilter;
 };
@@ -445,6 +585,11 @@ export type MutationDeleteHabitActivityArgs = {
 
 export type MutationDeleteUserArgs = {
   filter: UserFilter;
+};
+
+
+export type MutationUpdateGroupArgs = {
+  input: UpdateGroupInput;
 };
 
 
@@ -510,15 +655,23 @@ export type PolygonRef = {
 
 export type Query = {
   __typename?: 'Query';
+  aggregateGroup?: Maybe<GroupAggregateResult>;
   aggregateHabit?: Maybe<HabitAggregateResult>;
   aggregateHabitActivity?: Maybe<HabitActivityAggregateResult>;
   aggregateUser?: Maybe<UserAggregateResult>;
+  getGroup?: Maybe<Group>;
   getHabit?: Maybe<Habit>;
   getHabitActivity?: Maybe<HabitActivity>;
   getUser?: Maybe<User>;
+  queryGroup?: Maybe<Array<Maybe<Group>>>;
   queryHabit?: Maybe<Array<Maybe<Habit>>>;
   queryHabitActivity?: Maybe<Array<Maybe<HabitActivity>>>;
   queryUser?: Maybe<Array<Maybe<User>>>;
+};
+
+
+export type QueryAggregateGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
 };
 
 
@@ -537,6 +690,11 @@ export type QueryAggregateUserArgs = {
 };
 
 
+export type QueryGetGroupArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryGetHabitArgs = {
   id: Scalars['ID'];
 };
@@ -550,6 +708,14 @@ export type QueryGetHabitActivityArgs = {
 export type QueryGetUserArgs = {
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryQueryGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GroupOrder>;
 };
 
 
@@ -612,15 +778,23 @@ export type StringTermFilter = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  aggregateGroup?: Maybe<GroupAggregateResult>;
   aggregateHabit?: Maybe<HabitAggregateResult>;
   aggregateHabitActivity?: Maybe<HabitActivityAggregateResult>;
   aggregateUser?: Maybe<UserAggregateResult>;
+  getGroup?: Maybe<Group>;
   getHabit?: Maybe<Habit>;
   getHabitActivity?: Maybe<HabitActivity>;
   getUser?: Maybe<User>;
+  queryGroup?: Maybe<Array<Maybe<Group>>>;
   queryHabit?: Maybe<Array<Maybe<Habit>>>;
   queryHabitActivity?: Maybe<Array<Maybe<HabitActivity>>>;
   queryUser?: Maybe<Array<Maybe<User>>>;
+};
+
+
+export type SubscriptionAggregateGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
 };
 
 
@@ -639,6 +813,11 @@ export type SubscriptionAggregateUserArgs = {
 };
 
 
+export type SubscriptionGetGroupArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type SubscriptionGetHabitArgs = {
   id: Scalars['ID'];
 };
@@ -652,6 +831,14 @@ export type SubscriptionGetHabitActivityArgs = {
 export type SubscriptionGetUserArgs = {
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionQueryGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GroupOrder>;
 };
 
 
@@ -676,6 +863,26 @@ export type SubscriptionQueryUserArgs = {
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   order?: InputMaybe<UserOrder>;
+};
+
+export type UpdateGroupInput = {
+  filter: GroupFilter;
+  remove?: InputMaybe<GroupPatch>;
+  set?: InputMaybe<GroupPatch>;
+};
+
+export type UpdateGroupPayload = {
+  __typename?: 'UpdateGroupPayload';
+  group?: Maybe<Array<Maybe<Group>>>;
+  numUids?: Maybe<Scalars['Int']>;
+};
+
+
+export type UpdateGroupPayloadGroupArgs = {
+  filter?: InputMaybe<GroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GroupOrder>;
 };
 
 export type UpdateHabitActivityInput = {
@@ -740,10 +947,25 @@ export type UpdateUserPayloadUserArgs = {
 
 export type User = {
   __typename?: 'User';
+  adminGroups?: Maybe<Array<Maybe<Group>>>;
+  adminGroupsAggregate?: Maybe<GroupAggregateResult>;
   email: Scalars['String'];
   habits?: Maybe<Array<Habit>>;
   habitsAggregate?: Maybe<HabitAggregateResult>;
   id: Scalars['ID'];
+};
+
+
+export type UserAdminGroupsArgs = {
+  filter?: InputMaybe<GroupFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GroupOrder>;
+};
+
+
+export type UserAdminGroupsAggregateArgs = {
+  filter?: InputMaybe<GroupFilter>;
 };
 
 
@@ -776,6 +998,7 @@ export type UserFilter = {
 };
 
 export enum UserHasFilter {
+  AdminGroups = 'adminGroups',
   Email = 'email',
   Habits = 'habits'
 }
@@ -791,10 +1014,12 @@ export enum UserOrderable {
 }
 
 export type UserPatch = {
+  adminGroups?: InputMaybe<Array<InputMaybe<GroupRef>>>;
   habits?: InputMaybe<Array<HabitRef>>;
 };
 
 export type UserRef = {
+  adminGroups?: InputMaybe<Array<InputMaybe<GroupRef>>>;
   email?: InputMaybe<Scalars['String']>;
   habits?: InputMaybe<Array<HabitRef>>;
   id?: InputMaybe<Scalars['ID']>;
