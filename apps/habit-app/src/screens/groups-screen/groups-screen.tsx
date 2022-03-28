@@ -10,7 +10,7 @@ import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { FlatList } from 'react-native'
-import { List } from 'react-native-paper'
+import { FAB, List } from 'react-native-paper'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
 
@@ -21,9 +21,10 @@ const options: BottomTabNavigationOptions = {
 
 const Component = (): JSX.Element => {
   const { t } = useTranslation('GroupsScreen')
-  const { setOptions } =
+  const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const { data, loading, error } = useGroupsSubscription()
+  const mappedData = filterNullable(data?.queryGroup ?? [])
 
   useEffect(() => {
     setOptions({
@@ -40,7 +41,7 @@ const Component = (): JSX.Element => {
     return <Suspender />
   }
 
-  const mappedData = filterNullable(data?.queryGroup ?? [])
+  const handleCreate = (): void => navigate('GroupCreateScreen')
 
   return (
     <Screen>
@@ -50,6 +51,17 @@ const Component = (): JSX.Element => {
         renderItem={({ item }) => {
           return <List.Item title={item.name} />
         }}
+      />
+      <FAB
+        style={{
+          position: 'absolute',
+          margin: 16,
+          right: 0,
+          bottom: 0
+        }}
+        icon="account-multiple-plus"
+        accessibilityLabel={t('createButtonAccessibilityLabel')}
+        onPress={handleCreate}
       />
     </Screen>
   )

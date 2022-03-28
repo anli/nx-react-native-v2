@@ -5,7 +5,11 @@ import {
   useGroupsMockQueryHasData
 } from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
-import { waitForElementToBeRemoved } from '@testing-library/react-native'
+import {
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react-native'
 import React from 'react'
 import reactI18next from 'react-i18next'
 import { GroupsScreen } from './groups-screen'
@@ -75,5 +79,21 @@ describe('Given I am at Groups Screen', () => {
     await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
 
     expect(getByText('emptyData')).toBeDefined()
+  })
+
+  it('When I press Group Create Button, Then I see Group Create Screen', async () => {
+    const { getByTestId, getByA11yLabel } = render(
+      <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
+        <GroupsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
+
+    fireEvent.press(getByA11yLabel('createButtonAccessibilityLabel'))
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+
+    expect(mockNavigate).toBeCalledWith('GroupCreateScreen')
   })
 })
