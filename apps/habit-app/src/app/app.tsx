@@ -18,6 +18,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import {
   GroupCreateScreen,
+  GroupViewScreen,
   HabitCreateScreen,
   HabitsScreen,
   LoginScreen,
@@ -56,6 +57,7 @@ export type RootStackParamList = {
   HabitCreateScreen: undefined
   HabitUpdateScreen: { id: string, name: string }
   GroupCreateScreen: undefined
+  GroupViewScreen: { id: string }
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -135,6 +137,11 @@ const Navigation = (): JSX.Element => {
                   name="GroupCreateScreen"
                   component={GroupCreateScreen.Container}
                   options={GroupCreateScreen.options}
+                />
+                <RootStack.Screen
+                  name="GroupViewScreen"
+                  component={GroupViewScreen.Container}
+                  options={GroupViewScreen.options}
                 />
               </>
             ) : (

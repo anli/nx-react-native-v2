@@ -43,13 +43,16 @@ const Component = (): JSX.Element => {
 
   const handleCreate = (): void => navigate('GroupCreateScreen')
 
+  const handleView = (id: string): void => navigate('GroupViewScreen', { id })
+
   return (
     <Screen>
       <FlatList
         ListEmptyComponent={<Text>{t('emptyData')}</Text>}
         data={mappedData}
         renderItem={({ item }) => {
-          return <List.Item title={item.name} />
+          const _handleView = (): void => handleView(item.id)
+          return <List.Item title={item.name} onPress={_handleView} />
         }}
       />
       <FAB
