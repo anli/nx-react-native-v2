@@ -380,13 +380,13 @@ PODS:
   - RNScreens (3.11.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.3.5):
+  - RNSentry (3.3.6):
     - React-Core
     - Sentry (= 7.11.0)
   - RNSplit (0.1.0):
     - React
-  - RNSVG (12.1.1):
-    - React
+  - RNSVG (12.3.0):
+    - React-Core
   - RNVectorIcons (9.0.0):
     - React-Core
   - Sentry (7.11.0):
@@ -636,9 +636,9 @@ SPEC CHECKSUMS:
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
   RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
-  RNSentry: 3e7f2504006c19fa07027a7c4fbe83d88e69125a
+  RNSentry: 6fbe6a4194cf632e5dc02a640741512faa943dbf
   RNSplit: e75dc5a74f4c0e34bec2b68a6d075cbd8aadbe48
-  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280

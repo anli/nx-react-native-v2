@@ -96,4 +96,23 @@ describe('Given I am at Groups Screen', () => {
 
     expect(mockNavigate).toBeCalledWith('GroupCreateScreen')
   })
+
+  it('When I press Group, Then I see Group View Screen', async () => {
+    const { getByTestId, getByText } = render(
+      <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
+        <GroupsScreen.Container />
+      </MockedProvider>
+    )
+    const groupMockData = useGroupsMockData[0]
+
+    await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
+
+    fireEvent.press(getByText(groupMockData.name))
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+
+    expect(mockNavigate).toBeCalledWith('GroupViewScreen', {
+      id: groupMockData.id
+    })
+  })
 })
