@@ -66,6 +66,11 @@ export const ApolloProvider: FC<Props> = ({ children, url, authToken }) => {
               merge (_, incoming) {
                 return incoming
               }
+            },
+            queryGroup: {
+              merge (_, incoming) {
+                return incoming
+              }
             }
           }
         },

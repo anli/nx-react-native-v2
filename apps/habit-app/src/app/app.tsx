@@ -17,6 +17,7 @@ import DeviceInfo from 'react-native-device-info'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import {
+  GroupCreateScreen,
   HabitCreateScreen,
   HabitsScreen,
   LoginScreen,
@@ -54,6 +55,7 @@ export type RootStackParamList = {
   HabitsScreen: undefined
   HabitCreateScreen: undefined
   HabitUpdateScreen: { id: string, name: string }
+  GroupCreateScreen: undefined
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -128,6 +130,11 @@ const Navigation = (): JSX.Element => {
                   name="HabitUpdateScreen"
                   component={HabitUpdateScreen.Container}
                   options={HabitUpdateScreen.options}
+                />
+                <RootStack.Screen
+                  name="GroupCreateScreen"
+                  component={GroupCreateScreen.Container}
+                  options={GroupCreateScreen.options}
                 />
               </>
             ) : (
