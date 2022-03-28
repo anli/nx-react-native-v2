@@ -380,18 +380,18 @@ PODS:
   - RNScreens (3.11.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.3.3):
+  - RNSentry (3.3.5):
     - React-Core
-    - Sentry (= 7.10.2)
+    - Sentry (= 7.11.0)
   - RNSplit (0.1.0):
     - React
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (9.0.0):
     - React-Core
-  - Sentry (7.10.2):
-    - Sentry/Core (= 7.10.2)
-  - Sentry/Core (7.10.2)
+  - Sentry (7.11.0):
+    - Sentry/Core (= 7.11.0)
+  - Sentry/Core (7.11.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -636,11 +636,11 @@ SPEC CHECKSUMS:
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
   RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
-  RNSentry: e18c74a900defb174302793c5bedbbe8bcb1120e
+  RNSentry: 3e7f2504006c19fa07027a7c4fbe83d88e69125a
   RNSplit: e75dc5a74f4c0e34bec2b68a6d075cbd8aadbe48
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
-  Sentry: 7bf9bfe713692cf87812e55f0999260494ba7982
+  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
