@@ -4,3 +4,10 @@ subscription Group($id: ID!) {
     name
   }
 }
+
+query GroupNonSubscription($id: ID!) {
+  getGroup(id: $id) {
+    id
+    name
+  }
+}

@@ -21,7 +21,7 @@ const options = {
 
 const Component = (): JSX.Element => {
   const { t } = useTranslation('GroupViewScreen')
-  const { setOptions, canGoBack, goBack } =
+  const { setOptions, canGoBack, goBack, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const {
     params: { id }
@@ -39,6 +39,8 @@ const Component = (): JSX.Element => {
   const data = _data?.getGroup
 
   useEffect(() => {
+    const handleUpdate = (): void => navigate('GroupUpdateScreen', { id })
+
     const handleDelete = async (): Promise<void> => {
       await groupDeleteMutation({
         variables: {
@@ -71,16 +73,32 @@ const Component = (): JSX.Element => {
 
     setOptions({
       headerShown: true,
-      title: data?.name,
+      title: data?.name ?? '',
       headerRight: () => (
-        <Appbar.Action
-          icon="trash-can"
-          onPress={handleDeleteConfirmation}
-          accessibilityLabel={t('deleteButtonAccessibilityLabel')}
-        />
+        <>
+          <Appbar.Action
+            icon="pencil"
+            onPress={handleUpdate}
+            accessibilityLabel={t('updateButtonAccessibilityLabel')}
+          />
+          <Appbar.Action
+            icon="trash-can"
+            onPress={handleDeleteConfirmation}
+            accessibilityLabel={t('deleteButtonAccessibilityLabel')}
+          />
+        </>
       )
     })
-  }, [canGoBack, data?.name, goBack, groupDeleteMutation, id, setOptions, t])
+  }, [
+    canGoBack,
+    data?.name,
+    goBack,
+    groupDeleteMutation,
+    id,
+    navigate,
+    setOptions,
+    t
+  ])
 
   if (error !== undefined) {
     throw Error(error?.message)

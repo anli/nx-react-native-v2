@@ -1,6 +1,11 @@
 import faker from '@faker-js/faker'
 import { DocumentNode } from 'graphql'
-import { GroupDocument, GroupSubscription } from './use-group.generated'
+import {
+  GroupDocument,
+  GroupNonSubscriptionDocument,
+  GroupNonSubscriptionQuery,
+  GroupSubscription
+} from './use-group.generated'
 
 faker.seed(0)
 export const useGroupMockData = {
@@ -11,6 +16,13 @@ export const useGroupMockData = {
 
 const request = {
   query: GroupDocument,
+  variables: {
+    id: useGroupMockData.id
+  }
+}
+
+const nonSubscriptionRequest = {
+  query: GroupNonSubscriptionDocument,
   variables: {
     id: useGroupMockData.id
   }
@@ -28,12 +40,34 @@ export const useGroupMockQuerySuccess: Array<{
   }
 ]
 
+export const useGroupNonSubscriptionMockQuerySuccess: Array<{
+  request: { query: DocumentNode }
+  result: { data: GroupNonSubscriptionQuery }
+}> = [
+  {
+    request: nonSubscriptionRequest,
+    result: {
+      data: { __typename: 'Query', getGroup: useGroupMockData }
+    }
+  }
+]
+
 export const useGroupMockQueryError: Array<{
   request: { query: DocumentNode }
   error: Error
 }> = [
   {
     request,
+    error: new Error('An error occurred')
+  }
+]
+
+export const useGroupNonSubscriptionMockQueryError: Array<{
+  request: { query: DocumentNode }
+  error: Error
+}> = [
+  {
+    request: nonSubscriptionRequest,
     error: new Error('An error occurred')
   }
 ]

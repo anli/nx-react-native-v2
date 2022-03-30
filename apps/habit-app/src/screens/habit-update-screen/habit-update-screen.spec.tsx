@@ -4,7 +4,6 @@ import {
   useHabitUpdateMockQueryError,
   useHabitUpdateMockQuerySuccess
 } from '@nx-react-native/habit/data-access'
-import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
@@ -65,9 +64,6 @@ describe('Given I am at Habit Update Screen', () => {
 
   it('And API has error, When I press Update Button, Then I should see Error Message', async () => {
     jest.spyOn(Alert, 'alert')
-    jest.spyOn(SharedAuth, 'useAuth').mockImplementationOnce(() => ({
-      user: useHabitUpdateMockData.user
-    }))
 
     const { getByText } = render(
       <MockedProvider mocks={useHabitUpdateMockQueryError} addTypename={false}>
