@@ -1,0 +1,5 @@
+mutation GroupDelete($filter: GroupFilter!) {
+  deleteGroup(filter: $filter) {
+    numUids
+  }
+}
