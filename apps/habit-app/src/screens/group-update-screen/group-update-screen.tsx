@@ -3,8 +3,8 @@ import {
   useGroupUpdateMutation
 } from '@nx-react-native/habit/data-access'
 import {
-  FormData,
   GroupForm,
+  GroupFormData,
   GroupFormSkeleton
 } from '@nx-react-native/habit/ui'
 import { Screen } from '@nx-react-native/shared/ui'
@@ -38,7 +38,7 @@ const Component = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<FormData>()
+  } = useForm<GroupFormData>()
   const [groupUpdateMutation, { loading: updateLoading }] =
     useGroupUpdateMutation()
   const {
@@ -53,12 +53,17 @@ const Component = (): JSX.Element => {
   const defaultValues = _data?.getGroup
 
   useEffect(() => {
-    reset({ name: defaultValues?.name ?? '' })
+    reset({
+      name: defaultValues?.name ?? '',
+      adminUsers:
+        defaultValues?.adminUsers?.map((user) => ({ email: user.email })) ?? []
+    })
   }, [defaultValues, id, reset])
 
   useEffect(() => {
     setOptions({
-      title: t('title')
+      title: t('title'),
+      headerShown: true
     })
   })
 
@@ -70,7 +75,9 @@ const Component = (): JSX.Element => {
     return <Suspender />
   }
 
-  const handleGroupUpdateButton = async (data: FormData): Promise<void> => {
+  const handleGroupUpdateButton = async (
+    data: GroupFormData
+  ): Promise<void> => {
     try {
       await groupUpdateMutation({
         variables: {

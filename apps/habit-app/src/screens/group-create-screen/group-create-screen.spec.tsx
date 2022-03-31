@@ -1,5 +1,4 @@
 import { MockedProvider } from '@apollo/client/testing'
-import faker from '@faker-js/faker'
 import {
   useGroupCreateMockData,
   useGroupCreateMockQueryError,
@@ -27,6 +26,16 @@ jest.mock('@react-navigation/native', () => {
 })
 
 describe('Given I am at Group Create Screen', () => {
+  beforeAll(() => {
+    jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
+      user: useGroupCreateMockData.adminUsers[0]
+    }))
+  })
+
+  afterAll(() => {
+    jest.restoreAllMocks()
+  })
+
   it('When loaded, Then I should see Input, And I should see Button', async () => {
     const { getByA11yLabel, getByText } = render(
       <MockedProvider addTypename={false}>
@@ -64,33 +73,8 @@ describe('Given I am at Group Create Screen', () => {
     expect(await findByText('nameInputValidationRequired')).toBeDefined()
   })
 
-  it('And user is undefined, And I enter valid Name Input, When I press Save Button, Then I should see Error Message', async () => {
-    jest.spyOn(Alert, 'alert')
-
-    const { getByText, getByA11yLabel } = render(
-      <MockedProvider addTypename={false}>
-        <GroupCreateScreen.Container />
-      </MockedProvider>
-    )
-
-    fireEvent(
-      getByA11yLabel('nameInputAccessibilityLabel'),
-      'changeText',
-      faker.lorem.word()
-    )
-
-    fireEvent.press(getByText('buttonTitle'))
-
-    await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
-    expect(Alert.alert).toHaveBeenCalledWith('errorTitle', 'user is null')
-  })
-
   it('And API has error, And I enter valid Name Input, When I press Save Button, Then I should see Error Message', async () => {
     jest.spyOn(Alert, 'alert')
-    jest.spyOn(SharedAuth, 'useAuth').mockImplementationOnce(() => ({
-      user: useGroupCreateMockData.adminUsers[0]
-    }))
-
     const { getByText, getByA11yLabel } = render(
       <MockedProvider mocks={useGroupCreateMockQueryError} addTypename={false}>
         <GroupCreateScreen.Container />
@@ -110,10 +94,6 @@ describe('Given I am at Group Create Screen', () => {
   })
 
   it('And I enter valid Name Input, When I press Save Button, Then I should see Group Created', async () => {
-    jest.spyOn(SharedAuth, 'useAuth').mockImplementationOnce(() => ({
-      user: useGroupCreateMockData.adminUsers[0]
-    }))
-
     const { getByText, getByA11yLabel } = render(
       <MockedProvider
         mocks={useGroupCreateMockQuerySuccess}

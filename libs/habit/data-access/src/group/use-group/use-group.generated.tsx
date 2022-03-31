@@ -15,7 +15,7 @@ export type GroupNonSubscriptionQueryVariables = Types.Exact<{
 }>;
 
 
-export type GroupNonSubscriptionQuery = { __typename: 'Query', getGroup?: { __typename: 'Group', id: string, name: string } | null };
+export type GroupNonSubscriptionQuery = { __typename: 'Query', getGroup?: { __typename: 'Group', id: string, name: string, adminUsers?: Array<{ __typename: 'User', email: string }> | null } | null };
 
 
 export const GroupDocument = gql`
@@ -54,6 +54,9 @@ export const GroupNonSubscriptionDocument = gql`
   getGroup(id: $id) {
     id
     name
+    adminUsers {
+      email
+    }
   }
 }
     `;

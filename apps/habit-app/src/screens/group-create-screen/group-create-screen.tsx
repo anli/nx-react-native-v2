@@ -1,7 +1,7 @@
 import { useGroupCreateMutation } from '@nx-react-native/habit/data-access'
 import {
-  FormData,
   GroupForm,
+  GroupFormData,
   GroupFormSkeleton
 } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
@@ -28,9 +28,16 @@ const Component = (): JSX.Element => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>()
+    formState: { errors },
+    reset
+  } = useForm<GroupFormData>()
   const [groupCreateMutation, { loading }] = useGroupCreateMutation()
+
+  useEffect(() => {
+    reset({
+      adminUsers: [{ email: user?.email }]
+    })
+  }, [reset, user?.email])
 
   useEffect(() => {
     setOptions({
@@ -38,28 +45,22 @@ const Component = (): JSX.Element => {
     })
   })
 
-  const handleGroupCreateButton = async (data: FormData): Promise<void> => {
-    if (user != null) {
-      try {
-        await groupCreateMutation({
-          variables: {
-            input: {
-              ...data,
-              adminUsers: [{ email: user.email }]
-            }
+  const handleGroupCreateButton = async (
+    data: GroupFormData
+  ): Promise<void> => {
+    try {
+      await groupCreateMutation({
+        variables: {
+          input: {
+            ...data
           }
-        })
-        canGoBack() && goBack()
-        return
-      } catch (error) {
-        return Alert.alert(
-          t('errorTitle', { ns: 'ErrorScreen' }),
-          error.message
-        )
-      }
+        }
+      })
+      canGoBack() && goBack()
+      return
+    } catch (error) {
+      return Alert.alert(t('errorTitle', { ns: 'ErrorScreen' }), error.message)
     }
-
-    return Alert.alert(t('errorTitle', { ns: 'ErrorScreen' }), 'user is null')
   }
 
   return (

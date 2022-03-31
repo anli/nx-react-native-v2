@@ -1,7 +1,7 @@
 import { useHabitUpdateMutation } from '@nx-react-native/habit/data-access'
 import {
-  FormData,
   HabitForm,
+  HabitFormData,
   HabitFormSkeleton
 } from '@nx-react-native/habit/ui'
 import { Screen } from '@nx-react-native/shared/ui'
@@ -31,7 +31,7 @@ const Component = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<FormData>()
+  } = useForm<HabitFormData>()
   const [habitUpdateMutation, { loading }] = useHabitUpdateMutation()
 
   useEffect(() => {
@@ -44,7 +44,9 @@ const Component = (): JSX.Element => {
     })
   })
 
-  const handleHabitUpdateButton = async (data: FormData): Promise<void> => {
+  const handleHabitUpdateButton = async (
+    data: HabitFormData
+  ): Promise<void> => {
     try {
       await habitUpdateMutation({
         variables: {

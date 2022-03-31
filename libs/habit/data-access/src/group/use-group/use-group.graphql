@@ -9,5 +9,8 @@ query GroupNonSubscription($id: ID!) {
   getGroup(id: $id) {
     id
     name
+    adminUsers {
+      email
+    }
   }
 }

@@ -1,16 +1,16 @@
-import { Button, Screen, TextInput, View } from '@nx-react-native/shared/ui'
+import { Button, Screen, View } from '@nx-react-native/shared/ui'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
-import { Control, Controller, FieldError } from 'react-hook-form'
+import { Control, FieldError } from 'react-hook-form'
 import { KeyboardAvoidingView, Platform } from 'react-native'
-import { HelperText } from 'react-native-paper'
+import { FormTextInput } from '../form-text-input'
 
-export interface FormData {
+export interface HabitFormData {
   name: string
 }
 
 interface Props {
-  control: Control<FormData, unknown>
+  control: Control<HabitFormData, unknown>
   loading: boolean
   onPress: () => void
   errors: {
@@ -46,27 +46,15 @@ export const HabitForm = ({
         style={{ flex: 1 }}
         keyboardVerticalOffset={headerHeight}>
         <View padding="extraLoose" flex={1}>
-          <Controller
+          <FormTextInput<HabitFormData>
             control={control}
-            rules={{
-              required: nameInputValidationRequired
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                testID="NameInput"
-                mode="outlined"
-                accessibilityLabel={nameInputAccessibilityLabel}
-                label={nameInputLabel}
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-              />
-            )}
+            required={nameInputValidationRequired}
+            testID="NameInput"
+            accessibilityLabel={nameInputAccessibilityLabel}
+            label={nameInputLabel}
             name="name"
+            error={errors.name}
           />
-          <HelperText type="error" visible={Boolean(errors.name)}>
-            {errors.name?.message}
-          </HelperText>
         </View>
 
         <View padding="extraLoose">
