@@ -11,7 +11,8 @@ faker.seed(0)
 export const useGroupMockData = {
   __typename: 'Group' as const,
   id: faker.datatype.uuid(),
-  name: faker.lorem.word()
+  name: faker.lorem.word(),
+  adminUsers: [{ __typename: 'User' as const, email: faker.internet.email() }]
 }
 
 const request = {

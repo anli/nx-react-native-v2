@@ -1,7 +1,7 @@
 import { useHabitCreateMutation } from '@nx-react-native/habit/data-access'
 import {
-  FormData,
   HabitForm,
+  HabitFormData,
   HabitFormSkeleton
 } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
@@ -29,7 +29,7 @@ const Component = (): JSX.Element => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<HabitFormData>()
   const [habitCreateMutation, { loading }] = useHabitCreateMutation()
 
   useEffect(() => {
@@ -38,7 +38,9 @@ const Component = (): JSX.Element => {
     })
   })
 
-  const handleHabitCreateButton = async (data: FormData): Promise<void> => {
+  const handleHabitCreateButton = async (
+    data: HabitFormData
+  ): Promise<void> => {
     if (user != null) {
       try {
         await habitCreateMutation({
