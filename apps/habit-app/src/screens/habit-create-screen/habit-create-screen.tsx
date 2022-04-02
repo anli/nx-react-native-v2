@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useHabitCreateMutation } from '@nx-react-native/habit/data-access'
 import {
   HabitForm,
@@ -12,6 +13,7 @@ import React, { Suspense, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
+import * as yup from 'yup'
 
 const options: NativeStackNavigationOptions = {
   title: ''
@@ -24,12 +26,23 @@ const Component = (): JSX.Element => {
     'HabitForm',
     'ErrorScreen'
   ])
+  const schema = yup
+    .object({
+      name: yup.string().required(
+        t('nameInputValidationRequired', {
+          ns: 'GroupForm'
+        })
+      )
+    })
+    .required()
   const { setOptions, canGoBack, goBack } = useNavigation()
   const {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<HabitFormData>()
+  } = useForm<HabitFormData>({
+    resolver: yupResolver(schema)
+  })
   const [habitCreateMutation, { loading }] = useHabitCreateMutation()
 
   useEffect(() => {
@@ -70,9 +83,6 @@ const Component = (): JSX.Element => {
       loading={loading}
       onPress={handleSubmit(handleHabitCreateButton)}
       errors={errors}
-      nameInputValidationRequired={`${t('nameInputValidationRequired', {
-        ns: 'HabitForm'
-      })}`}
       nameInputAccessibilityLabel={t('nameInputAccessibilityLabel', {
         ns: 'HabitForm'
       })}

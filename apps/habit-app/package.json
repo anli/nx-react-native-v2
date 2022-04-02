@@ -48,6 +48,8 @@
     "@sentry/react-native": "*",
     "@heap/react-native-heap": "*",
     "@splitsoftware/splitio-react-native": "*",
-    "react-native-device-info": "*"
+    "react-native-device-info": "*",
+    "@hookform/resolvers": "*",
+    "yup": "*"
   }
 }
