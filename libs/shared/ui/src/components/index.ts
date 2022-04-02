@@ -1,4 +1,5 @@
 export * from './button'
+export * from './form-text-input'
 export * from './screen'
 export * from './tab-bar-icon'
 export * from './text'

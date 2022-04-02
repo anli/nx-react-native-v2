@@ -1,9 +1,8 @@
-import { Button, Screen, View } from '@nx-react-native/shared/ui'
+import { Button, FormTextInput, Screen, View } from '@nx-react-native/shared/ui'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
 import { Control, FieldError } from 'react-hook-form'
 import { KeyboardAvoidingView, Platform } from 'react-native'
-import { FormTextInput } from '../form-text-input'
 
 export interface HabitFormData {
   name: string
@@ -16,7 +15,6 @@ interface Props {
   errors: {
     name?: FieldError
   }
-  nameInputValidationRequired: string
   nameInputAccessibilityLabel: string
   nameInputLabel: string
   buttonAccessibilityLabel: string
@@ -28,7 +26,6 @@ export const HabitForm = ({
   loading,
   onPress,
   errors,
-  nameInputValidationRequired,
   nameInputAccessibilityLabel,
   nameInputLabel,
   buttonAccessibilityLabel,
@@ -48,7 +45,6 @@ export const HabitForm = ({
         <View padding="extraLoose" flex={1}>
           <FormTextInput<HabitFormData>
             control={control}
-            required={nameInputValidationRequired}
             testID="NameInput"
             accessibilityLabel={nameInputAccessibilityLabel}
             label={nameInputLabel}

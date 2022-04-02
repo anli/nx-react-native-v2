@@ -1,5 +1,7 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useGroupCreateMutation } from '@nx-react-native/habit/data-access'
 import {
+  getGroupFormSchema,
   GroupForm,
   GroupFormData,
   GroupFormSkeleton
@@ -9,7 +11,7 @@ import { Screen } from '@nx-react-native/shared/ui'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
 
@@ -24,13 +26,27 @@ const Component = (): JSX.Element => {
     'GroupForm',
     'ErrorScreen'
   ])
+  const schema = getGroupFormSchema({
+    nameRequired: t('nameInputValidationRequired', {
+      ns: 'GroupForm'
+    }),
+    adminUsersEmail: t('adminUsersValidationEmail', {
+      ns: 'GroupForm'
+    })
+  })
   const { setOptions, canGoBack, goBack } = useNavigation()
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<GroupFormData>()
+  } = useForm<GroupFormData>({
+    resolver: yupResolver(schema)
+  })
+  const { fields } = useFieldArray({
+    control,
+    name: 'adminUsers'
+  })
   const [groupCreateMutation, { loading }] = useGroupCreateMutation()
 
   useEffect(() => {
@@ -66,12 +82,10 @@ const Component = (): JSX.Element => {
   return (
     <GroupForm
       control={control}
+      fields={fields}
       loading={loading}
       onPress={handleSubmit(handleGroupCreateButton)}
       errors={errors}
-      nameInputValidationRequired={`${t('nameInputValidationRequired', {
-        ns: 'GroupForm'
-      })}`}
       nameInputAccessibilityLabel={t('nameInputAccessibilityLabel', {
         ns: 'GroupForm'
       })}

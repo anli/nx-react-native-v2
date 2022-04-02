@@ -1,10 +1,9 @@
-import { Button, Screen, View } from '@nx-react-native/shared/ui'
+import { Button, FormTextInput, Screen, View } from '@nx-react-native/shared/ui'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
-import { Control, FieldError, useFieldArray } from 'react-hook-form'
+import { Control, FieldArrayWithId, FieldError } from 'react-hook-form'
 import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
-import { List } from 'react-native-paper'
-import { FormTextInput } from '../form-text-input'
+import { HelperText, List } from 'react-native-paper'
 
 export interface GroupFormData {
   name: string
@@ -13,12 +12,15 @@ export interface GroupFormData {
 
 interface Props {
   control: Control<GroupFormData, unknown>
+  fields: Array<FieldArrayWithId<GroupFormData, 'adminUsers', 'id'>>
   loading: boolean
   onPress: () => void
   errors: {
     name?: FieldError
+    adminUsers?: Array<{
+      email?: FieldError
+    }>
   }
-  nameInputValidationRequired: string
   nameInputAccessibilityLabel: string
   nameInputLabel: string
   buttonAccessibilityLabel: string
@@ -27,20 +29,16 @@ interface Props {
 
 export const GroupForm = ({
   control,
+  fields,
   loading,
   onPress,
   errors,
-  nameInputValidationRequired,
   nameInputAccessibilityLabel,
   nameInputLabel,
   buttonAccessibilityLabel,
   buttonTitle
 }: Props): JSX.Element => {
   const headerHeight = useHeaderHeight()
-  const { fields } = useFieldArray({
-    control,
-    name: 'adminUsers'
-  })
 
   return (
     <Screen>
@@ -55,7 +53,6 @@ export const GroupForm = ({
           <View paddingHorizontal="extraLoose" paddingTop="extraLoose">
             <FormTextInput<GroupFormData>
               control={control}
-              required={nameInputValidationRequired}
               testID="NameInput"
               accessibilityLabel={nameInputAccessibilityLabel}
               label={nameInputLabel}
@@ -66,8 +63,25 @@ export const GroupForm = ({
           <View paddingHorizontal="loose">
             <List.Section>
               <List.Subheader>Users</List.Subheader>
-              {fields.map((item) => {
-                return <List.Item key={item.id} title={item.email} />
+              {fields.map((item, _index) => {
+                return (
+                  <List.Item
+                    key={item.id}
+                    title={item.email}
+                    description={() =>
+                      Boolean(errors?.adminUsers?.[_index]) && (
+                        /* istanbul ignore next */
+                        <View style={{ marginLeft: -12 }}>
+                          <HelperText
+                            type="error"
+                            visible={Boolean(errors?.adminUsers?.[_index])}>
+                            {errors?.adminUsers?.[_index]?.email?.message}
+                          </HelperText>
+                        </View>
+                      )
+                    }
+                  />
+                )
               })}
             </List.Section>
           </View>

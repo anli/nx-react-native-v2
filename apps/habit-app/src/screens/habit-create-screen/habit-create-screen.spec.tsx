@@ -27,6 +27,10 @@ jest.mock('@react-navigation/native', () => {
 })
 
 describe('Given I am at Habit Create Screen', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   it('When loaded, Then I should see Input, And I should see Button', async () => {
     const { getByA11yLabel, getByText } = render(
       <MockedProvider addTypename={false}>
@@ -87,7 +91,7 @@ describe('Given I am at Habit Create Screen', () => {
 
   it('And API has error, And I enter valid Name Input, When I press Save Button, Then I should see Error Message', async () => {
     jest.spyOn(Alert, 'alert')
-    jest.spyOn(SharedAuth, 'useAuth').mockImplementationOnce(() => ({
+    jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
       user: useHabitCreateMockData.user
     }))
 

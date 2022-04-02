@@ -23,7 +23,8 @@ import {
   HabitCreateScreen,
   HabitsScreen,
   LoginScreen,
-  ProfileScreen
+  ProfileScreen,
+  UserSelectScreen
 } from '../screens'
 import { GroupsScreen } from '../screens/groups-screen'
 import { HabitUpdateScreen } from '../screens/habit-update-screen'
@@ -59,7 +60,8 @@ export type RootStackParamList = {
   HabitUpdateScreen: { id: string, name: string }
   GroupCreateScreen: undefined
   GroupViewScreen: { id: string }
-  GroupUpdateScreen: { id: string }
+  GroupUpdateScreen: { id: string, userSelectEmail?: string }
+  UserSelectScreen: { nextScreen: keyof RootStackParamList }
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -149,6 +151,11 @@ const Navigation = (): JSX.Element => {
                   name="GroupUpdateScreen"
                   component={GroupUpdateScreen.Container}
                   options={GroupUpdateScreen.options}
+                />
+                <RootStack.Screen
+                  name="UserSelectScreen"
+                  component={UserSelectScreen.Container}
+                  options={UserSelectScreen.options}
                 />
               </>
             ) : (

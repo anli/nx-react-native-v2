@@ -17,6 +17,7 @@ import { Alert } from 'react-native'
 import { GroupUpdateScreen } from './group-update-screen'
 
 const mockGoBack = jest.fn()
+const mockNavigate = jest.fn()
 jest.mock('@react-navigation/native', () => {
   const module = jest.requireActual('@react-navigation/native')
   return {
@@ -24,7 +25,8 @@ jest.mock('@react-navigation/native', () => {
     useNavigation: () => ({
       ...module.useNavigation(),
       canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack
+      goBack: mockGoBack,
+      navigate: mockNavigate
     })
   }
 })
@@ -128,5 +130,30 @@ describe('Given I am at Group Update Screen', () => {
     fireEvent.press(getByText('buttonTitle'))
 
     await waitFor(() => expect(mockGoBack).toBeCalledTimes(1))
+  })
+
+  it('When I press Add User Button, Then I should see User Select Screen', async () => {
+    const { getByA11yLabel, getByTestId } = render(
+      <MockedProvider
+        mocks={useGroupNonSubscriptionMockQuerySuccess}
+        addTypename={false}>
+        <GroupUpdateScreen.Container />
+      </MockedProvider>,
+      {
+        params: defaultParams
+      }
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('GroupUpdateScreenSkeleton')
+    )
+
+    fireEvent.press(getByA11yLabel('addUserButtonAccessibilityLabel'))
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+
+    expect(mockNavigate).toBeCalledWith('UserSelectScreen', {
+      nextScreen: 'GroupUpdateScreen'
+    })
   })
 })

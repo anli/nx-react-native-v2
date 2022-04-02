@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useHabitUpdateMutation } from '@nx-react-native/habit/data-access'
 import {
   HabitForm,
@@ -11,6 +12,7 @@ import React, { Suspense, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
+import * as yup from 'yup'
 import { RootStackParamList } from '../../app'
 
 const options: NativeStackNavigationOptions = {
@@ -23,6 +25,15 @@ const Component = (): JSX.Element => {
     'HabitForm',
     'ErrorScreen'
   ])
+  const schema = yup
+    .object({
+      name: yup.string().required(
+        t('nameInputValidationRequired', {
+          ns: 'GroupForm'
+        })
+      )
+    })
+    .required()
   const { setOptions, canGoBack, goBack } = useNavigation()
   const { params: defaultValues } =
     useRoute<RouteProp<RootStackParamList, 'HabitUpdateScreen'>>()
@@ -31,7 +42,9 @@ const Component = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<HabitFormData>()
+  } = useForm<HabitFormData>({
+    resolver: yupResolver(schema)
+  })
   const [habitUpdateMutation, { loading }] = useHabitUpdateMutation()
 
   useEffect(() => {
@@ -70,9 +83,6 @@ const Component = (): JSX.Element => {
       loading={loading}
       onPress={handleSubmit(handleHabitUpdateButton)}
       errors={errors}
-      nameInputValidationRequired={`${t('nameInputValidationRequired', {
-        ns: 'HabitForm'
-      })}`}
       nameInputAccessibilityLabel={t('nameInputAccessibilityLabel', {
         ns: 'HabitForm'
       })}
