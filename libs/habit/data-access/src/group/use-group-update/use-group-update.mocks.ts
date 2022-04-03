@@ -8,8 +8,7 @@ import {
 faker.seed(0)
 export const useGroupUpdateMockData = {
   id: faker.datatype.uuid(),
-  name: faker.lorem.word(),
-  adminUsers: [{ email: faker.internet.email() }]
+  name: faker.lorem.word()
 }
 
 const request = {
@@ -18,8 +17,7 @@ const request = {
     input: {
       filter: { id: [useGroupUpdateMockData.id] },
       set: {
-        name: useGroupUpdateMockData.name,
-        adminUsers: useGroupUpdateMockData.adminUsers
+        name: useGroupUpdateMockData.name
       }
     }
   }

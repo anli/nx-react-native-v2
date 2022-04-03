@@ -1,0 +1,16 @@
+subscription GroupUsersScreen($id: ID!) {
+  getGroup(id: $id) {
+    adminUsers {
+      id
+      email
+    }
+  }
+}
+
+mutation RemoveAdminUser($id: [ID!], $email: String!) {
+  updateGroup(
+    input: { filter: { id: $id }, remove: { adminUsers: { email: $email } } }
+  ) {
+    numUids
+  }
+}

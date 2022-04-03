@@ -4,12 +4,10 @@ import { AnyObject } from 'yup/lib/types'
 
 interface Props {
   nameRequired: string
-  adminUsersEmail: string
 }
 
 export const getGroupFormSchema = ({
-  nameRequired,
-  adminUsersEmail
+  nameRequired
 }: Props): RequiredObjectSchema<
 ObjectShape,
 AnyObject,
@@ -17,14 +15,6 @@ TypeOfShape<ObjectShape>
 > =>
   yup
     .object({
-      name: yup.string().required(nameRequired),
-      adminUsers: yup
-        .array()
-        .of(
-          yup.object().shape({
-            email: yup.string().required().email(adminUsersEmail)
-          })
-        )
-        .required()
+      name: yup.string().required(nameRequired)
     })
     .required()
