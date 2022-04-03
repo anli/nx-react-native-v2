@@ -1,5 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing'
 import {
+  useGroupMockData,
   useGroupNonSubscriptionMockQueryError,
   useGroupNonSubscriptionMockQuerySuccess,
   useGroupUpdateMockData,
@@ -155,5 +156,29 @@ describe('Given I am at Group Update Screen', () => {
     expect(mockNavigate).toBeCalledWith('UserSelectScreen', {
       nextScreen: 'GroupUpdateScreen'
     })
+  })
+
+  it('When I press Delete User Button, Then I should see User Select Screen', async () => {
+    const { getByA11yLabel, getByTestId, getByText, queryByText } = render(
+      <MockedProvider
+        mocks={useGroupNonSubscriptionMockQuerySuccess}
+        addTypename={false}>
+        <GroupUpdateScreen.Container />
+      </MockedProvider>,
+      {
+        params: defaultParams
+      }
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('GroupUpdateScreenSkeleton')
+    )
+
+    expect(getByText(useGroupMockData.adminUsers[0].email)).toBeDefined()
+    expect(getByA11yLabel('userDeleteButtonAccessibilityLabel')).toBeDefined()
+
+    fireEvent.press(getByA11yLabel('userDeleteButtonAccessibilityLabel'))
+
+    expect(queryByText(useGroupMockData.adminUsers[0].email)).toBeNull()
   })
 })

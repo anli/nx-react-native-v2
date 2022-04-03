@@ -26,6 +26,5 @@ TypeOfShape<ObjectShape>
           })
         )
         .required()
-        .min(1)
     })
     .required()
