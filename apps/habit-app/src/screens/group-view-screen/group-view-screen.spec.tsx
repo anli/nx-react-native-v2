@@ -36,8 +36,8 @@ const defaultParams = {
 }
 
 describe('Given I am at Group View Screen', () => {
-  it('When loaded, Then I should group name', async () => {
-    const { getByTestId } = render(
+  it('When loaded, Then I should group name, And I should see Members', async () => {
+    const { getByTestId, getByText } = render(
       <MockedProvider mocks={useGroupMockQuerySuccess} addTypename={false}>
         <GroupViewScreen.Container />
       </MockedProvider>,
@@ -49,6 +49,8 @@ describe('Given I am at Group View Screen', () => {
     await waitForElementToBeRemoved(() =>
       getByTestId('GroupViewScreenSkeleton')
     )
+
+    expect(getByText('membersTitle')).toBeDefined()
   })
 
   it('When loading, Then I should see Habits Screen Skeleton', async () => {
