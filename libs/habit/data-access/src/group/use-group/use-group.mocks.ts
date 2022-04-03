@@ -12,7 +12,11 @@ export const useGroupMockData = {
   __typename: 'Group' as const,
   id: faker.datatype.uuid(),
   name: faker.lorem.word(),
-  adminUsers: [{ __typename: 'User' as const, email: faker.internet.email() }]
+  adminUsers: [{ __typename: 'User' as const, email: faker.internet.email() }],
+  adminUsersAggregate: {
+    __typename: 'UserAggregateResult' as const,
+    count: 1
+  }
 }
 
 const request = {

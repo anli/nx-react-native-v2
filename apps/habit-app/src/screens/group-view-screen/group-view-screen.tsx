@@ -3,7 +3,7 @@ import {
   useGroupSubscription
 } from '@nx-react-native/habit/data-access'
 import { HabitsListSkeleton } from '@nx-react-native/habit/ui'
-import { Screen } from '@nx-react-native/shared/ui'
+import { Screen, Text, View } from '@nx-react-native/shared/ui'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -11,7 +11,7 @@ import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
-import { Appbar } from 'react-native-paper'
+import { Appbar, List } from 'react-native-paper'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
 
@@ -108,7 +108,22 @@ const Component = (): JSX.Element => {
     return <Suspender />
   }
 
-  return <Screen></Screen>
+  return (
+    <Screen>
+      <List.Item
+        title={t('membersTitle')}
+        left={(props) => <List.Icon {...props} icon="account-box" />}
+        right={(props) => (
+          <>
+            <View justifyContent="center">
+              <Text>{data?.adminUsersAggregate?.count}</Text>
+            </View>
+            <List.Icon {...props} icon="chevron-right" />
+          </>
+        )}
+      />
+    </Screen>
+  )
 }
 
 const Container = (): JSX.Element => {

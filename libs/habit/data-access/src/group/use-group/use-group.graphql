@@ -2,6 +2,9 @@ subscription Group($id: ID!) {
   getGroup(id: $id) {
     id
     name
+    adminUsersAggregate {
+      count
+    }
   }
 }
 

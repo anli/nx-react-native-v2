@@ -8,7 +8,7 @@ export type GroupSubscriptionVariables = Types.Exact<{
 }>;
 
 
-export type GroupSubscription = { __typename: 'Subscription', getGroup?: { __typename: 'Group', id: string, name: string } | null };
+export type GroupSubscription = { __typename: 'Subscription', getGroup?: { __typename: 'Group', id: string, name: string, adminUsersAggregate?: { __typename: 'UserAggregateResult', count?: number | null } | null } | null };
 
 export type GroupNonSubscriptionQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
@@ -23,6 +23,9 @@ export const GroupDocument = gql`
   getGroup(id: $id) {
     id
     name
+    adminUsersAggregate {
+      count
+    }
   }
 }
     `;
