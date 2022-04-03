@@ -3,7 +3,8 @@ import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
 import { Control, FieldArrayWithId, FieldError } from 'react-hook-form'
 import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
-import { HelperText, List } from 'react-native-paper'
+import { List } from 'react-native-paper'
+import { UserItem } from './user-item'
 
 export interface GroupFormData {
   name: string
@@ -25,6 +26,8 @@ interface Props {
   nameInputLabel: string
   buttonAccessibilityLabel: string
   buttonTitle: string
+  handleUserDelete?: (index: number) => void
+  userDeleteButtonAccessibilityLabel: string
 }
 
 export const GroupForm = ({
@@ -36,7 +39,9 @@ export const GroupForm = ({
   nameInputAccessibilityLabel,
   nameInputLabel,
   buttonAccessibilityLabel,
-  buttonTitle
+  buttonTitle,
+  handleUserDelete,
+  userDeleteButtonAccessibilityLabel
 }: Props): JSX.Element => {
   const headerHeight = useHeaderHeight()
 
@@ -63,22 +68,16 @@ export const GroupForm = ({
           <View paddingHorizontal="loose">
             <List.Section>
               <List.Subheader>Users</List.Subheader>
-              {fields.map((item, _index) => {
+              {fields.map((_user, _userIndex) => {
                 return (
-                  <List.Item
-                    key={item.id}
-                    title={item.email}
-                    description={() =>
-                      Boolean(errors?.adminUsers?.[_index]) && (
-                        /* istanbul ignore next */
-                        <View style={{ marginLeft: -12 }}>
-                          <HelperText
-                            type="error"
-                            visible={Boolean(errors?.adminUsers?.[_index])}>
-                            {errors?.adminUsers?.[_index]?.email?.message}
-                          </HelperText>
-                        </View>
-                      )
+                  <UserItem
+                    index={_userIndex}
+                    item={_user}
+                    error={errors?.adminUsers}
+                    key={_user.id}
+                    onDelete={handleUserDelete}
+                    deleteButtonAccessibilityLabel={
+                      userDeleteButtonAccessibilityLabel
                     }
                   />
                 )

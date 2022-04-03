@@ -56,7 +56,7 @@ const Component = (): JSX.Element => {
   } = useForm<GroupFormData>({
     resolver: yupResolver(schema)
   })
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'adminUsers'
   })
@@ -151,6 +151,10 @@ const Component = (): JSX.Element => {
       nameInputLabel={t('nameInputLabel', { ns: 'GroupForm' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
+      handleUserDelete={remove}
+      userDeleteButtonAccessibilityLabel={t(
+        'userDeleteButtonAccessibilityLabel'
+      )}
     />
   )
 }

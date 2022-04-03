@@ -92,6 +92,9 @@ const Component = (): JSX.Element => {
       nameInputLabel={t('nameInputLabel', { ns: 'GroupForm' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
+      userDeleteButtonAccessibilityLabel={t(
+        'userDeleteButtonAccessibilityLabel'
+      )}
     />
   )
 }
