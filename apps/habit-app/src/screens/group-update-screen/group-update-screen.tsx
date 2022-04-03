@@ -18,10 +18,9 @@ import {
 } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
-import { Appbar } from 'react-native-paper'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
 
@@ -38,15 +37,12 @@ const Component = (): JSX.Element => {
   const schema = getGroupFormSchema({
     nameRequired: t('nameInputValidationRequired', {
       ns: 'GroupForm'
-    }),
-    adminUsersEmail: t('adminUsersValidationEmail', {
-      ns: 'GroupForm'
     })
   })
-  const { setOptions, canGoBack, goBack, navigate } =
+  const { setOptions, canGoBack, goBack } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const {
-    params: { id, userSelectEmail }
+    params: { id }
   } = useRoute<RouteProp<RootStackParamList, 'GroupUpdateScreen'>>()
   const {
     control,
@@ -55,10 +51,6 @@ const Component = (): JSX.Element => {
     reset
   } = useForm<GroupFormData>({
     resolver: yupResolver(schema)
-  })
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'adminUsers'
   })
   const [groupUpdateMutation, { loading: updateLoading }] =
     useGroupUpdateMutation()
@@ -75,40 +67,16 @@ const Component = (): JSX.Element => {
 
   useEffect(() => {
     reset({
-      name: defaultValues?.name ?? '',
-      adminUsers:
-        defaultValues?.adminUsers?.map((user) => ({
-          email: user.email
-        })) ?? []
+      name: defaultValues?.name ?? ''
     })
   }, [defaultValues, id, reset])
 
-  /* istanbul ignore next */
   useEffect(() => {
-    if (userSelectEmail !== undefined) {
-      append({ email: userSelectEmail })
-    }
-  }, [append, userSelectEmail])
-
-  useEffect(() => {
-    const handleAddUser = (): void => {
-      navigate('UserSelectScreen', {
-        nextScreen: 'GroupUpdateScreen'
-      })
-    }
-
     setOptions({
       title: t('title'),
-      headerShown: true,
-      headerRight: () => (
-        <Appbar.Action
-          icon="account-plus"
-          onPress={handleAddUser}
-          accessibilityLabel={t('addUserButtonAccessibilityLabel')}
-        />
-      )
+      headerShown: true
     })
-  })
+  }, [setOptions, t])
 
   if (error !== undefined) {
     throw Error(error?.message)
@@ -141,7 +109,6 @@ const Component = (): JSX.Element => {
   return (
     <GroupForm
       control={control}
-      fields={fields}
       loading={updateLoading}
       onPress={handleSubmit(handleGroupUpdateButton)}
       errors={errors}
@@ -151,10 +118,6 @@ const Component = (): JSX.Element => {
       nameInputLabel={t('nameInputLabel', { ns: 'GroupForm' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
-      handleUserDelete={remove}
-      userDeleteButtonAccessibilityLabel={t(
-        'userDeleteButtonAccessibilityLabel'
-      )}
     />
   )
 }

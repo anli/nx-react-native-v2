@@ -108,10 +108,14 @@ const Component = (): JSX.Element => {
     return <Suspender />
   }
 
+  const handleViewUsers = (): void => navigate('GroupUsersScreen', { id })
+
   return (
     <Screen>
       <List.Item
-        title={t('membersTitle')}
+        accessibilityLabel={t('usersButtonAccessibilityLabel')}
+        onPress={handleViewUsers}
+        title={t('usersTitle')}
         left={(props) => <List.Icon {...props} icon="account-box" />}
         right={(props) => (
           <>

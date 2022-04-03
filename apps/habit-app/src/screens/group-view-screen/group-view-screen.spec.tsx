@@ -36,7 +36,12 @@ const defaultParams = {
 }
 
 describe('Given I am at Group View Screen', () => {
-  it('When loaded, Then I should group name, And I should see Members', async () => {
+  beforeEach(() => {
+    jest.restoreAllMocks()
+    jest.clearAllMocks()
+  })
+
+  it('When loaded, Then I should group name, And I should see Users', async () => {
     const { getByTestId, getByText } = render(
       <MockedProvider mocks={useGroupMockQuerySuccess} addTypename={false}>
         <GroupViewScreen.Container />
@@ -50,7 +55,7 @@ describe('Given I am at Group View Screen', () => {
       getByTestId('GroupViewScreenSkeleton')
     )
 
-    expect(getByText('membersTitle')).toBeDefined()
+    expect(getByText('usersTitle')).toBeDefined()
   })
 
   it('When loading, Then I should see Habits Screen Skeleton', async () => {
@@ -140,6 +145,28 @@ describe('Given I am at Group View Screen', () => {
 
     await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
     expect(mockNavigate).toBeCalledWith('GroupUpdateScreen', {
+      id: useGroupMockData.id
+    })
+  })
+
+  it('When I press Users Button, Then I should see Group Users Screen', async () => {
+    const { getByTestId, getByA11yLabel } = render(
+      <MockedProvider mocks={useGroupMockQuerySuccess} addTypename={false}>
+        <GroupViewScreen.Container />
+      </MockedProvider>,
+      {
+        params: defaultParams
+      }
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('GroupViewScreenSkeleton')
+    )
+
+    fireEvent.press(getByA11yLabel('usersButtonAccessibilityLabel'))
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+    expect(mockNavigate).toBeCalledWith('GroupUsersScreen', {
       id: useGroupMockData.id
     })
   })
