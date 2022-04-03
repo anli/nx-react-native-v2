@@ -380,7 +380,7 @@ PODS:
   - RNScreens (3.11.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.3.6):
+  - RNSentry (3.4.0):
     - React-Core
     - Sentry (= 7.11.0)
   - RNSplit (0.1.0):
@@ -636,7 +636,7 @@ SPEC CHECKSUMS:
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
   RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
-  RNSentry: 6fbe6a4194cf632e5dc02a640741512faa943dbf
+  RNSentry: ec3c033c13bcb65c79f19d54ca54c514d1832bb5
   RNSplit: e75dc5a74f4c0e34bec2b68a6d075cbd8aadbe48
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
