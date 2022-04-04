@@ -22,6 +22,20 @@ const defaultParams = {
   id: groupUsersScreenData.id
 }
 
+const mockNavigate = jest.fn()
+jest.mock('@react-navigation/native', () => {
+  const module = jest.requireActual('@react-navigation/native')
+  return {
+    ...module,
+    useNavigation: () => ({
+      ...module.useNavigation(),
+      canGoBack: jest.fn().mockReturnValue(true),
+      goBack: jest.fn().mockReturnValue(true),
+      navigate: mockNavigate
+    })
+  }
+})
+
 describe('Given I am at Group Users Screen', () => {
   beforeEach(() => {
     jest.restoreAllMocks()
@@ -167,5 +181,29 @@ describe('Given I am at Group Users Screen', () => {
     await waitFor(() =>
       expect(getByTestId('GroupUsersScreenError')).toBeDefined()
     )
+  })
+
+  it('When I press Add User Button, Then I should see Add User Screen', async () => {
+    const { getByTestId, getByA11yLabel } = render(
+      <MockedProvider
+        mocks={groupUsersScreenSubscriptionMockSuccess}
+        addTypename={false}>
+        <GroupUsersScreen.Container />
+      </MockedProvider>,
+      {
+        params: defaultParams
+      }
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('GroupUsersScreenSkeleton')
+    )
+
+    fireEvent.press(getByA11yLabel('addUserButtonAccessibilityLabel'))
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+    expect(mockNavigate).toBeCalledWith('GroupUsersAppendScreen', {
+      id: defaultParams.id
+    })
   })
 })
