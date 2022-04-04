@@ -8,7 +8,7 @@ import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { Alert, FlatList, Pressable } from 'react-native'
-import { List } from 'react-native-paper'
+import { Appbar, List } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
@@ -24,7 +24,7 @@ const options = {
 const Component = (): JSX.Element => {
   const { t } = useTranslation('GroupUsersScreen')
   const { user } = useAuth()
-  const { setOptions } =
+  const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const {
     params: { id }
@@ -46,9 +46,18 @@ const Component = (): JSX.Element => {
   const data = _data?.getGroup?.adminUsers
 
   useEffect(() => {
+    const handleAddUser = (): void => navigate('GroupUsersAppendScreen', { id })
+
     setOptions({
       headerShown: true,
-      title: t('title')
+      title: t('title'),
+      headerRight: () => (
+        <Appbar.Action
+          icon="account-plus"
+          onPress={handleAddUser}
+          accessibilityLabel={t('addUserButtonAccessibilityLabel')}
+        />
+      )
     })
   }, [setOptions, t])
 

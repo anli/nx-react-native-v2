@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message'
 import {
   GroupCreateScreen,
   GroupUpdateScreen,
+  GroupUsersAppendScreen,
   GroupUsersScreen,
   GroupViewScreen,
   HabitCreateScreen,
@@ -63,6 +64,7 @@ export type RootStackParamList = {
   GroupUpdateScreen: { id: string, userSelectEmail?: string }
   UserSelectScreen: { nextScreen: keyof RootStackParamList }
   GroupUsersScreen: { id: string }
+  GroupUsersAppendScreen: { id: string }
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -157,6 +159,11 @@ const Navigation = (): JSX.Element => {
                   name="GroupUsersScreen"
                   component={GroupUsersScreen.Container}
                   options={GroupUsersScreen.options}
+                />
+                <RootStack.Screen
+                  name="GroupUsersAppendScreen"
+                  component={GroupUsersAppendScreen.Container}
+                  options={GroupUsersAppendScreen.options}
                 />
               </>
             ) : (

@@ -1,0 +1,7 @@
+mutation SetAdminUser($id: [ID!], $email: String!) {
+  updateGroup(
+    input: { filter: { id: $id }, set: { adminUsers: { email: $email } } }
+  ) {
+    numUids
+  }
+}
