@@ -1,5 +1,6 @@
 export * from './error-screen'
 export * from './group-create-screen'
+export * from './group-select-screen'
 export * from './group-update-screen'
 export * from './group-users-append-screen'
 export * from './group-users-screen'

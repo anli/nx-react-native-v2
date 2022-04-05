@@ -1,0 +1,18 @@
+query HabitUpdateScreen($habitId: ID!) {
+  queryGroup {
+    id
+    name
+  }
+  getHabit(id: $habitId) {
+    name
+    group {
+      id
+    }
+  }
+}
+
+mutation HabitUpdate($input: UpdateHabitInput!) {
+  updateHabit(input: $input) {
+    numUids
+  }
+}

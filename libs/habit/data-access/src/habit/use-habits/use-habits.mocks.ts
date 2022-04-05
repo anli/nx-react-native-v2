@@ -24,6 +24,9 @@ export const useHabitsMockData = Array.from({ length: 3 }, (_, i) => {
     __typename: 'Habit' as const,
     id: faker.datatype.uuid(),
     name: faker.lorem.word(),
+    group: faker.datatype.boolean()
+      ? { __typename: 'Group' as const, name: faker.lorem.word() }
+      : null,
     habitActivities: [
       {
         __typename: 'HabitActivity' as const,

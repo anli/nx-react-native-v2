@@ -55,9 +55,11 @@ const Component = (): JSX.Element => {
         variables: {
           input: {
             ...data,
-            adminUsers: [{
-              email: user?.email
-            }]
+            adminUsers: [
+              {
+                email: user?.email
+              }
+            ]
           }
         }
       })

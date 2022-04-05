@@ -1,3 +1,4 @@
+import { Maybe } from '@nx-react-native/habit/data-access'
 import { View } from '@nx-react-native/shared/ui'
 import { format, formatISO } from 'date-fns'
 import React from 'react'
@@ -12,12 +13,13 @@ HabitWeekDayProps,
 interface Item {
   id: string
   name: string
+  group?: Maybe<{ name: string }>
   weekData: WeekDataItem[]
 }
 
 export interface HabitsListItemProps {
   item: Item
-  onItemPress: (id: string, name: string) => void
+  onItemPress: (id: string) => void
   onDayPress: HabitWeekDayProps['onPress']
 }
 
@@ -27,12 +29,16 @@ export const HabitsListItem = ({
   onDayPress
 }: HabitsListItemProps): JSX.Element => {
   const handleItemPress = (): void => {
-    onItemPress(item.id, item.name)
+    onItemPress(item.id)
   }
 
   return (
     <View>
-      <List.Item onPress={handleItemPress} title={item.name} />
+      <List.Item
+        onPress={handleItemPress}
+        title={item.name}
+        description={item.group?.name}
+      />
       <View flexDirection="row" justifyContent="space-around">
         {item.weekData.map(({ date, count, habitActivityId, habitId }) => {
           const dayName = format(date, 'EEEEEE')

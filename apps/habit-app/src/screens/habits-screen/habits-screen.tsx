@@ -136,7 +136,7 @@ const Component = (): JSX.Element => {
     navigate('HabitCreateScreen')
   }
 
-  const handleHabitOptions = (id: string, name: string): void => {
+  const handleHabitOptions = (id: string): void => {
     showActionSheetWithOptions(
       {
         options: [
@@ -149,7 +149,7 @@ const Component = (): JSX.Element => {
       },
       async (buttonIndex) => {
         if (buttonIndex === 0) {
-          return navigate('HabitUpdateScreen', { id, name })
+          return navigate('HabitUpdateScreen', { id })
         }
 
         if (buttonIndex === 1) {

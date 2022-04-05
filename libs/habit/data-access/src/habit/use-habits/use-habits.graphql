@@ -9,5 +9,8 @@ subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
     }
     id
     name
+    group {
+      name
+    }
   }
 }

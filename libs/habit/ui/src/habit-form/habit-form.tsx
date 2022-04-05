@@ -1,11 +1,13 @@
 import { Button, FormTextInput, Screen, View } from '@nx-react-native/shared/ui'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
-import { Control, FieldError } from 'react-hook-form'
-import { KeyboardAvoidingView, Platform } from 'react-native'
+import { Control, Controller, FieldError } from 'react-hook-form'
+import { KeyboardAvoidingView, Platform, Pressable } from 'react-native'
+import { List } from 'react-native-paper'
 
 export interface HabitFormData {
   name: string
+  groupId?: string
 }
 
 interface Props {
@@ -19,6 +21,15 @@ interface Props {
   nameInputLabel: string
   buttonAccessibilityLabel: string
   buttonTitle: string
+  onSelectGroup: () => void
+  groups: Array<{
+    id: string
+    name: string
+  }>
+  emptyGroupButtonLabel: string
+  onRemoveGroup: () => void
+  groupSelectButtonAccessibilityLabel: string
+  groupRemoveButtonAccessibilityLabel: string
 }
 
 export const HabitForm = ({
@@ -29,7 +40,13 @@ export const HabitForm = ({
   nameInputAccessibilityLabel,
   nameInputLabel,
   buttonAccessibilityLabel,
-  buttonTitle
+  buttonTitle,
+  onSelectGroup,
+  groups,
+  emptyGroupButtonLabel,
+  onRemoveGroup,
+  groupSelectButtonAccessibilityLabel,
+  groupRemoveButtonAccessibilityLabel
 }: Props): JSX.Element => {
   const headerHeight = useHeaderHeight()
 
@@ -42,14 +59,47 @@ export const HabitForm = ({
         })}
         style={{ flex: 1 }}
         keyboardVerticalOffset={headerHeight}>
-        <View padding="extraLoose" flex={1}>
-          <FormTextInput<HabitFormData>
+        <View flex={1} paddingVertical="loose">
+          <View paddingHorizontal="loose">
+            <FormTextInput<HabitFormData>
+              control={control}
+              testID="NameInput"
+              accessibilityLabel={nameInputAccessibilityLabel}
+              label={nameInputLabel}
+              name="name"
+              error={errors.name}
+            />
+          </View>
+          <Controller
             control={control}
-            testID="NameInput"
-            accessibilityLabel={nameInputAccessibilityLabel}
-            label={nameInputLabel}
-            name="name"
-            error={errors.name}
+            render={({ field: { value: groupId } }) => {
+              const hasGroup = Boolean(groupId)
+              const groupName = hasGroup
+                ? groups.find(({ id }) => id === groupId)?.name
+                : emptyGroupButtonLabel
+              return (
+                <List.Item
+                  accessibilityLabel={groupSelectButtonAccessibilityLabel}
+                  onPress={onSelectGroup}
+                  title={groupName}
+                  left={(...props) => (
+                    <List.Icon {...props} icon="account-group" />
+                  )}
+                  right={(...props) =>
+                    hasGroup && (
+                      <Pressable
+                        onPress={onRemoveGroup}
+                        accessibilityLabel={
+                          groupRemoveButtonAccessibilityLabel
+                        }>
+                        <List.Icon {...props} icon="close" />
+                      </Pressable>
+                    )
+                  }
+                />
+              )
+            }}
+            name="groupId"
           />
         </View>
 
