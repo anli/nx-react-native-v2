@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useHabitCreateMutation } from '@nx-react-native/habit/data-access'
 import {
   HabitForm,
   HabitFormData,
@@ -7,13 +6,25 @@ import {
 } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen } from '@nx-react-native/shared/ui'
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack'
+import { filterNullable } from '@nx-react-native/shared/utils'
+import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import {
+  NativeStackNavigationOptions,
+  NativeStackNavigationProp
+} from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
 import * as yup from 'yup'
+import { RootStackParamList } from '../../app'
+import { ErrorScreen } from '../error-screen'
+import {
+  useHabitCreateMutation,
+  useHabitCreateScreenQuery
+} from './habit-create-screen.generated'
 
 const options: NativeStackNavigationOptions = {
   title: ''
@@ -21,35 +32,52 @@ const options: NativeStackNavigationOptions = {
 
 const Component = (): JSX.Element => {
   const { user } = useAuth()
-  const { t } = useTranslation([
-    'HabitCreateScreen',
-    'HabitForm',
-    'ErrorScreen'
-  ])
-  const schema = yup
-    .object({
-      name: yup.string().required(
-        t('nameInputValidationRequired', {
-          ns: 'GroupForm'
-        })
-      )
-    })
-    .required()
-  const { setOptions, canGoBack, goBack } = useNavigation()
+  const { t } = useTranslation(['HabitCreateScreen', 'Form', 'ErrorScreen'])
+  const schema = yup.object({
+    name: yup.string().required(
+      t('nameInputValidationRequired', {
+        ns: 'Form'
+      })
+    )
+  })
+  const { setOptions, canGoBack, goBack, navigate } =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const { params } =
+    useRoute<RouteProp<RootStackParamList, 'HabitCreateScreen'>>()
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset,
+    setValue
   } = useForm<HabitFormData>({
     resolver: yupResolver(schema)
   })
   const [habitCreateMutation, { loading }] = useHabitCreateMutation()
+  const {
+    data: _data,
+    loading: queryLoading,
+    error: queryError
+  } = useHabitCreateScreenQuery()
+  const groups = filterNullable(_data?.queryGroup ?? [])
 
   useEffect(() => {
     setOptions({
       title: t('title')
     })
-  })
+  }, [setOptions, t])
+
+  useEffect(() => {
+    setValue('groupId', params?.groupSelectScreen?.id)
+  }, [params, reset, setValue])
+
+  if (queryError !== undefined) {
+    throw Error(queryError?.message)
+  }
+
+  if (queryLoading === true) {
+    return <Suspender />
+  }
 
   const handleHabitCreateButton = async (
     data: HabitFormData
@@ -59,8 +87,11 @@ const Component = (): JSX.Element => {
         await habitCreateMutation({
           variables: {
             input: {
-              ...data,
-              user: { email: user.email }
+              name: data.name,
+              user: { email: user.email },
+              ...(data.groupId !== undefined
+                ? { group: { id: data.groupId } }
+                : {})
             }
           }
         })
@@ -77,6 +108,14 @@ const Component = (): JSX.Element => {
     return Alert.alert(t('errorTitle', { ns: 'ErrorScreen' }), 'user is null')
   }
 
+  const handleSelectGroup = (): void => {
+    navigate('GroupSelectScreen', { nextScreenName: 'HabitCreateScreen' })
+  }
+
+  const handleRemoveGroup = (): void => {
+    setValue('groupId', undefined)
+  }
+
   return (
     <HabitForm
       control={control}
@@ -84,27 +123,48 @@ const Component = (): JSX.Element => {
       onPress={handleSubmit(handleHabitCreateButton)}
       errors={errors}
       nameInputAccessibilityLabel={t('nameInputAccessibilityLabel', {
-        ns: 'HabitForm'
+        ns: 'Form'
       })}
-      nameInputLabel={t('nameInputLabel', { ns: 'HabitForm' })}
+      nameInputLabel={t('nameInputLabel', { ns: 'Form' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
+      onSelectGroup={handleSelectGroup}
+      groups={groups}
+      emptyGroupButtonLabel={t('emptyGroupButtonLabel', { ns: 'Form' })}
+      onRemoveGroup={handleRemoveGroup}
+      groupSelectButtonAccessibilityLabel={t(
+        'groupSelectButtonAccessibilityLabel',
+        { ns: 'Form' }
+      )}
+      groupRemoveButtonAccessibilityLabel={t(
+        'groupRemoveButtonAccessibilityLabel',
+        { ns: 'Form' }
+      )}
     />
   )
 }
 
 const Container = (): JSX.Element => {
   return (
-    <Suspense
-      fallback={
-        <Screen testID="HabitCreateScreenSkeleton">
-          <HabitFormSkeleton />
+    <ErrorBoundary
+      fallbackRender={({ error, resetErrorBoundary }) => (
+        <ErrorScreen
+          testID="HabitCreateScreenError"
+          error={error}
+          resetErrorBoundary={resetErrorBoundary}
+        />
+      )}>
+      <Suspense
+        fallback={
+          <Screen testID="HabitCreateScreenSkeleton">
+            <HabitFormSkeleton />
+          </Screen>
+        }>
+        <Screen testID="HabitCreateScreen">
+          <Component />
         </Screen>
-      }>
-      <Screen testID="HabitCreateScreen">
-        <Component />
-      </Screen>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   )
 }
 

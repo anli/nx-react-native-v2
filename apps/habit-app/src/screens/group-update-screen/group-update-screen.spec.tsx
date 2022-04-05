@@ -17,7 +17,6 @@ import { Alert } from 'react-native'
 import { GroupUpdateScreen } from './group-update-screen'
 
 const mockGoBack = jest.fn()
-const mockNavigate = jest.fn()
 jest.mock('@react-navigation/native', () => {
   const module = jest.requireActual('@react-navigation/native')
   return {
@@ -25,8 +24,7 @@ jest.mock('@react-navigation/native', () => {
     useNavigation: () => ({
       ...module.useNavigation(),
       canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack,
-      navigate: mockNavigate
+      goBack: mockGoBack
     })
   }
 })

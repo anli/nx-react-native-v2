@@ -9,7 +9,7 @@ export type HabitsSubscriptionVariables = Types.Exact<{
 }>;
 
 
-export type HabitsSubscription = { __typename: 'Subscription', queryHabit?: Array<{ __typename: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename: 'HabitActivity', id: string, count: number, date: any }> | null } | null> | null };
+export type HabitsSubscription = { __typename: 'Subscription', queryHabit?: Array<{ __typename: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename: 'HabitActivity', id: string, count: number, date: any }> | null, group?: { __typename: 'Group', name: string } | null } | null> | null };
 
 
 export const HabitsDocument = gql`
@@ -22,6 +22,9 @@ export const HabitsDocument = gql`
     }
     id
     name
+    group {
+      name
+    }
   }
 }
     `;

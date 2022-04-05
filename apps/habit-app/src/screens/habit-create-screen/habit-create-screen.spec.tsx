@@ -1,19 +1,26 @@
 import { MockedProvider } from '@apollo/client/testing'
 import faker from '@faker-js/faker'
-import {
-  useHabitCreateMockData,
-  useHabitCreateMockQueryError,
-  useHabitCreateMockQuerySuccess
-} from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
-import { fireEvent, waitFor } from '@testing-library/react-native'
+import {
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react-native'
 import React from 'react'
-import ReactI18next from 'react-i18next'
 import { Alert } from 'react-native'
 import { HabitCreateScreen } from './habit-create-screen'
+import {
+  habitCreateMutationMockError,
+  habitCreateMutationMockSuccess,
+  habitCreateMutationWithGroupMockSuccess,
+  habitCreateScreenData,
+  habitCreateScreenQueryMockError,
+  habitCreateScreenQueryMockSuccess
+} from './habit-create-screen.mocks'
 
 const mockGoBack = jest.fn()
+const mockNavigate = jest.fn()
 jest.mock('@react-navigation/native', () => {
   const module = jest.requireActual('@react-navigation/native')
   return {
@@ -21,7 +28,8 @@ jest.mock('@react-navigation/native', () => {
     useNavigation: () => ({
       ...module.useNavigation(),
       canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack
+      goBack: mockGoBack,
+      navigate: mockNavigate
     })
   }
 })
@@ -29,13 +37,20 @@ jest.mock('@react-navigation/native', () => {
 describe('Given I am at Habit Create Screen', () => {
   afterEach(() => {
     jest.restoreAllMocks()
+    jest.clearAllMocks()
   })
 
   it('When loaded, Then I should see Input, And I should see Button', async () => {
-    const { getByA11yLabel, getByText } = render(
-      <MockedProvider addTypename={false}>
+    const { getByA11yLabel, getByText, getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={habitCreateScreenQueryMockSuccess}>
         <HabitCreateScreen.Container />
       </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
     )
 
     expect(getByA11yLabel('nameInputAccessibilityLabel')).toBeDefined()
@@ -43,24 +58,34 @@ describe('Given I am at Habit Create Screen', () => {
     expect(getByText('buttonTitle')).toBeDefined()
   })
 
-  it('When initial load, Then I should see Skeleton Screen', () => {
-    jest
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .spyOn<any, 'useTranslation'>(ReactI18next, 'useTranslation')
-      .mockImplementationOnce(() => {
-        // eslint-disable-next-line @typescript-eslint/no-throw-literal
-        throw new Promise(() => null)
-      })
-    const { getByTestId } = render(<HabitCreateScreen.Container />)
+  it('When Error, Then I should see Error Screen', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => null)
+    const { getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={habitCreateScreenQueryMockError}>
+        <HabitCreateScreen.Container />
+      </MockedProvider>
+    )
 
-    expect(getByTestId('HabitCreateScreenSkeleton')).toBeDefined()
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
+    )
+
+    expect(getByTestId('HabitCreateScreenError')).toBeDefined()
   })
 
   it('When I enter invalid Name Input, Then I should see Validation Error', async () => {
-    const { findByText, getByText } = render(
-      <MockedProvider addTypename={false}>
+    const { findByText, getByText, getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={habitCreateScreenQueryMockSuccess}>
         <HabitCreateScreen.Container />
       </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
     )
 
     fireEvent.press(getByText('buttonTitle'))
@@ -71,10 +96,16 @@ describe('Given I am at Habit Create Screen', () => {
   it('And user is undefined, And I enter valid Name Input, When I press Save Button, Then I should see Error Message', async () => {
     jest.spyOn(Alert, 'alert')
 
-    const { getByText, getByA11yLabel } = render(
-      <MockedProvider addTypename={false}>
+    const { getByText, getByA11yLabel, getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={habitCreateScreenQueryMockSuccess}>
         <HabitCreateScreen.Container />
       </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
     )
 
     fireEvent(
@@ -92,19 +123,28 @@ describe('Given I am at Habit Create Screen', () => {
   it('And API has error, And I enter valid Name Input, When I press Save Button, Then I should see Error Message', async () => {
     jest.spyOn(Alert, 'alert')
     jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
-      user: useHabitCreateMockData.user
+      user: habitCreateScreenData.user
     }))
 
-    const { getByText, getByA11yLabel } = render(
-      <MockedProvider mocks={useHabitCreateMockQueryError} addTypename={false}>
+    const { getByText, getByA11yLabel, getByTestId } = render(
+      <MockedProvider
+        mocks={[
+          ...habitCreateScreenQueryMockSuccess,
+          ...habitCreateMutationMockError
+        ]}
+        addTypename={false}>
         <HabitCreateScreen.Container />
       </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
     )
 
     fireEvent(
       getByA11yLabel('nameInputAccessibilityLabel'),
       'changeText',
-      useHabitCreateMockData.name
+      habitCreateScreenData.name
     )
 
     fireEvent.press(getByText('buttonTitle'))
@@ -114,25 +154,129 @@ describe('Given I am at Habit Create Screen', () => {
   })
 
   it('And I enter valid Name Input, When I press Save Button, Then I should see Habit Created', async () => {
-    jest.spyOn(SharedAuth, 'useAuth').mockImplementationOnce(() => ({
-      user: useHabitCreateMockData.user
+    jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
+      user: habitCreateScreenData.user
     }))
 
-    const { getByText, getByA11yLabel } = render(
+    const { getByText, getByA11yLabel, getByTestId } = render(
       <MockedProvider
-        mocks={useHabitCreateMockQuerySuccess}
+        mocks={[
+          ...habitCreateScreenQueryMockSuccess,
+          ...habitCreateMutationMockSuccess
+        ]}
         addTypename={false}>
         <HabitCreateScreen.Container />
       </MockedProvider>
     )
 
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
+    )
+
     fireEvent(
       getByA11yLabel('nameInputAccessibilityLabel'),
       'changeText',
-      useHabitCreateMockData.name
+      habitCreateScreenData.name
     )
 
     fireEvent.press(getByText('buttonTitle'))
+
+    await waitFor(() => expect(mockGoBack).toBeCalledTimes(1))
+  })
+
+  it('When I press Group Select Button, Then I should see Group Select Screen', async () => {
+    const { getByA11yLabel, getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={habitCreateScreenQueryMockSuccess}>
+        <HabitCreateScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
+    )
+
+    fireEvent.press(getByA11yLabel('groupSelectButtonAccessibilityLabel'))
+
+    await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
+    expect(mockNavigate).toBeCalledWith('GroupSelectScreen', {
+      nextScreenName: 'HabitCreateScreen'
+    })
+  })
+
+  it('When I press Group Remove Button, Then I should see Group Removed', async () => {
+    jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
+      user: habitCreateScreenData.user
+    }))
+    const { getByA11yLabel, getByText, getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[
+          ...habitCreateScreenQueryMockSuccess,
+          ...habitCreateMutationMockSuccess
+        ]}>
+        <HabitCreateScreen.Container />
+      </MockedProvider>,
+      {
+        params: {
+          groupSelectScreen: { id: habitCreateScreenData.groups[0].id }
+        }
+      }
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
+    )
+
+    expect(getByText(habitCreateScreenData.groups[0].name)).toBeDefined()
+
+    fireEvent(
+      getByA11yLabel('nameInputAccessibilityLabel'),
+      'changeText',
+      habitCreateScreenData.name
+    )
+
+    fireEvent.press(getByA11yLabel('groupRemoveButtonAccessibilityLabel'))
+
+    fireEvent.press(getByA11yLabel('buttonAccessibilityLabel'))
+
+    await waitFor(() => expect(mockGoBack).toBeCalledTimes(1))
+  })
+
+  it('And I have Group Selected, When I press Save Button, Then I should see previous screen', async () => {
+    jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
+      user: habitCreateScreenData.user
+    }))
+    const { getByA11yLabel, getByText, getByTestId } = render(
+      <MockedProvider
+        addTypename={false}
+        mocks={[
+          ...habitCreateScreenQueryMockSuccess,
+          ...habitCreateMutationWithGroupMockSuccess
+        ]}>
+        <HabitCreateScreen.Container />
+      </MockedProvider>,
+      {
+        params: {
+          groupSelectScreen: { id: habitCreateScreenData.groups[0].id }
+        }
+      }
+    )
+
+    await waitForElementToBeRemoved(() =>
+      getByTestId('HabitCreateScreenSkeleton')
+    )
+
+    expect(getByText(habitCreateScreenData.groups[0].name)).toBeDefined()
+
+    fireEvent(
+      getByA11yLabel('nameInputAccessibilityLabel'),
+      'changeText',
+      habitCreateScreenData.name
+    )
+
+    fireEvent.press(getByA11yLabel('buttonAccessibilityLabel'))
 
     await waitFor(() => expect(mockGoBack).toBeCalledTimes(1))
   })

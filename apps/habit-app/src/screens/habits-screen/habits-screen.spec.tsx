@@ -281,8 +281,7 @@ describe('Given I am at Habits Screen', () => {
 
     await waitFor(() => expect(mockNavigate).toBeCalledTimes(1))
     expect(mockNavigate).toHaveBeenCalledWith('HabitUpdateScreen', {
-      id: useHabitsMockData[0].id,
-      name: useHabitsMockData[0].name
+      id: useHabitsMockData[0].id
     })
   })
 
