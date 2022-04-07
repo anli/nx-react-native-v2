@@ -10,6 +10,7 @@ import {
   useHabitsMockData,
   useHabitsMockQueryEmptyData,
   useHabitsMockQueryError,
+  useHabitsMockQueryErrorTokenExpired,
   useHabitsMockQueryHasData,
   useHabitsMockQueryHasNextWeekData,
   useHabitsMockQueryHasPreviousWeekData
@@ -438,5 +439,21 @@ describe('Given I am at Habits Screen', () => {
         )
       )
     ).toBeDefined()
+  })
+
+  it('When Error is Token Expired, Then I should re-login', async () => {
+    const mockReLogin = jest.fn()
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      reLogin: mockReLogin
+    })
+    render(
+      <MockedProvider
+        mocks={useHabitsMockQueryErrorTokenExpired}
+        addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitFor(() => expect(mockReLogin).toBeCalledTimes(1))
   })
 })

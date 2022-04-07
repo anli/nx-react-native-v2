@@ -46,7 +46,7 @@ const Skeleton = Login.Skeleton
 
 type KnownError = 'TOKEN_EXPIRED' | 'UNKNOWN'
 
-const getErrorType = (error: Error): KnownError => {
+export const getErrorType = (error: Error): KnownError => {
   if (error.message.includes('unable to parse jwt token:token is expired by')) {
     return 'TOKEN_EXPIRED'
   }

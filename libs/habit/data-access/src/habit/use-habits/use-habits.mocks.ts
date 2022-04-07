@@ -72,6 +72,18 @@ export const useHabitsMockQueryError: Array<{
   }
 ]
 
+export const useHabitsMockQueryErrorTokenExpired: Array<{
+  request: { query: DocumentNode }
+  error: Error
+}> = [
+  {
+    request,
+    error: new Error(
+      'Error: unable to parse jwt token:token is expired by 8m10.863843902s'
+    )
+  }
+]
+
 export const useHabitsMockQueryEmptyData: Array<{
   request: { query: DocumentNode }
   result: { data: HabitsSubscription }

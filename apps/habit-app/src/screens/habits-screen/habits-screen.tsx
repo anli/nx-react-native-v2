@@ -10,6 +10,7 @@ import {
   HabitsListItemProps,
   HabitsListSkeleton
 } from '@nx-react-native/habit/ui'
+import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen, Text, View } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
@@ -35,6 +36,7 @@ import { Appbar, FAB, List } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
+import { getErrorType } from '../error-screen'
 
 const options: BottomTabNavigationOptions = {
   title: '',
@@ -59,6 +61,7 @@ const Component = (): JSX.Element => {
   const [habitDeleteMutation] = useHabitDeleteMutation()
   const [habitActivityCreateMutation] = useHabitActivityCreateMutation()
   const [habitActivityDeleteMutation] = useHabitActivityDeleteMutation()
+  const { reLogin } = useAuth()
 
   useEffect(() => {
     const handlePreviousPeriod = (): void =>
@@ -125,7 +128,11 @@ const Component = (): JSX.Element => {
   )
 
   if (error !== undefined) {
-    throw Error(error?.message)
+    if (getErrorType(error) === 'TOKEN_EXPIRED') {
+      void reLogin?.()
+    } else {
+      throw Error(error?.message)
+    }
   }
 
   if (loading === true) {
