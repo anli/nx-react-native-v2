@@ -1,6 +1,7 @@
 import { MockedProvider } from '@apollo/client/testing'
 import faker from '@faker-js/faker'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import {
   fireEvent,
   waitFor,
@@ -13,18 +14,6 @@ import {
   groupSelectScreenQueryMockError,
   groupSelectScreenQueryMockSuccess
 } from './group-select-screen.mocks'
-
-const mockNavigate = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      navigate: mockNavigate
-    })
-  }
-})
 
 const defaultParams = {
   nextScreenName: faker.lorem.word()
@@ -76,6 +65,8 @@ describe('Given I am at Group Select Screen', () => {
   })
 
   it('When I press Group, Then I should see Next Screen with Selected Group', async () => {
+    const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
+
     const { getByText, getByTestId } = render(
       <MockedProvider
         mocks={groupSelectScreenQueryMockSuccess}

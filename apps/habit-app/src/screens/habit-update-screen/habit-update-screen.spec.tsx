@@ -1,5 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import {
   fireEvent,
   waitFor,
@@ -16,21 +17,6 @@ import {
   habitUpdateScreenQueryMockError,
   habitUpdateScreenQueryMockSuccess
 } from './habit-update-screen.mocks'
-
-const mockGoBack = jest.fn()
-const mockNavigate = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack,
-      navigate: mockNavigate
-    })
-  }
-})
 
 const defaultParams = {
   id: habitUpdateScreenData.id
@@ -87,6 +73,7 @@ describe('Given I am at Habit Update Screen', () => {
   })
 
   it('When I press Update Button, Then I should see Habit Updated', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     const { getByText, getByTestId } = render(
       <MockedProvider
         mocks={[
@@ -138,6 +125,7 @@ describe('Given I am at Habit Update Screen', () => {
   })
 
   it('When I press Group Select Button, Then I should see Group Select Screen', async () => {
+    const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
     const { getByA11yLabel, getByTestId } = render(
       <MockedProvider
         addTypename={false}
@@ -162,6 +150,7 @@ describe('Given I am at Habit Update Screen', () => {
   })
 
   it('When I press Group Remove Button, And I press Save Button, Then I should see Group Removed', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     const { getByA11yLabel, getByTestId, queryByText, getByText } = render(
       <MockedProvider
         addTypename={false}

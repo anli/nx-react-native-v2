@@ -6,24 +6,12 @@ import {
 } from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import ReactI18next from 'react-i18next'
 import { Alert } from 'react-native'
 import { GroupCreateScreen } from './group-create-screen'
-
-const mockGoBack = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack
-    })
-  }
-})
 
 describe('Given I am at Group Create Screen', () => {
   beforeAll(() => {
@@ -34,6 +22,7 @@ describe('Given I am at Group Create Screen', () => {
 
   afterAll(() => {
     jest.restoreAllMocks()
+    jest.clearAllMocks()
   })
 
   it('When loaded, Then I should see Input, And I should see Button', async () => {
@@ -94,6 +83,7 @@ describe('Given I am at Group Create Screen', () => {
   })
 
   it('And I enter valid Name Input, When I press Save Button, Then I should see Group Created', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     const { getByText, getByA11yLabel } = render(
       <MockedProvider
         mocks={useGroupCreateMockQuerySuccess}

@@ -1,5 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import { fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import ReactI18next from 'react-i18next'
@@ -10,19 +11,6 @@ import {
   setAdminUserMutationMockError,
   setAdminUserMutationMockSuccess
 } from './group-users-append-screen.mocks'
-
-const mockGoBack = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack
-    })
-  }
-})
 
 const defaultParams = {
   id: groupUsersAppendScreenData.id
@@ -69,6 +57,7 @@ describe('Given I am at Group Users Append Screen', () => {
   })
 
   it('And I enter valid Input, When I press Add Button, Then I should go back to Previous Screen', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     const { getByText, getByA11yLabel } = render(
       <MockedProvider
         mocks={setAdminUserMutationMockSuccess}
