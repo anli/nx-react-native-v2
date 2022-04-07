@@ -5,6 +5,7 @@ import {
   useGroupsMockQueryHasData
 } from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import {
   fireEvent,
   waitFor,
@@ -13,18 +14,6 @@ import {
 import React from 'react'
 import reactI18next from 'react-i18next'
 import { GroupsScreen } from './groups-screen'
-
-const mockNavigate = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      navigate: mockNavigate
-    })
-  }
-})
 
 describe('Given I am at Groups Screen', () => {
   beforeEach(() => {
@@ -82,6 +71,7 @@ describe('Given I am at Groups Screen', () => {
   })
 
   it('When I press Group Create Button, Then I see Group Create Screen', async () => {
+    const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
     const { getByTestId, getByA11yLabel } = render(
       <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
         <GroupsScreen.Container />
@@ -98,6 +88,7 @@ describe('Given I am at Groups Screen', () => {
   })
 
   it('When I press Group, Then I see Group View Screen', async () => {
+    const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
     const { getByTestId, getByText } = render(
       <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
         <GroupsScreen.Container />

@@ -59,7 +59,7 @@ const Component = (): JSX.Element => {
         />
       )
     })
-  }, [setOptions, t])
+  }, [id, navigate, setOptions, t])
 
   if (
     groupUsersScreenSubscriptionError !== undefined ||

@@ -2,6 +2,7 @@ import { MockedProvider } from '@apollo/client/testing'
 import faker from '@faker-js/faker'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import {
   fireEvent,
   waitFor,
@@ -18,21 +19,6 @@ import {
   habitCreateScreenQueryMockError,
   habitCreateScreenQueryMockSuccess
 } from './habit-create-screen.mocks'
-
-const mockGoBack = jest.fn()
-const mockNavigate = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack,
-      navigate: mockNavigate
-    })
-  }
-})
 
 describe('Given I am at Habit Create Screen', () => {
   afterEach(() => {
@@ -154,6 +140,7 @@ describe('Given I am at Habit Create Screen', () => {
   })
 
   it('And I enter valid Name Input, When I press Save Button, Then I should see Habit Created', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
       user: habitCreateScreenData.user
     }))
@@ -185,6 +172,7 @@ describe('Given I am at Habit Create Screen', () => {
   })
 
   it('When I press Group Select Button, Then I should see Group Select Screen', async () => {
+    const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
     const { getByA11yLabel, getByTestId } = render(
       <MockedProvider
         addTypename={false}
@@ -206,6 +194,7 @@ describe('Given I am at Habit Create Screen', () => {
   })
 
   it('When I press Group Remove Button, Then I should see Group Removed', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
       user: habitCreateScreenData.user
     }))
@@ -245,6 +234,7 @@ describe('Given I am at Habit Create Screen', () => {
   })
 
   it('And I have Group Selected, When I press Save Button, Then I should see previous screen', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
       user: habitCreateScreenData.user
     }))

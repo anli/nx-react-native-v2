@@ -7,6 +7,7 @@ import {
   useGroupUpdateMockQuerySuccess
 } from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
+import { useNavigation } from '@react-navigation/native'
 import {
   fireEvent,
   waitFor,
@@ -15,19 +16,6 @@ import {
 import React from 'react'
 import { Alert } from 'react-native'
 import { GroupUpdateScreen } from './group-update-screen'
-
-const mockGoBack = jest.fn()
-jest.mock('@react-navigation/native', () => {
-  const module = jest.requireActual('@react-navigation/native')
-  return {
-    ...module,
-    useNavigation: () => ({
-      ...module.useNavigation(),
-      canGoBack: jest.fn().mockReturnValue(true),
-      goBack: mockGoBack
-    })
-  }
-})
 
 const defaultParams = {
   id: useGroupUpdateMockData.id
@@ -107,6 +95,7 @@ describe('Given I am at Group Update Screen', () => {
   })
 
   it('When I press Update Button, Then I should see Group Updated', async () => {
+    const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     const { getByText, getByTestId } = render(
       <MockedProvider
         mocks={[
