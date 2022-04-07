@@ -18,6 +18,7 @@ import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import * as Sentry from '@sentry/react-native'
 import {
   addWeeks,
   eachDayOfInterval,
@@ -92,6 +93,36 @@ const Component = (): JSX.Element => {
 
   const handleDayPress: HabitsListItemProps['onDayPress'] = useCallback(
     async ({ id, habitId, habitActivityId }) => {
+      const transaction = Sentry.startTransaction({
+        name: 'updateHabitActivity'
+      })
+      /* istanbul ignore next */
+      Sentry.getCurrentHub().configureScope((scope) =>
+        scope.setSpan(transaction)
+      )
+
+      const span = transaction.startChild({
+        data:
+          habitActivityId !== undefined
+            ? {
+                filter: {
+                  id: [habitActivityId]
+                }
+              }
+            : {
+                input: {
+                  count: 1,
+                  date: id,
+                  habit: { id: habitId }
+                }
+              },
+        op: 'http',
+        description:
+          habitActivityId !== undefined
+            ? 'habitActivityDeleteMutation'
+            : 'habitActivityCreateMutation'
+      })
+
       try {
         if (habitActivityId !== undefined) {
           await habitActivityDeleteMutation({
@@ -101,6 +132,8 @@ const Component = (): JSX.Element => {
               }
             }
           })
+          span.setStatus('ok')
+
           return Toast.show({
             type: 'success',
             text1: t('habitActivityDeletedSuccess')
@@ -121,7 +154,11 @@ const Component = (): JSX.Element => {
           text1: t('habitActivityCreatedSuccess')
         })
       } catch (_error) {
+        span.setStatus('unknown_error')
         return Alert.alert(t('errorTitle', _error.message))
+      } finally {
+        span.finish()
+        transaction.finish()
       }
     },
     [habitActivityCreateMutation, habitActivityDeleteMutation, t]
