@@ -107,6 +107,7 @@ apps/habit-app-e2e/artifacts
 **/.env
 **/.env.*
 !**/.env.sample
+!**/.env.local.sample
 !**/.env.*.secret
 
 ## E2E
