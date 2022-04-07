@@ -18,11 +18,11 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "nx test-ios habit-app-e2e"
+        "command": "ENVFILE=.env.e2e nx test-ios habit-app-e2e"
       },
       "configurations": {
         "production": {
-          "command": "ENVFILE=.env.production nx test-ios habit-app-e2e --configuration=production"
+          "command": "ENVFILE=.env.e2e nx test-ios habit-app-e2e --configuration=production"
         }
       }
     },
@@ -57,11 +57,11 @@
       "executor": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "nx test-android habit-app-e2e"
+        "command": "ENVFILE=.env.e2e nx test-android habit-app-e2e"
       },
       "configurations": {
         "production": {
-          "command": "ENVFILE=.env.production nx test-android habit-app-e2e --configuration=production"
+          "command": "ENVFILE=.env.e2e nx test-android habit-app-e2e --configuration=production"
         }
       }
     },
