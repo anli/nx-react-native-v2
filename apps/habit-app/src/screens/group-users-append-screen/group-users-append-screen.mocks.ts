@@ -42,3 +42,18 @@ export const setAdminUserMutationMockError: Array<{
     error: new Error('An error occurred')
   }
 ]
+
+export const setAdminUserMutationMockSuccessNull: Array<{
+  request: { query: DocumentNode }
+  result: { data: SetAdminUserMutation }
+}> = [
+  {
+    request: setAdminUserRequest,
+    result: {
+      data: {
+        __typename: 'Mutation',
+        updateGroup: null
+      }
+    }
+  }
+]

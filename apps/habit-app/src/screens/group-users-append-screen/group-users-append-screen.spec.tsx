@@ -9,7 +9,8 @@ import { GroupUsersAppendScreen } from './group-users-append-screen'
 import {
   groupUsersAppendScreenData,
   setAdminUserMutationMockError,
-  setAdminUserMutationMockSuccess
+  setAdminUserMutationMockSuccess,
+  setAdminUserMutationMockSuccessNull
 } from './group-users-append-screen.mocks'
 
 const defaultParams = {
@@ -102,5 +103,34 @@ describe('Given I am at Group Users Append Screen', () => {
 
     await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
     expect(Alert.alert).toHaveBeenCalledWith('errorTitle', 'An error occurred')
+  })
+
+  it('And API return null, And I enter valid Input, When I press Add Button, Then I should see Error Message User Does Not Exist', async () => {
+    jest.spyOn(Alert, 'alert')
+
+    const { getByText, getByA11yLabel } = render(
+      <MockedProvider
+        mocks={setAdminUserMutationMockSuccessNull}
+        addTypename={false}>
+        <GroupUsersAppendScreen.Container />
+      </MockedProvider>,
+      {
+        params: defaultParams
+      }
+    )
+
+    fireEvent(
+      getByA11yLabel('emailInputAccessibilityLabel'),
+      'changeText',
+      groupUsersAppendScreenData.email
+    )
+
+    fireEvent.press(getByText('buttonTitle'))
+
+    await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
+    expect(Alert.alert).toHaveBeenCalledWith(
+      'errorTitle',
+      'errorUserDoesNotExist'
+    )
   })
 })

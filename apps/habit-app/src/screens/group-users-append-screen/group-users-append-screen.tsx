@@ -57,12 +57,17 @@ const Component = (): JSX.Element => {
     data: UserFormData
   ): Promise<void> => {
     try {
-      await setAdminUserMutation({
+      const response = await setAdminUserMutation({
         variables: {
           id,
           email: data.email
         }
       })
+
+      if (response?.data?.updateGroup == null) {
+        throw new Error(t('errorUserDoesNotExist', { ns: 'ErrorScreen' }))
+      }
+
       canGoBack() && goBack()
       return
     } catch (error) {
