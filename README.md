@@ -1,94 +1,190 @@
+# NX React Native
 
+Habit Tracker Mobile App build with [React Native](https://reactnative.dev/) and [NX monorepo](https://nx.dev/)
 
-# NxReactNative
+## Decryption of environment variables
 
-This project was generated using [Nx](https://nx.dev).
+Environment variables are encrypted using [Git Secret](https://git-secret.io/).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+Get access to the secret for this repository then run
 
-🔎 **Smart, Fast and Extensible Build System**
+```
+git secret reveal
+```
 
-## Adding capabilities to your workspace
+## Run the App
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+Install packages
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+```
+npm ci
+```
 
-Below are our core plugins:
+Run metro
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+```
+npm run start
+```
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+Run on Android
 
-## Generate an application
+```
+npm run android
+```
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+Run on iOS
 
-> You can use any of the plugins above to generate applications as well.
+```
+npm run ios
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+## Run e2e tests with Detox
 
-## Generate a library
+If you are not using the default `iPhone 13` or `Pixel_4a_API_30`
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+Update `.env.local`
 
-> You can also use any of the plugins above to generate libraries as well.
+```
+# available variables can be found in .env.local.sample
+E2E_IOS_SIMULATOR=
+E2E_ANDROID_SIMULATOR=
+```
 
-Libraries are shareable across libraries and applications. They can be imported from `@nx-react-native/mylib`.
+Run on development build
 
-## Development server
+```
+npm run start-e2e
+npm run e2e-build-android
+npm run e2e-test-android
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+npm run e2e-build-ios
+npm run e2e-test-ios
+```
 
-## Code scaffolding
+Run on production build
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+```
+npm run start-e2e
+npm run e2e-build-android -- --configuration=production
+npm run e2e-test-android -- --configuration=production
 
-## Build
+npm run e2e-build-ios -- --configuration=production
+npm run e2e-test-ios -- --configuration=production
+```
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Run Jest Unit Tests
 
-## Running unit tests
+Run all tests
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+```
+# run on all modules, and do not use caching
+npm run test -- --all --skip-nx-cache
+```
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+Run test coverage checks
 
-## Running end-to-end tests
+```
+npm run test-coverage
 
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+# open coverage report if needed
+open coverage/combine-coverage/index.html
+```
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+Only run affected tests due to changes to their files
 
-## Understand your workspace
+```
+npm run test
+```
 
-Run `nx graph` to see a diagram of the dependencies of your projects.
+## Run linting
 
-## Further help
+```
+# run on all modules, and do not use caching
+npm run lint -- --all --skip-nx-cache
+```
 
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+## Run type checking
 
+Run all
 
+```
+npm run type-check -- --all --skip-nx-cache
+```
 
-## ☁ Nx Cloud
+Run affected
 
-### Distributed Computation Caching & Distributed Task Execution
+```
+npm run type-check
+```
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+## Run Release App to App Store's Testflight and Google Play Store's Internal Track
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+Run
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
+```
+npm run alpha-release-android
+npm run alpha-release-ios
+```
 
-Visit [Nx Cloud](https://nx.app/) to learn more.
+## Key File and Folder Architecture
+
+```
+__mocks__                               // global jest mocks
+.github                                 // CI scripts
+apps
+├──habit-app
+│   ├──android/fastlane                 // release scripts for android
+│   ├──ios/fastlane                     // release scripts for ios
+│   ├──src
+│   │  ├──app                           // library initialization, navigation
+│   │  └──screens                       // screens
+│   ├──.env                             // development env
+│   ├──.env.e2e                         // e2e testing env
+│   ├──.env.production                  // production env
+│   └──.env.sample                      // reference for all env used
+└──habit-app-e2e
+    ├──utils                            // e2e screen helper functions
+    └──*.spec.ts                        // detox e2e test files
+coverage                                // unit test coverage files
+libs
+├──habit                                // habit specific libraries
+│  ├──data-access                       // API queries
+│  └──ui                                // sharable UI, forms, lists
+└──shared                               // store reusable libraries across different apps or libs
+   ├──auth                              // authentication with Auth0
+   ├──feature-flag                      // feature flag with split.io
+   ├──i18n                              // translation with i18nexus
+   ├──ui                                // ui with restyle
+   │  └──src
+   │     ├──components                  // generic UI components
+   │     ├──themes                      // theming files
+   │     └──utils
+   ├──utils                             // generic helpers i.e. filter nullable
+   ├──utils-apollo-provider             // graphQL helpers
+   ├──utils-date                        // date helpers
+   ├──utils-suspense                    // react suspense helpers
+   └──utils-testing                     // unit tests helpers
+tools                                   // custom scripts
+└──combine-coverage-final.js
+.env                                    // repository env
+.env.local                              // repository local env
+.env.local.sample                       // reference for repository local env
+...
+```
+
+## Key Technology Stack or Libraries
+
+- [NX monorepo](https://nx.dev/): Smart, Fast and Extensible Build System for monorepo
+- [Typescript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript
+- [Standard JS](https://standardjs.com/): Enforce consistent style for code clarity and conventions
+- [Restyle](https://github.com/Shopify/restyle): A type-enforced system for building UI components in React Native with TypeScript
+- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/): Allows for creating smooth animations and interactions that runs on the UI thread.
+- [why did you render](https://github.com/welldone-software/why-did-you-render): Detect potentially avoidable re-renders.
+- [Sonar Cloud](https://sonarcloud.io/): Feedback on Code Quality and Code Security
+- [Detox](https://github.com/wix/Detox): Gray box end-to-end testing and automation framework
+- [Faker](https://github.com/faker-js/faker): Generate massive amounts of fake (but realistic) data for testing and development.
+- [Graphql Codegen](https://github.com/dotansimha/graphql-code-generator): A tool for generating code based on a GraphQL schema and GraphQL operations
+- [React Native Testing Library](https://github.com/callstack/react-native-testing-library): Simple and complete React Native testing utilities that encourage good testing practices.
+- [React Native Heap](https://github.com/heap/react-native-heap): React Native integration for Heap Analytics
+- [React Hook Form](https://github.com/react-hook-form/react-hook-form): React Hooks for form state management and validation
+- [React Native Sentry](https://github.com/getsentry/sentry-react-native): Error and Performance Monitoring
