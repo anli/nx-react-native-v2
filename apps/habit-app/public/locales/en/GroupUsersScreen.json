@@ -1,0 +1,7 @@
+{
+  "addUserButtonAccessibilityLabel": "Add User Button",
+  "deleteButtonAccessibilityLabel": "Remove User Button",
+  "removeAdminUserConfirmationTitle": "Confirm remove user",
+  "removeAdminUserSuccess": "User removed successfully",
+  "title": "Users"
+}

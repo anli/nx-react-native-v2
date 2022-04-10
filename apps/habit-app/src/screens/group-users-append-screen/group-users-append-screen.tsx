@@ -22,15 +22,15 @@ const options: NativeStackNavigationOptions = {
 const Component = (): JSX.Element => {
   const { t } = useTranslation([
     'GroupUsersAppendScreen',
-    'Form',
+    'Global',
     'ErrorScreen'
   ])
   const schema = yup
     .object({
       email: yup
         .string()
-        .required(t('emailInputValidationRequired', { ns: 'Form' }))
-        .email(t('emailInputValidationEmail', { ns: 'Form' }))
+        .required(t('emailInputValidationRequired', { ns: 'Global' }))
+        .email(t('emailInputValidationEmail', { ns: 'Global' }))
     })
     .required()
   const { setOptions, canGoBack, goBack } = useNavigation()
@@ -82,9 +82,9 @@ const Component = (): JSX.Element => {
       onPress={handleSubmit(handleSetAdminUserButton)}
       errors={errors}
       emailInputAccessibilityLabel={t('emailInputAccessibilityLabel', {
-        ns: 'Form'
+        ns: 'Global'
       })}
-      emailInputLabel={t('emailInputLabel', { ns: 'Form' })}
+      emailInputLabel={t('emailInputLabel', { ns: 'Global' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
     />

@@ -21,14 +21,10 @@ const options: NativeStackNavigationOptions = {
 
 const Component = (): JSX.Element => {
   const { user } = useAuth()
-  const { t } = useTranslation([
-    'GroupCreateScreen',
-    'GroupForm',
-    'ErrorScreen'
-  ])
+  const { t } = useTranslation(['GroupCreateScreen', 'Global', 'ErrorScreen'])
   const schema = getGroupFormSchema({
     nameRequired: t('nameInputValidationRequired', {
-      ns: 'GroupForm'
+      ns: 'Global'
     })
   })
   const { setOptions, canGoBack, goBack } = useNavigation()
@@ -77,9 +73,9 @@ const Component = (): JSX.Element => {
       onPress={handleSubmit(handleGroupCreateButton)}
       errors={errors}
       nameInputAccessibilityLabel={t('nameInputAccessibilityLabel', {
-        ns: 'GroupForm'
+        ns: 'Global'
       })}
-      nameInputLabel={t('nameInputLabel', { ns: 'GroupForm' })}
+      nameInputLabel={t('nameInputLabel', { ns: 'Global' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
     />

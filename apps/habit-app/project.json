@@ -70,9 +70,29 @@
       },
       "outputs": []
     },
+    "code-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx graphql-codegen --config codegen.yaml",
+        "cwd": "apps/habit-app"
+      },
+      "outputs": []
+    },
     "ensure-symlink": {
       "executor": "@nrwl/react-native:ensure-symlink",
       "options": {}
+    },
+    "i18n-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "npx i18nexus-cli pull",
+          "npx prettier '**/public/locales/**/*.json'  --w"
+        ],
+        "cwd": "apps/habit-app",
+        "parallel": false
+      },
+      "outputs": []
     },
     "ios": {
       "configurations": {
@@ -144,14 +164,6 @@
         "cwd": "apps/habit-app"
       },
       "outputs": []
-    },
-    "code-generate": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "npx graphql-codegen --config codegen.yaml",
-        "cwd": "apps/habit-app"
-      }
     }
   },
   "tags": []

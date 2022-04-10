@@ -46,7 +46,7 @@ const options: BottomTabNavigationOptions = {
 
 const Component = (): JSX.Element => {
   const { showActionSheetWithOptions } = useActionSheet()
-  const { t } = useTranslation('HabitsScreen')
+  const { t } = useTranslation(['HabitsScreen', 'Global'])
   const [periodStartDate, setPeriodStartDate] = useState<Date>(
     startOfWeek(startOfToday(), { weekStartsOn: 1 })
   )
@@ -136,7 +136,7 @@ const Component = (): JSX.Element => {
 
           return Toast.show({
             type: 'success',
-            text1: t('habitActivityDeletedSuccess')
+            text1: t('habitActivityDeletedSuccess', { ns: 'Global' })
           })
         }
 
@@ -151,11 +151,11 @@ const Component = (): JSX.Element => {
         })
         return Toast.show({
           type: 'success',
-          text1: t('habitActivityCreatedSuccess')
+          text1: t('habitActivityCreatedSuccess', { ns: 'Global' })
         })
       } catch (_error) {
         span.setStatus('unknown_error')
-        return Alert.alert(t('errorTitle', _error.message))
+        return Alert.alert(t('errorTitle', _error.message, { ns: 'Global' }))
       } finally {
         span.finish()
         transaction.finish()
@@ -184,9 +184,9 @@ const Component = (): JSX.Element => {
     showActionSheetWithOptions(
       {
         options: [
-          t('updateButtonLabel'),
-          t('deleteButtonLabel'),
-          t('cancelButtonLabel')
+          t('updateButtonLabel', { ns: 'Global' }),
+          t('deleteButtonLabel', { ns: 'Global' }),
+          t('cancelButtonLabel', { ns: 'Global' })
         ],
         cancelButtonIndex: 2,
         destructiveButtonIndex: 1
@@ -205,9 +205,11 @@ const Component = (): JSX.Element => {
                 }
               }
             })
-            return Alert.alert(t('deleteSuccess'))
+            return Alert.alert(t('deleteSuccess', { ns: 'Global' }))
           } catch (_error) {
-            return Alert.alert(t('errorTitle', _error.message))
+            return Alert.alert(
+              t('errorTitle', _error.message, { ns: 'Global' })
+            )
           }
         }
       }
@@ -245,7 +247,7 @@ const Component = (): JSX.Element => {
             {formatDateRange(periodStartDate, periodEndDate)}
           </List.Subheader>
         }
-        ListEmptyComponent={<Text>{t('emptyData')}</Text>}
+        ListEmptyComponent={<Text>{t('emptyData', { ns: 'Global' })}</Text>}
         data={mappedData}
         renderItem={({ item }) => {
           return (

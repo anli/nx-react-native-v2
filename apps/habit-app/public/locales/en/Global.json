@@ -1,0 +1,20 @@
+{
+  "cancelButtonLabel": "Cancel",
+  "createdSuccess": "Updated!",
+  "deleteButtonLabel": "Delete",
+  "deletedSuccess": "Updated!",
+  "deleteSuccess": "Deleted",
+  "emailInputAccessibilityLabel": "Email Input",
+  "emailInputLabel": "Email",
+  "emailInputValidationEmail": "Email is incorrectly formatted",
+  "emailInputValidationRequired": "Email is required",
+  "emptyData": "No Data Found",
+  "emptyGroupButtonLabel": "Press to add group",
+  "errorTitle": "Something Went Wrong",
+  "groupRemoveButtonAccessibilityLabel": "Group Remove Button",
+  "groupSelectButtonAccessibilityLabel": "Group Select Button",
+  "nameInputAccessibilityLabel": "Name Input",
+  "nameInputLabel": "Name",
+  "nameInputValidationRequired": "Name is required",
+  "updateButtonLabel": "Update"
+}

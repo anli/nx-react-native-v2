@@ -18,7 +18,7 @@ const options = {
 }
 
 const Component = (): JSX.Element => {
-  const { t } = useTranslation('GroupSelectScreen')
+  const { t } = useTranslation(['GroupSelectScreen', 'Global'])
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const {
@@ -53,7 +53,7 @@ const Component = (): JSX.Element => {
   return (
     <Screen>
       <FlatList
-        ListEmptyComponent={<Text>{t('emptyData')}</Text>}
+        ListEmptyComponent={<Text>{t('emptyData', { ns: 'Global' })}</Text>}
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {

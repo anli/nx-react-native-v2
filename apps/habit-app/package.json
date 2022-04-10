@@ -50,6 +50,8 @@
     "@splitsoftware/splitio-react-native": "*",
     "react-native-device-info": "*",
     "@hookform/resolvers": "*",
-    "yup": "*"
+    "yup": "*",
+    "i18next-chained-backend": "*",
+    "i18next-resources-to-backend": "*"
   }
 }
