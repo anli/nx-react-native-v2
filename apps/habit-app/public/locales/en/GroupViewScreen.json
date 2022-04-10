@@ -1,0 +1,8 @@
+{
+  "deleteButtonAccessibilityLabel": "Delete Group Button",
+  "deleteConfirmationMessage": "Are you sure. You cannot undo this.",
+  "deleteConfirmationTitle": "Delete",
+  "updateButtonAccessibilityLabel": "Update Group Button",
+  "usersButtonAccessibilityLabel": "Users Button",
+  "usersTitle": "Users"
+}

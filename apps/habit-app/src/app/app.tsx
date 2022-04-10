@@ -30,6 +30,7 @@ import {
 } from '../screens'
 import { GroupsScreen } from '../screens/groups-screen'
 import { HabitUpdateScreen } from '../screens/habit-update-screen'
+import { translations } from './../../public/locales/translations'
 
 // KNOWN ISSUE: type error is caused by '@heap/react-native-heap'
 // See https://github.com/heap/react-native-heap/issues/277
@@ -39,7 +40,11 @@ const HeapNavigationContainer = Heap.withReactNavigationAutotrack<any>(
   NavigationContainer as any
 )
 
-void I18nInit({ loadPath: Config.I18N_URL, useSuspense: true })
+void I18nInit({
+  loadPath: Config.I18N_URL,
+  useSuspense: true,
+  bundledResources: translations
+})
 
 const auth0 = new Auth0({
   domain: Config.AUTHENTICATION_DOMAIN,

@@ -32,11 +32,11 @@ const options: NativeStackNavigationOptions = {
 
 const Component = (): JSX.Element => {
   const { user } = useAuth()
-  const { t } = useTranslation(['HabitCreateScreen', 'Form', 'ErrorScreen'])
+  const { t } = useTranslation(['HabitCreateScreen', 'Global', 'ErrorScreen'])
   const schema = yup.object({
     name: yup.string().required(
       t('nameInputValidationRequired', {
-        ns: 'Form'
+        ns: 'Global'
       })
     )
   })
@@ -123,22 +123,22 @@ const Component = (): JSX.Element => {
       onPress={handleSubmit(handleHabitCreateButton)}
       errors={errors}
       nameInputAccessibilityLabel={t('nameInputAccessibilityLabel', {
-        ns: 'Form'
+        ns: 'Global'
       })}
-      nameInputLabel={t('nameInputLabel', { ns: 'Form' })}
+      nameInputLabel={t('nameInputLabel', { ns: 'Global' })}
       buttonAccessibilityLabel={t('buttonAccessibilityLabel')}
       buttonTitle={t('buttonTitle')}
       onSelectGroup={handleSelectGroup}
       groups={groups}
-      emptyGroupButtonLabel={t('emptyGroupButtonLabel', { ns: 'Form' })}
+      emptyGroupButtonLabel={t('emptyGroupButtonLabel', { ns: 'Global' })}
       onRemoveGroup={handleRemoveGroup}
       groupSelectButtonAccessibilityLabel={t(
         'groupSelectButtonAccessibilityLabel',
-        { ns: 'Form' }
+        { ns: 'Global' }
       )}
       groupRemoveButtonAccessibilityLabel={t(
         'groupRemoveButtonAccessibilityLabel',
-        { ns: 'Form' }
+        { ns: 'Global' }
       )}
     />
   )

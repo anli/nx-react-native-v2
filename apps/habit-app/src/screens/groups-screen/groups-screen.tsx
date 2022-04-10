@@ -20,7 +20,7 @@ const options: BottomTabNavigationOptions = {
 }
 
 const Component = (): JSX.Element => {
-  const { t } = useTranslation('GroupsScreen')
+  const { t } = useTranslation(['GroupsScreen', 'Global'])
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const { data, loading, error } = useGroupsSubscription()
@@ -48,7 +48,7 @@ const Component = (): JSX.Element => {
   return (
     <Screen>
       <FlatList
-        ListEmptyComponent={<Text>{t('emptyData')}</Text>}
+        ListEmptyComponent={<Text>{t('emptyData', { ns: 'Global' })}</Text>}
         data={mappedData}
         renderItem={({ item }) => {
           const _handleView = (): void => handleView(item.id)

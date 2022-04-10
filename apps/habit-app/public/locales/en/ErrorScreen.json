@@ -1,0 +1,6 @@
+{
+  "buttonTitle": "Retry",
+  "errorTitle": "Error",
+  "errorUserDoesNotExist": "This user does not exist",
+  "title": "Something Went Wrong"
+}
