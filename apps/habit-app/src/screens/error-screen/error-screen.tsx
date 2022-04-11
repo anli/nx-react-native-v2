@@ -1,10 +1,15 @@
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Button, Screen, Text, View } from '@nx-react-native/shared/ui'
+import {
+  Button,
+  Screen,
+  SkeletonPlaceholderScreen,
+  Text,
+  View
+} from '@nx-react-native/shared/ui'
 import { useNavigation } from '@react-navigation/native'
 import React, { Suspense, useEffect } from 'react'
 import { FallbackProps } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
-import { Login } from '../login-screen/ui'
 
 export const Component: React.ComponentType<FallbackProps> = ({
   error,
@@ -42,8 +47,6 @@ export const Component: React.ComponentType<FallbackProps> = ({
   )
 }
 
-const Skeleton = Login.Skeleton
-
 type KnownError = 'TOKEN_EXPIRED' | 'UNKNOWN'
 
 export const getErrorType = (error: Error): KnownError => {
@@ -72,11 +75,7 @@ FallbackProps & { testID?: string }
 
   return (
     <Suspense
-      fallback={
-        <Screen testID="ErrorScreenSkeleton">
-          <Skeleton />
-        </Screen>
-      }>
+      fallback={<SkeletonPlaceholderScreen testID="ErrorScreenSkeleton" />}>
       <Screen testID={testID}>
         <Component
           error={error}

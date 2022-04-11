@@ -1,12 +1,15 @@
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Screen, View } from '@nx-react-native/shared/ui'
+import {
+  Screen,
+  SkeletonPlaceholderScreen,
+  View
+} from '@nx-react-native/shared/ui'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { List } from 'react-native-paper'
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import { ErrorScreen } from '..'
 
 const options: BottomTabNavigationOptions = {
@@ -44,16 +47,6 @@ const Component = (): JSX.Element => {
   )
 }
 
-const ProfileScreenSkeleton = (): JSX.Element => {
-  return (
-    <SkeletonPlaceholder>
-      <SkeletonPlaceholder.Item margin={16}>
-        <SkeletonPlaceholder.Item width="100%" height={46} />
-      </SkeletonPlaceholder.Item>
-    </SkeletonPlaceholder>
-  )
-}
-
 const Container = (): JSX.Element => {
   return (
     <ErrorBoundary
@@ -65,11 +58,7 @@ const Container = (): JSX.Element => {
         />
       )}>
       <Suspense
-        fallback={
-          <Screen testID="ProfileScreenSkeleton">
-            <ProfileScreenSkeleton />
-          </Screen>
-        }>
+        fallback={<SkeletonPlaceholderScreen testID="ProfileScreenSkeleton" />}>
         <Screen testID="ProfileScreen">
           <Component />
         </Screen>

@@ -1,5 +1,8 @@
-import { HabitsListSkeleton } from '@nx-react-native/habit/ui'
-import { Screen, Text } from '@nx-react-native/shared/ui'
+import {
+  Screen,
+  SkeletonPlaceholderScreen,
+  Text
+} from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
@@ -81,11 +84,7 @@ const Container = (): JSX.Element => {
         />
       )}>
       <Suspense
-        fallback={
-          <Screen testID="GroupsScreenSkeleton">
-            <HabitsListSkeleton />
-          </Screen>
-        }>
+        fallback={<SkeletonPlaceholderScreen testID="GroupsScreenSkeleton" />}>
         <Screen testID="GroupsScreen">
           <Component />
         </Screen>

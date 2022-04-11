@@ -81,7 +81,8 @@ const base = {
   },
   buttonVariants: {
     defaults: {}
-  }
+  },
+  skeletonPlaceholderItemVariants: {}
 }
 
 export const baseTheme = createTheme({

@@ -2,11 +2,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import {
   getGroupFormSchema,
   GroupForm,
-  GroupFormData,
-  GroupFormSkeleton
+  GroupFormData
 } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Screen } from '@nx-react-native/shared/ui'
+import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
@@ -86,9 +85,7 @@ const Container = (): JSX.Element => {
   return (
     <Suspense
       fallback={
-        <Screen testID="GroupCreateScreenSkeleton">
-          <GroupFormSkeleton />
-        </Screen>
+        <SkeletonPlaceholderScreen testID="GroupCreateScreenSkeleton" />
       }>
       <Screen testID="GroupCreateScreen">
         <Component />
