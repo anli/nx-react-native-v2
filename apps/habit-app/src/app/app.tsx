@@ -4,13 +4,17 @@ import Heap from '@heap/react-native-heap'
 import { AuthProvider, useAuth } from '@nx-react-native/shared/auth'
 import { SplitProvider, useSplit } from '@nx-react-native/shared/feature-flag'
 import { init as I18nInit } from '@nx-react-native/shared/i18n'
-import { TabBarIcon, ThemeProvider } from '@nx-react-native/shared/ui'
+import {
+  SkeletonPlaceholderScreen,
+  TabBarIcon,
+  ThemeProvider
+} from '@nx-react-native/shared/ui'
 import { ApolloProvider } from '@nx-react-native/shared/utils-apollo-provider'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { SplitFactory } from '@splitsoftware/splitio-react-native'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import DeviceInfo from 'react-native-device-info'
@@ -201,7 +205,12 @@ export const App = (): JSX.Element => (
       <PaperProvider theme={DefaultTheme}>
         <AuthProvider client={auth0}>
           <ActionSheetProvider>
-            <Navigation />
+            <Suspense
+              fallback={
+                <SkeletonPlaceholderScreen testID="SkeletonPlaceholderScreen" />
+              }>
+              <Navigation />
+            </Suspense>
           </ActionSheetProvider>
         </AuthProvider>
       </PaperProvider>

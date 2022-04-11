@@ -1,10 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import {
-  HabitForm,
-  HabitFormData,
-  HabitFormSkeleton
-} from '@nx-react-native/habit/ui'
-import { Screen } from '@nx-react-native/shared/ui'
+import { HabitForm, HabitFormData } from '@nx-react-native/habit/ui'
+import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
@@ -166,9 +162,7 @@ const Container = (): JSX.Element => {
       )}>
       <Suspense
         fallback={
-          <Screen testID="HabitUpdateScreenSkeleton">
-            <HabitFormSkeleton />
-          </Screen>
+          <SkeletonPlaceholderScreen testID="HabitUpdateScreenSkeleton" />
         }>
         <Screen testID="HabitUpdateScreen">
           <Component />

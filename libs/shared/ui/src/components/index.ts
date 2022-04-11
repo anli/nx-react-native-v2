@@ -1,6 +1,7 @@
 export * from './button'
 export * from './form-text-input'
 export * from './screen'
+export * from './skeleton-placeholder-screen'
 export * from './tab-bar-icon'
 export * from './text'
 export * from './text-input'

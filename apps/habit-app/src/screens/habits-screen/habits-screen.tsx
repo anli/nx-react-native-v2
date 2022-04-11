@@ -1,11 +1,12 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
-import {
-  HabitsListItem,
-  HabitsListItemProps,
-  HabitsListSkeleton
-} from '@nx-react-native/habit/ui'
+import { HabitsListItem, HabitsListItemProps } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Screen, Text, View } from '@nx-react-native/shared/ui'
+import {
+  Screen,
+  SkeletonPlaceholderScreen,
+  Text,
+  View
+} from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
@@ -285,11 +286,7 @@ const Container = (): JSX.Element => {
         />
       )}>
       <Suspense
-        fallback={
-          <Screen testID="HabitsScreenSkeleton">
-            <HabitsListSkeleton />
-          </Screen>
-        }>
+        fallback={<SkeletonPlaceholderScreen testID="HabitsScreenSkeleton" />}>
         <Screen testID="HabitsScreen">
           <Component />
         </Screen>

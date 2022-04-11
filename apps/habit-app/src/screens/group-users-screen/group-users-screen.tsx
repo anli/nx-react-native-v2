@@ -1,6 +1,5 @@
-import { HabitsListSkeleton } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
-import { Screen } from '@nx-react-native/shared/ui'
+import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -166,9 +165,7 @@ const Container = (): JSX.Element => {
       )}>
       <Suspense
         fallback={
-          <Screen testID="GroupUsersScreenSkeleton">
-            <HabitsListSkeleton />
-          </Screen>
+          <SkeletonPlaceholderScreen testID="GroupUsersScreenSkeleton" />
         }>
         <Screen testID="GroupUsersScreen">
           <Component />
