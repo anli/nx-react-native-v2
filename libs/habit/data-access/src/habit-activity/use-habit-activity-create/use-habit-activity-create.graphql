@@ -1,5 +1,0 @@
-mutation HabitActivityCreate($input: [AddHabitActivityInput!]!) {
-  addHabitActivity(input: $input) {
-    numUids
-  }
-}

@@ -1,9 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
-  useGroupQuery,
-  useGroupUpdateMutation
-} from '@nx-react-native/habit/data-access'
-import {
   getGroupFormSchema,
   GroupForm,
   GroupFormData,
@@ -23,6 +19,10 @@ import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
+import {
+  useGroupUpdateScreenQuery,
+  useGroupUpdateScreenUpdateMutation
+} from './group-update-screen.generated'
 
 const options: NativeStackNavigationOptions = {
   title: ''
@@ -49,12 +49,12 @@ const Component = (): JSX.Element => {
     resolver: yupResolver(schema)
   })
   const [groupUpdateMutation, { loading: updateLoading }] =
-    useGroupUpdateMutation()
+    useGroupUpdateScreenUpdateMutation()
   const {
     data: _data,
     loading: queryLoading,
     error
-  } = useGroupQuery({
+  } = useGroupUpdateScreenQuery({
     variables: {
       id
     }

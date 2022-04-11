@@ -1,9 +1,4 @@
 import { MockedProvider } from '@apollo/client/testing'
-import {
-  useGroupCreateMockData,
-  useGroupCreateMockQueryError,
-  useGroupCreateMockQuerySuccess
-} from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { render } from '@nx-react-native/shared/utils-testing'
 import { useNavigation } from '@react-navigation/native'
@@ -12,11 +7,16 @@ import React from 'react'
 import ReactI18next from 'react-i18next'
 import { Alert } from 'react-native'
 import { GroupCreateScreen } from './group-create-screen'
+import {
+  groupCreateScreenAddMutationMockError,
+  groupCreateScreenAddMutationMockSuccess,
+  groupCreateScreenMockData
+} from './group-create-screen.mocks'
 
 describe('Given I am at Group Create Screen', () => {
   beforeAll(() => {
     jest.spyOn(SharedAuth, 'useAuth').mockImplementation(() => ({
-      user: useGroupCreateMockData.adminUsers[0]
+      user: groupCreateScreenMockData.adminUsers[0]
     }))
   })
 
@@ -65,7 +65,9 @@ describe('Given I am at Group Create Screen', () => {
   it('And API has error, And I enter valid Name Input, When I press Save Button, Then I should see Error Message', async () => {
     jest.spyOn(Alert, 'alert')
     const { getByText, getByA11yLabel } = render(
-      <MockedProvider mocks={useGroupCreateMockQueryError} addTypename={false}>
+      <MockedProvider
+        mocks={groupCreateScreenAddMutationMockError}
+        addTypename={false}>
         <GroupCreateScreen.Container />
       </MockedProvider>
     )
@@ -73,7 +75,7 @@ describe('Given I am at Group Create Screen', () => {
     fireEvent(
       getByA11yLabel('nameInputAccessibilityLabel'),
       'changeText',
-      useGroupCreateMockData.name
+      groupCreateScreenMockData.name
     )
 
     fireEvent.press(getByText('buttonTitle'))
@@ -86,7 +88,7 @@ describe('Given I am at Group Create Screen', () => {
     const mockGoBack = jest.spyOn(useNavigation(), 'goBack')
     const { getByText, getByA11yLabel } = render(
       <MockedProvider
-        mocks={useGroupCreateMockQuerySuccess}
+        mocks={groupCreateScreenAddMutationMockSuccess}
         addTypename={false}>
         <GroupCreateScreen.Container />
       </MockedProvider>
@@ -95,7 +97,7 @@ describe('Given I am at Group Create Screen', () => {
     fireEvent(
       getByA11yLabel('nameInputAccessibilityLabel'),
       'changeText',
-      useGroupCreateMockData.name
+      groupCreateScreenMockData.name
     )
 
     fireEvent.press(getByText('buttonTitle'))

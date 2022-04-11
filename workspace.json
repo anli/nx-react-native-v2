@@ -3,7 +3,6 @@
   "projects": {
     "habit-app": "apps/habit-app",
     "habit-app-e2e": "apps/habit-app-e2e",
-    "habit-data-access": "libs/habit/data-access",
     "habit-ui": "libs/habit/ui",
     "shared-auth": "libs/shared/auth",
     "shared-feature-flag": "libs/shared/feature-flag",

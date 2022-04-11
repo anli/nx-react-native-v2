@@ -1,0 +1,15 @@
+subscription GroupViewScreen($id: ID!) {
+  getGroup(id: $id) {
+    id
+    name
+    adminUsersAggregate {
+      count
+    }
+  }
+}
+
+mutation GroupViewScreenDelete($filter: GroupFilter!) {
+  deleteGroup(filter: $filter) {
+    numUids
+  }
+}

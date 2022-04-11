@@ -1,0 +1,12 @@
+query GroupUpdateScreen($id: ID!) {
+  getGroup(id: $id) {
+    id
+    name
+  }
+}
+
+mutation GroupUpdateScreenUpdate($input: UpdateGroupInput!) {
+  updateGroup(input: $input) {
+    numUids
+  }
+}

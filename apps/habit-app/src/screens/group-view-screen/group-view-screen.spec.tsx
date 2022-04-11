@@ -1,10 +1,4 @@
 import { MockedProvider } from '@apollo/client/testing'
-import {
-  useGroupDeleteMockQuerySuccess,
-  useGroupMockData,
-  useGroupMockQueryError,
-  useGroupMockQuerySuccess
-} from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
 import {
   act,
@@ -15,6 +9,12 @@ import {
 import React from 'react'
 import { Alert } from 'react-native'
 import { GroupViewScreen } from './group-view-screen'
+import {
+  useGroupDeleteMockQuerySuccess,
+  useGroupMockData,
+  useGroupMockQueryError,
+  useGroupMockQuerySuccess
+} from './group-view-screen.mocks'
 
 const mockGoBack = jest.fn()
 const mockNavigate = jest.fn()

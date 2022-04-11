@@ -6,20 +6,14 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/shared/utils-testing/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["libs/shared/utils-testing/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/libs/shared/utils-testing"
-      ],
+      "outputs": ["coverage/libs/shared/utils-testing"],
       "options": {
         "coverageDirectory": "coverage/libs-shared-utils-testing",
         "jestConfig": "libs/shared/utils-testing/jest.config.js",

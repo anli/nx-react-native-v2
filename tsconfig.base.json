@@ -16,9 +16,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-react-native/habit/data-access": [
-        "libs/habit/data-access/src/index.ts"
-      ],
       "@nx-react-native/habit/ui": ["libs/habit/ui/src/index.ts"],
       "@nx-react-native/shared/auth": ["libs/shared/auth/src/index.ts"],
       "@nx-react-native/shared/feature-flag": [

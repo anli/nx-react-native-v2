@@ -1,4 +1,4 @@
-subscription Groups {
+subscription GroupsScreen {
   queryGroup {
     id
     name

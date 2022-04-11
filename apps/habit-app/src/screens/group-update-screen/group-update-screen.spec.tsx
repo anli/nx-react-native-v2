@@ -1,11 +1,4 @@
 import { MockedProvider } from '@apollo/client/testing'
-import {
-  useGroupNonSubscriptionMockQueryError,
-  useGroupNonSubscriptionMockQuerySuccess,
-  useGroupUpdateMockData,
-  useGroupUpdateMockQueryError,
-  useGroupUpdateMockQuerySuccess
-} from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -16,16 +9,23 @@ import {
 import React from 'react'
 import { Alert } from 'react-native'
 import { GroupUpdateScreen } from './group-update-screen'
+import {
+  groupUpdateScreenMockData,
+  groupUpdateScreenQueryMockError,
+  groupUpdateScreenQueryMockSuccess,
+  groupUpdateScreenUpdateMutationMockError,
+  groupUpdateScreenUpdateMutationMockSuccess
+} from './group-update-screen.mocks'
 
 const defaultParams = {
-  id: useGroupUpdateMockData.id
+  id: groupUpdateScreenMockData.id
 }
 
 describe('Given I am at Group Update Screen', () => {
   it('When loaded, Then I should see Input with default value, And I should see Button', async () => {
     const { getByA11yLabel, getByText, getByTestId } = render(
       <MockedProvider
-        mocks={useGroupNonSubscriptionMockQuerySuccess}
+        mocks={groupUpdateScreenQueryMockSuccess}
         addTypename={false}>
         <GroupUpdateScreen.Container />
       </MockedProvider>,
@@ -41,7 +41,7 @@ describe('Given I am at Group Update Screen', () => {
     expect(getByA11yLabel('nameInputAccessibilityLabel')).toBeDefined()
 
     expect(getByA11yLabel('nameInputAccessibilityLabel').props.value).toEqual(
-      useGroupUpdateMockData.name
+      groupUpdateScreenMockData.name
     )
 
     expect(getByText('buttonTitle')).toBeDefined()
@@ -51,7 +51,7 @@ describe('Given I am at Group Update Screen', () => {
     jest.spyOn(console, 'error').mockImplementationOnce(() => null)
     const { getByTestId } = render(
       <MockedProvider
-        mocks={useGroupNonSubscriptionMockQueryError}
+        mocks={groupUpdateScreenQueryMockError}
         addTypename={false}>
         <GroupUpdateScreen.Container />
       </MockedProvider>,
@@ -73,8 +73,8 @@ describe('Given I am at Group Update Screen', () => {
     const { getByText, getByTestId } = render(
       <MockedProvider
         mocks={[
-          ...useGroupNonSubscriptionMockQuerySuccess,
-          ...useGroupUpdateMockQueryError
+          ...groupUpdateScreenQueryMockSuccess,
+          ...groupUpdateScreenUpdateMutationMockError
         ]}
         addTypename={false}>
         <GroupUpdateScreen.Container />
@@ -99,8 +99,8 @@ describe('Given I am at Group Update Screen', () => {
     const { getByText, getByTestId } = render(
       <MockedProvider
         mocks={[
-          ...useGroupNonSubscriptionMockQuerySuccess,
-          ...useGroupUpdateMockQuerySuccess
+          ...groupUpdateScreenQueryMockSuccess,
+          ...groupUpdateScreenUpdateMutationMockSuccess
         ]}
         addTypename={false}>
         <GroupUpdateScreen.Container />
