@@ -1,0 +1,5 @@
+mutation GroupCreateScreenAdd($input: [AddGroupInput!]!) {
+  addGroup(input: $input) {
+    numUids
+  }
+}

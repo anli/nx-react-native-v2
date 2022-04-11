@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useGroupCreateMutation } from '@nx-react-native/habit/data-access'
 import {
   getGroupFormSchema,
   GroupForm,
@@ -14,6 +13,7 @@ import React, { Suspense, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Alert } from 'react-native'
+import { useGroupCreateScreenAddMutation } from './group-create-screen.generated'
 
 const options: NativeStackNavigationOptions = {
   title: ''
@@ -35,7 +35,7 @@ const Component = (): JSX.Element => {
   } = useForm<GroupFormData>({
     resolver: yupResolver(schema)
   })
-  const [groupCreateMutation, { loading }] = useGroupCreateMutation()
+  const [groupCreateMutation, { loading }] = useGroupCreateScreenAddMutation()
 
   useEffect(() => {
     setOptions({

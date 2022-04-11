@@ -1,12 +1,15 @@
 import faker from '@faker-js/faker'
 import { DocumentNode } from 'graphql'
-import { GroupsDocument, GroupsSubscription } from './use-groups.generated'
+import {
+  GroupsScreenDocument,
+  GroupsScreenSubscription
+} from './groups-screen.generated'
 
 const request = {
-  query: GroupsDocument
+  query: GroupsScreenDocument
 }
 
-export const useGroupsMockData = Array.from({ length: 3 }, (_, i) => {
+export const useGroupsScreenMockData = Array.from({ length: 3 }, (_, i) => {
   faker.seed(i)
   return {
     __typename: 'Group' as const,
@@ -15,9 +18,9 @@ export const useGroupsMockData = Array.from({ length: 3 }, (_, i) => {
   }
 })
 
-export const useGroupsMockQueryNoData: Array<{
+export const useGroupsScreenMockQueryNoData: Array<{
   request: { query: DocumentNode }
-  result: { data: GroupsSubscription }
+  result: { data: GroupsScreenSubscription }
 }> = [
   {
     request,
@@ -27,19 +30,19 @@ export const useGroupsMockQueryNoData: Array<{
   }
 ]
 
-export const useGroupsMockQueryHasData: Array<{
+export const useGroupsScreenMockQueryHasData: Array<{
   request: { query: DocumentNode }
-  result: { data: GroupsSubscription }
+  result: { data: GroupsScreenSubscription }
 }> = [
   {
     request,
     result: {
-      data: { __typename: 'Subscription', queryGroup: useGroupsMockData }
+      data: { __typename: 'Subscription', queryGroup: useGroupsScreenMockData }
     }
   }
 ]
 
-export const useGroupsMockQueryError: Array<{
+export const useGroupsScreenMockQueryError: Array<{
   request: { query: DocumentNode }
   error: Error
 }> = [
@@ -49,9 +52,9 @@ export const useGroupsMockQueryError: Array<{
   }
 ]
 
-export const useGroupsMockQueryEmptyData: Array<{
+export const useGroupsScreenMockQueryEmptyData: Array<{
   request: { query: DocumentNode }
-  result: { data: GroupsSubscription }
+  result: { data: GroupsScreenSubscription }
 }> = [
   {
     request,

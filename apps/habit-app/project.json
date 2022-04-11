@@ -54,9 +54,7 @@
         "entryFile": "apps/habit-app/src/main.tsx",
         "platform": "ios"
       },
-      "outputs": [
-        "apps/habit-app/build"
-      ]
+      "outputs": ["apps/habit-app/build"]
     },
     "clean": {
       "executor": "@nrwl/workspace:run-commands",
@@ -109,13 +107,9 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "apps/habit-app/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["apps/habit-app/**/*.{ts,tsx,js,jsx}"]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "run-android": {
       "executor": "@nrwl/react-native:run-android",
@@ -153,9 +147,7 @@
         "jestConfig": "apps/habit-app/jest.config.js",
         "passWithNoTests": true
       },
-      "outputs": [
-        "coverage/apps/habit-app"
-      ]
+      "outputs": ["coverage/apps/habit-app"]
     },
     "type-check": {
       "executor": "@nrwl/workspace:run-commands",

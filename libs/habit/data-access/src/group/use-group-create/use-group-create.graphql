@@ -1,5 +1,0 @@
-mutation GroupCreate($input: [AddGroupInput!]!) {
-  addGroup(input: $input) {
-    numUids
-  }
-}

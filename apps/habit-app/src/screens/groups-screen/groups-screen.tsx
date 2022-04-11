@@ -1,4 +1,3 @@
-import { useGroupsSubscription } from '@nx-react-native/habit/data-access'
 import { HabitsListSkeleton } from '@nx-react-native/habit/ui'
 import { Screen, Text } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
@@ -13,6 +12,7 @@ import { FlatList } from 'react-native'
 import { FAB, List } from 'react-native-paper'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
+import { useGroupsScreenSubscription } from './groups-screen.generated'
 
 const options: BottomTabNavigationOptions = {
   title: '',
@@ -23,7 +23,7 @@ const Component = (): JSX.Element => {
   const { t } = useTranslation(['GroupsScreen', 'Global'])
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-  const { data, loading, error } = useGroupsSubscription()
+  const { data, loading, error } = useGroupsScreenSubscription()
   const mappedData = filterNullable(data?.queryGroup ?? [])
 
   useEffect(() => {

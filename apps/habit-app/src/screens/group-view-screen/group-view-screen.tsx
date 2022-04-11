@@ -1,7 +1,3 @@
-import {
-  useGroupDeleteMutation,
-  useGroupSubscription
-} from '@nx-react-native/habit/data-access'
 import { HabitsListSkeleton } from '@nx-react-native/habit/ui'
 import { Screen, Text, View } from '@nx-react-native/shared/ui'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
@@ -14,6 +10,10 @@ import { Alert } from 'react-native'
 import { Appbar, List } from 'react-native-paper'
 import { RootStackParamList } from '../../app'
 import { ErrorScreen } from '../error-screen'
+import {
+  useGroupViewScreenDeleteMutation,
+  useGroupViewScreenSubscription
+} from './group-view-screen.generated'
 
 const options = {
   title: ''
@@ -30,12 +30,12 @@ const Component = (): JSX.Element => {
     data: _data,
     loading,
     error
-  } = useGroupSubscription({
+  } = useGroupViewScreenSubscription({
     variables: {
       id
     }
   })
-  const [groupDeleteMutation] = useGroupDeleteMutation()
+  const [groupDeleteMutation] = useGroupViewScreenDeleteMutation()
   const data = _data?.getGroup
 
   useEffect(() => {

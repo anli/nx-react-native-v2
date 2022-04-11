@@ -1,0 +1,34 @@
+subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
+  queryHabit {
+    habitActivities(
+      filter: { date: { between: { min: $minDate, max: $maxDate } } }
+    ) {
+      id
+      count
+      date
+    }
+    id
+    name
+    group {
+      name
+    }
+  }
+}
+
+mutation HabitActivityDelete($filter: HabitActivityFilter!) {
+  deleteHabitActivity(filter: $filter) {
+    numUids
+  }
+}
+
+mutation HabitActivityCreate($input: [AddHabitActivityInput!]!) {
+  addHabitActivity(input: $input) {
+    numUids
+  }
+}
+
+mutation HabitDelete($filter: HabitFilter!) {
+  deleteHabit(filter: $filter) {
+    numUids
+  }
+}

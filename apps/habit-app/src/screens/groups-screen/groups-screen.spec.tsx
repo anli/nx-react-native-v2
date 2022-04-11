@@ -1,9 +1,4 @@
 import { MockedProvider } from '@apollo/client/testing'
-import {
-  useGroupsMockData,
-  useGroupsMockQueryEmptyData,
-  useGroupsMockQueryHasData
-} from '@nx-react-native/habit/data-access'
 import { render } from '@nx-react-native/shared/utils-testing'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -14,6 +9,11 @@ import {
 import React from 'react'
 import reactI18next from 'react-i18next'
 import { GroupsScreen } from './groups-screen'
+import {
+  useGroupsScreenMockData,
+  useGroupsScreenMockQueryEmptyData,
+  useGroupsScreenMockQueryHasData
+} from './groups-screen.mocks'
 
 describe('Given I am at Groups Screen', () => {
   beforeEach(() => {
@@ -22,14 +22,16 @@ describe('Given I am at Groups Screen', () => {
 
   it('When loaded, Then I should see Groups', async () => {
     const { getByTestId, getByText } = render(
-      <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
+      <MockedProvider
+        mocks={useGroupsScreenMockQueryHasData}
+        addTypename={false}>
         <GroupsScreen.Container />
       </MockedProvider>
     )
 
     await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
 
-    expect(getByText(useGroupsMockData[0].name)).toBeDefined()
+    expect(getByText(useGroupsScreenMockData[0].name)).toBeDefined()
   })
 
   it('When loading, Then I should see Skeleton Screen', () => {
@@ -60,7 +62,9 @@ describe('Given I am at Groups Screen', () => {
 
   it('When Empty Data, Then I should see Empty Groups Text', async () => {
     const { getByTestId, getByText } = render(
-      <MockedProvider mocks={useGroupsMockQueryEmptyData} addTypename={false}>
+      <MockedProvider
+        mocks={useGroupsScreenMockQueryEmptyData}
+        addTypename={false}>
         <GroupsScreen.Container />
       </MockedProvider>
     )
@@ -73,7 +77,9 @@ describe('Given I am at Groups Screen', () => {
   it('When I press Group Create Button, Then I see Group Create Screen', async () => {
     const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
     const { getByTestId, getByA11yLabel } = render(
-      <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
+      <MockedProvider
+        mocks={useGroupsScreenMockQueryHasData}
+        addTypename={false}>
         <GroupsScreen.Container />
       </MockedProvider>
     )
@@ -90,11 +96,13 @@ describe('Given I am at Groups Screen', () => {
   it('When I press Group, Then I see Group View Screen', async () => {
     const mockNavigate = jest.spyOn(useNavigation(), 'navigate')
     const { getByTestId, getByText } = render(
-      <MockedProvider mocks={useGroupsMockQueryHasData} addTypename={false}>
+      <MockedProvider
+        mocks={useGroupsScreenMockQueryHasData}
+        addTypename={false}>
         <GroupsScreen.Container />
       </MockedProvider>
     )
-    const groupMockData = useGroupsMockData[0]
+    const groupMockData = useGroupsScreenMockData[0]
 
     await waitForElementToBeRemoved(() => getByTestId('GroupsScreenSkeleton'))
 

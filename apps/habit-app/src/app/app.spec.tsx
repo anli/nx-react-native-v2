@@ -1,5 +1,4 @@
 import { MockedProvider } from '@apollo/client/testing'
-import { useHabitsMockQueryHasData } from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import * as FeatureFlag from '@nx-react-native/shared/feature-flag'
 import {
@@ -7,6 +6,7 @@ import {
   waitForElementToBeRemoved
 } from '@testing-library/react-native'
 import React from 'react'
+import { useHabitsMockQueryHasData } from './../screens/habits-screen/habits-screen.mocks'
 import { App } from './app'
 
 describe('App', () => {

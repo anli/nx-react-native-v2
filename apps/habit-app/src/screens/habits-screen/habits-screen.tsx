@@ -1,11 +1,5 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import {
-  useHabitActivityCreateMutation,
-  useHabitActivityDeleteMutation,
-  useHabitDeleteMutation,
-  useHabitsSubscription
-} from '@nx-react-native/habit/data-access'
-import {
   HabitsListItem,
   HabitsListItemProps,
   HabitsListSkeleton
@@ -38,6 +32,12 @@ import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
 import { getErrorType } from '../error-screen'
+import {
+  useHabitActivityCreateMutation,
+  useHabitActivityDeleteMutation,
+  useHabitDeleteMutation,
+  useHabitsSubscription
+} from './habits-screen.generated'
 
 const options: BottomTabNavigationOptions = {
   title: '',

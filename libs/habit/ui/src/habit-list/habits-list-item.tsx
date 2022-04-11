@@ -1,6 +1,6 @@
-import { Maybe } from '@nx-react-native/habit/data-access'
 import { View } from '@nx-react-native/shared/ui'
 import { format, formatISO } from 'date-fns'
+import { Maybe } from 'graphql/jsutils/Maybe'
 import React from 'react'
 import { List } from 'react-native-paper'
 import { HabitWeekDay, HabitWeekDayProps } from './habit-week-day'

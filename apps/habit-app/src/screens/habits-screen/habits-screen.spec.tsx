@@ -1,20 +1,5 @@
 import { MockedProvider } from '@apollo/client/testing'
 import ExpoActionSheet from '@expo/react-native-action-sheet'
-import {
-  useHabitActivityCreateMockQuerySuccess,
-  useHabitActivityDeleteMockQueryError,
-  useHabitActivityDeleteMockQuerySuccess,
-  useHabitDeleteMockData,
-  useHabitDeleteMockQueryError,
-  useHabitDeleteMockQuerySuccess,
-  useHabitsMockData,
-  useHabitsMockQueryEmptyData,
-  useHabitsMockQueryError,
-  useHabitsMockQueryErrorTokenExpired,
-  useHabitsMockQueryHasData,
-  useHabitsMockQueryHasNextWeekData,
-  useHabitsMockQueryHasPreviousWeekData
-} from '@nx-react-native/habit/data-access'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
 import { render } from '@nx-react-native/shared/utils-testing'
@@ -35,6 +20,21 @@ import React from 'react'
 import { Alert } from 'react-native'
 import Toast from 'react-native-toast-message'
 import { HabitsScreen } from './habits-screen'
+import {
+  useHabitActivityCreateMockQuerySuccess,
+  useHabitActivityDeleteMockQueryError,
+  useHabitActivityDeleteMockQuerySuccess,
+  useHabitDeleteMockData,
+  useHabitDeleteMockQueryError,
+  useHabitDeleteMockQuerySuccess,
+  useHabitsMockData,
+  useHabitsMockQueryEmptyData,
+  useHabitsMockQueryError,
+  useHabitsMockQueryErrorTokenExpired,
+  useHabitsMockQueryHasData,
+  useHabitsMockQueryHasNextWeekData,
+  useHabitsMockQueryHasPreviousWeekData
+} from './habits-screen.mocks'
 
 const mockNavigate = jest.fn()
 jest.mock('@react-navigation/native', () => {

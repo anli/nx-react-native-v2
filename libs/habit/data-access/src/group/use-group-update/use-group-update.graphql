@@ -1,5 +1,0 @@
-mutation GroupUpdate($input: UpdateGroupInput!) {
-  updateGroup(input: $input) {
-    numUids
-  }
-}
