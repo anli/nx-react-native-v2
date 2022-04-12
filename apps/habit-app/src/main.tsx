@@ -2,13 +2,15 @@ import Heap from '@heap/react-native-heap'
 import * as Sentry from '@sentry/react-native'
 import { AppRegistry, LogBox } from 'react-native'
 import Config from 'react-native-config'
+import 'react-native-gesture-handler'
 import { App } from './app'
 import './wdyr'
 
 LogBox.ignoreLogs([
   'Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/whatwg-fetch/dist/fetch.umd.js -> node_modules/react-native/Libraries/Network/fetch.js',
   'Setting a timer', // split library
-  "EventEmitter.removeListener('appStateDidChange', ...): Method has been deprecated" // split library
+  "EventEmitter.removeListener('appStateDidChange', ...): Method has been deprecated", // split library
+  "[react-native-gesture-handler] Seems like you're using an old API with gesture components, check out new Gestures system!" // react-native-draggable-flatlist
 ])
 
 if (Config.SENTRY_INIT === 'true') {

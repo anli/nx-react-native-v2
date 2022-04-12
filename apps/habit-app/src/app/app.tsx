@@ -18,6 +18,7 @@ import React, { Suspense } from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import DeviceInfo from 'react-native-device-info'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import {
@@ -200,7 +201,7 @@ const Navigation = (): JSX.Element => {
 }
 
 export const App = (): JSX.Element => (
-  <>
+  <GestureHandlerRootView style={{ flex: 1 }}>
     <ThemeProvider mode="light">
       <PaperProvider theme={DefaultTheme}>
         <AuthProvider client={auth0}>
@@ -216,5 +217,5 @@ export const App = (): JSX.Element => (
       </PaperProvider>
     </ThemeProvider>
     <Toast />
-  </>
+  </GestureHandlerRootView>
 )
