@@ -7,7 +7,7 @@ import {
   Text,
   View
 } from '@nx-react-native/shared/ui'
-import { filterNullable } from '@nx-react-native/shared/utils'
+import { filterNullable, useSort } from '@nx-react-native/shared/utils'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
 import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
@@ -27,7 +27,10 @@ import {
 import React, { Suspense, useCallback, useEffect, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
-import { Alert, FlatList } from 'react-native'
+import { Alert, Vibration } from 'react-native'
+import DraggableFlatList, {
+  ScaleDecorator
+} from 'react-native-draggable-flatlist'
 import { Appbar, FAB, List } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
@@ -64,6 +67,8 @@ const Component = (): JSX.Element => {
   const [habitActivityCreateMutation] = useHabitActivityCreateMutation()
   const [habitActivityDeleteMutation] = useHabitActivityDeleteMutation()
   const { reLogin } = useAuth()
+  const { set: setUserHabitSortIds, compareFn: compareUserHabitSortIds } =
+    useSort('UserHabitSortIds')
 
   useEffect(() => {
     const handlePreviousPeriod = (): void =>
@@ -177,6 +182,31 @@ const Component = (): JSX.Element => {
     return <Suspender />
   }
 
+  const mappedData = filterNullable(data?.queryHabit ?? []).map((_item) => {
+    const weekData = eachDayOfInterval({
+      start: periodStartDate,
+      end: periodEndDate
+    }).map((_date) => {
+      const activity = _item?.habitActivities?.find((_activity) => {
+        return _activity.date.substring(0, 10) === format(_date, 'yyyy-MM-dd')
+      })
+
+      return {
+        date: _date,
+        count: activity?.count ?? 0,
+        habitActivityId: activity?.id,
+        habitId: _item.id
+      }
+    })
+
+    return {
+      ..._item,
+      weekData
+    }
+  })
+
+  const sortedData = [...mappedData].sort(compareUserHabitSortIds)
+
   const handleCreateHabit = (): void => {
     navigate('HabitCreateScreen')
   }
@@ -217,46 +247,44 @@ const Component = (): JSX.Element => {
     )
   }
 
-  const mappedData = filterNullable(data?.queryHabit ?? []).map((_item) => {
-    const weekData = eachDayOfInterval({
-      start: periodStartDate,
-      end: periodEndDate
-    }).map((_date) => {
-      const activity = _item?.habitActivities?.find((_activity) => {
-        return _activity.date.substring(0, 10) === format(_date, 'yyyy-MM-dd')
-      })
+  const handleDragEnd = async ({
+    data: _data
+  }: {
+    data: typeof mappedData
+  }): Promise<void> => {
+    const ids = _data.map((_item) => _item.id)
+    void setUserHabitSortIds(ids)
+  }
 
-      return {
-        date: _date,
-        count: activity?.count ?? 0,
-        habitActivityId: activity?.id,
-        habitId: _item.id
-      }
-    })
-
-    return {
-      ..._item,
-      weekData
-    }
-  })
+  const handleDragBegin = (): void => {
+    Vibration.vibrate()
+  }
 
   return (
     <Screen>
-      <FlatList
+      <DraggableFlatList
+        testID="List"
         ListHeaderComponent={
           <List.Subheader>
             {formatDateRange(periodStartDate, periodEndDate)}
           </List.Subheader>
         }
         ListEmptyComponent={<Text>{t('emptyData', { ns: 'Global' })}</Text>}
-        data={mappedData}
-        renderItem={({ item }) => {
+        data={sortedData}
+        onDragBegin={handleDragBegin}
+        onDragEnd={handleDragEnd}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, drag, isActive }) => {
           return (
-            <HabitsListItem
-              item={item}
-              onDayPress={handleDayPress}
-              onItemPress={handleHabitOptions}
-            />
+            <ScaleDecorator activeScale={1.05}>
+              <HabitsListItem
+                onLongPress={drag}
+                disabled={isActive}
+                item={item}
+                onDayPress={handleDayPress}
+                onItemPress={handleHabitOptions}
+              />
+            </ScaleDecorator>
           )
         }}
       />

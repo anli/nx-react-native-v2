@@ -3,11 +3,13 @@ import ExpoActionSheet from '@expo/react-native-action-sheet'
 import * as SharedAuth from '@nx-react-native/shared/auth'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
 import { render } from '@nx-react-native/shared/utils-testing'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   act,
   fireEvent,
   waitFor,
-  waitForElementToBeRemoved
+  waitForElementToBeRemoved,
+  within
 } from '@testing-library/react-native'
 import {
   addWeeks,
@@ -47,6 +49,11 @@ jest.mock('@react-navigation/native', () => {
     })
   }
 })
+
+const mockedVibrate = jest.fn()
+jest.mock('react-native/Libraries/Vibration/Vibration', () => ({
+  vibrate: mockedVibrate
+}))
 
 describe('Given I am at Habits Screen', () => {
   beforeEach(() => {
@@ -455,5 +462,67 @@ describe('Given I am at Habits Screen', () => {
     )
 
     await waitFor(() => expect(mockReLogin).toBeCalledTimes(1))
+  })
+
+  it('When I long press List Item, Then I should see device Vibrate', async () => {
+    const { getByTestId, getByText } = render(
+      <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    fireEvent(getByText(useHabitsMockData[0].name), 'onLongPress')
+    fireEvent(getByTestId('List'), 'onDragBegin')
+
+    expect(mockedVibrate).toBeCalledTimes(1)
+  })
+
+  it('When I drag end List Item, Then I should see item sorted', async () => {
+    const sortedData = [...useHabitsMockData].reverse()
+
+    const { getByTestId, getAllByTestId } = render(
+      <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+    expect(
+      within(getAllByTestId('HabitsListItem')[0]).getByText(
+        useHabitsMockData[0].name
+      )
+    ).toBeDefined()
+
+    fireEvent(getByTestId('List'), 'onDragEnd', { data: sortedData })
+
+    expect(
+      await within(getAllByTestId('HabitsListItem')[0]).findByText(
+        sortedData[0].name
+      )
+    ).toBeDefined()
+  })
+
+  it('And I have previously sorted Ids, When loaded, Then I should see item sorted', async () => {
+    const sortedData = [...useHabitsMockData].reverse()
+    const sortedIds = sortedData.map((item) => item.id)
+    jest
+      .spyOn(AsyncStorage, 'getItem')
+      .mockResolvedValue(JSON.stringify(sortedIds))
+
+    const { getByTestId, getAllByTestId } = render(
+      <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
+        <HabitsScreen.Container />
+      </MockedProvider>
+    )
+
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
+    expect(
+      await within(getAllByTestId('HabitsListItem')[0]).findByText(
+        sortedData[0].name
+      )
+    ).toBeDefined()
   })
 })

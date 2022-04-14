@@ -4,6 +4,7 @@ import {
   SkeletonPlaceholderScreen,
   View
 } from '@nx-react-native/shared/ui'
+import { Storage } from '@nx-react-native/shared/utils'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import React, { Suspense, useEffect } from 'react'
@@ -30,8 +31,9 @@ const Component = (): JSX.Element => {
     })
   }, [t, setOptions])
 
-  const handleLogout = (): void => {
+  const handleLogout = async (): Promise<void> => {
     logout?.()
+    await Storage.clear()
   }
 
   return (

@@ -52,6 +52,10 @@
     "@hookform/resolvers": "*",
     "yup": "*",
     "i18next-chained-backend": "*",
-    "i18next-resources-to-backend": "*"
+    "i18next-resources-to-backend": "*",
+    "react-native-reanimated": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-draggable-flatlist": "*",
+    "@react-native-async-storage/async-storage": "*"
   }
 }

@@ -6,7 +6,8 @@ import ReactI18next from 'react-i18next'
 import { ProfileScreen } from './profile-screen'
 
 describe('Given I am at Profile Screen', () => {
-  beforeEach(() => {
+  afterEach(() => {
+    jest.restoreAllMocks()
     jest.clearAllMocks()
   })
 
@@ -43,6 +44,7 @@ describe('Given I am at Profile Screen', () => {
   })
 
   it('When Error, Then I should see Error Screen', () => {
+    jest.spyOn(console, 'error').mockImplementation(() => null)
     jest
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .spyOn<any, 'useTranslation'>(ReactI18next, 'useTranslation')
@@ -55,23 +57,8 @@ describe('Given I am at Profile Screen', () => {
     expect(getByTestId('ProfileScreenError')).toBeDefined()
   })
 
-  it('When Error, Then I should see Error Screen', () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => null)
-    jest
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .spyOn<any, 'useTranslation'>(ReactI18next, 'useTranslation')
-      .mockImplementationOnce(() => {
-        throw new Error()
-      })
-    const { getByTestId } = render(<ProfileScreen.Container />)
-
-    expect(getByTestId('ProfileScreenError')).toBeDefined()
-
-    spy.mockRestore()
-  })
-
   it('When Error And I press Retry, Then I should logout', async () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => null)
+    jest.spyOn(console, 'error').mockImplementation(() => null)
     const mockLogout = jest.fn()
     jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
       logout: mockLogout
@@ -88,7 +75,5 @@ describe('Given I am at Profile Screen', () => {
     fireEvent.press(getByTestId('ErrorScreen.Button'))
 
     expect(mockLogout).toBeCalledTimes(1)
-
-    spy.mockRestore()
   })
 })
