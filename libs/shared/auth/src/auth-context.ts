@@ -4,7 +4,7 @@ export interface AuthContextProps {
   login?: () => void
   logout?: (clear?: boolean) => void
   idToken?: string
-  user?: { email: string }
+  user?: { email: string } | null
   reLogin?: () => Promise<void>
 }
 

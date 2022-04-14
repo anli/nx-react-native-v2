@@ -11,7 +11,9 @@ const scope = 'openid profile email offline_access'
 
 export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
   const [idToken, setIdToken] = useState<string | undefined>(undefined)
-  const [user, setUser] = useState<{ email: string } | undefined>(undefined)
+  const [user, setUser] = useState<{ email: string } | undefined | null>(
+    undefined
+  )
 
   const reLogin = useCallback(async (): Promise<void> => {
     const credentials = await Keychain.getGenericPassword()
@@ -29,6 +31,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
 
       setIdToken(_idToken)
       setUser({ email: userInfo.email })
+    } else {
+      setUser(null)
     }
   }, [client.auth])
 
@@ -37,27 +41,44 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
   }, [client.auth, reLogin])
 
   const login = async (): Promise<void> => {
-    const {
-      idToken: _idToken,
-      accessToken,
-      refreshToken
-    } = await client.webAuth.authorize({ scope })
-    refreshToken != null &&
-      (await Keychain.setGenericPassword('DEFAULT', refreshToken))
+    try {
+      const {
+        idToken: _idToken,
+        accessToken,
+        refreshToken
+      } = await client.webAuth.authorize({ scope })
+      refreshToken != null &&
+        (await Keychain.setGenericPassword('DEFAULT', refreshToken))
 
-    const userInfo = await client.auth.userInfo({
-      token: accessToken
-    })
+      const userInfo = await client.auth.userInfo({
+        token: accessToken
+      })
 
-    setIdToken(_idToken)
-    setUser({ email: userInfo.email })
+      setIdToken(_idToken)
+      setUser({ email: userInfo.email })
+    } catch (error) {
+      // TODO: not as easy to write test with @testing-library/react-hooks API
+      /* istanbul ignore next */
+      const formattedError = error as {
+        error?: string
+        error_description?: string
+      }
+
+      /* istanbul ignore next */
+      if (formattedError?.error === 'a0.session.user_cancelled') {
+        return
+      }
+
+      /* istanbul ignore next */
+      throw new Error(formattedError.error_description)
+    }
   }
 
   const logout = async (clear = true): Promise<void> => {
     clear && (await client.webAuth.clearSession())
     clear && (await Keychain.resetGenericPassword())
     setIdToken(undefined)
-    setUser(undefined)
+    setUser(null)
   }
 
   return (

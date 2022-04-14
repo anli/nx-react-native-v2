@@ -13,7 +13,7 @@ const scope = 'openid profile email offline_access'
 
 export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
   const [idToken, setIdToken] = useState<string | undefined>(undefined)
-  const [user, setUser] = useState<{ email: string } | undefined>(undefined)
+  const [user, setUser] = useState<{ email: string } | null>(null)
 
   const login = async (): Promise<void> => {
     const authInfo = await client.auth.refreshToken({
@@ -29,7 +29,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
 
   const logout = async (): Promise<void> => {
     setIdToken(undefined)
-    setUser(undefined)
+    setUser(null)
   }
 
   return (

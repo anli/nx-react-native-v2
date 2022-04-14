@@ -6,6 +6,7 @@ interface Props {
   buttonTitle: string
   onPress: () => void
   buttonAccessibilityLabel: string
+  loading: boolean
 }
 
 export const Component: FC<Props> = ({
@@ -14,7 +15,8 @@ export const Component: FC<Props> = ({
   buttonTitle,
   children,
   onPress,
-  buttonAccessibilityLabel
+  buttonAccessibilityLabel,
+  loading
 }) => {
   return (
     <>
@@ -29,6 +31,8 @@ export const Component: FC<Props> = ({
           {subtitle}
         </Text>
         <Button
+          disabled={loading}
+          loading={loading}
           accessibilityLabel={buttonAccessibilityLabel}
           borderRadius="extraLoose"
           padding="tight"

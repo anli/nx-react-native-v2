@@ -133,6 +133,10 @@ const Navigation = (): JSX.Element => {
   const isAuthenticated = Boolean(user)
   const splitClient = splitFactory.client()
 
+  if (typeof user === 'undefined') {
+    return <SkeletonPlaceholderScreen testID="SkeletonPlaceholderScreen" />
+  }
+
   return (
     <ApolloProvider url={Config.GRAPHQL_URL} authToken={idToken}>
       <SplitProvider client={splitClient}>
