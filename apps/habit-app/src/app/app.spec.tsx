@@ -11,6 +11,9 @@ import { App } from './app'
 
 describe('App', () => {
   it('Then I should see Login Screen', () => {
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      user: null
+    })
     const { getByTestId } = render(<App />)
 
     expect(getByTestId('LoginScreen')).toBeDefined()
@@ -65,5 +68,14 @@ describe('App', () => {
     await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
 
     expect(queryByTestId('GroupsTabButton')).toBeNull()
+  })
+
+  it('When auth is Loading, Then I should see Loading Screen', () => {
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      user: undefined
+    })
+    const { getByTestId } = render(<App />)
+
+    expect(getByTestId('SkeletonPlaceholderScreen')).toBeDefined()
   })
 })
