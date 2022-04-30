@@ -1,4 +1,4 @@
-git_url("git@github.com:anli/fastlane-certificates.git")
+git_url("git@github-anli:anli/fastlane-certificates.git")
 
 storage_mode("git")
 
