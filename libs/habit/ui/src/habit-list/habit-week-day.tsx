@@ -1,4 +1,5 @@
 import { Text, View } from '@nx-react-native/shared/ui'
+import { isToday, parseISO } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { Checkbox } from 'react-native-paper'
 
@@ -46,9 +47,11 @@ export const HabitWeekDay = React.memo(
       })
     }
 
+    const isIdToday = isToday(parseISO(id))
+
     return (
       <View justifyContent="center" alignItems="center">
-        <Text variant="footnote">{name}</Text>
+        <Text variant="footnote" color={isIdToday ? 'primary' : 'text'} >{name}</Text>
         <Checkbox.Android
           testID="HabitWeekDay.Checkbox"
           onPress={handlePress}
