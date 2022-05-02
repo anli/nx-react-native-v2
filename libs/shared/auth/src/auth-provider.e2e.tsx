@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react'
+import { Platform } from 'react-native'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import { AuthContext } from './auth-context'
 
-const refreshToken = Config.E2E_REFRESH_TOKEN
+const refreshToken = Platform.select({ default: Config.E2E_REFRESH_TOKEN_IOS, android: Config.E2E_REFRESH_TOKEN_ANDROID })
 
 interface AuthProviderProps {
   client: Auth0
