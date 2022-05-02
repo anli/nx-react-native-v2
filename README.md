@@ -53,7 +53,7 @@ E2E_ANDROID_SIMULATOR=
 Run on development build
 
 ```
-npm run start-e2e
+npm run e2e-start
 npm run e2e-build-android
 npm run e2e-test-android
 
@@ -64,7 +64,7 @@ npm run e2e-test-ios
 Run on production build
 
 ```
-npm run start-e2e
+npm run e2e-start
 npm run e2e-build-android -- --configuration=production
 npm run e2e-test-android -- --configuration=production
 
