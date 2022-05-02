@@ -52,24 +52,6 @@ describe('App', () => {
     expect(getByTestId('GroupsTabButton')).toBeDefined()
   })
 
-  it('When feature flag Group is off, Then I should not see Group Tab', async () => {
-    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
-      user: { email: 'user@email.com' }
-    })
-    jest.spyOn(FeatureFlag, 'useSplit').mockReturnValue({
-      getTreatment: jest.fn().mockReturnValue('off')
-    })
-    const { queryByTestId, getByTestId } = render(
-      <MockedProvider mocks={useHabitsMockQueryHasData} addTypename={false}>
-        <App />
-      </MockedProvider>
-    )
-
-    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
-
-    expect(queryByTestId('GroupsTabButton')).toBeNull()
-  })
-
   it('When auth is Loading, Then I should see Loading Screen', () => {
     jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
       user: undefined

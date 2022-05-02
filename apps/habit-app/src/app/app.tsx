@@ -2,7 +2,7 @@
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import Heap from '@heap/react-native-heap'
 import { AuthProvider, useAuth } from '@nx-react-native/shared/auth'
-import { SplitProvider, useSplit } from '@nx-react-native/shared/feature-flag'
+import { SplitProvider } from '@nx-react-native/shared/feature-flag'
 import { init as I18nInit } from '@nx-react-native/shared/i18n'
 import {
   SkeletonPlaceholderScreen,
@@ -87,8 +87,6 @@ const RootStack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator()
 
 export const AppTabs = (): JSX.Element => {
-  const { getTreatment } = useSplit()
-
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -101,19 +99,17 @@ export const AppTabs = (): JSX.Element => {
           )
         }}
       />
-      {getTreatment('Group') === 'on' && (
-        <Tab.Screen
-          name="GroupsScreen"
-          component={GroupsScreen.Container}
-          options={{
-            ...GroupsScreen.options,
-            tabBarTestID: 'GroupsTabButton',
-            tabBarIcon: ({ color, size }) => (
-              <TabBarIcon name="account-group" color={color} size={size} />
-            )
-          }}
-        />
-      )}
+      <Tab.Screen
+        name="GroupsScreen"
+        component={GroupsScreen.Container}
+        options={{
+          ...GroupsScreen.options,
+          tabBarTestID: 'GroupsTabButton',
+          tabBarIcon: ({ color, size }) => (
+            <TabBarIcon name="account-group" color={color} size={size} />
+          )
+        }}
+      />
       <Tab.Screen
         name="ProfileScreen"
         component={ProfileScreen.Container}
