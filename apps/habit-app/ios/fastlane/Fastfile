@@ -59,4 +59,15 @@ platform :ios do
       skip_waiting_for_build_processing: true,
     )
   end
+
+  lane :certificate do
+    Dotenv.overload '../../.env.production'
+    puts 'LOADED ENV: ' + ENV['ENVIRONMENT']    
+    
+    sync_code_signing(
+      type: "development",
+      readonly: true,
+      username: ENV['APPLE_ID_USERNAME']
+    )  
+  end  
 end
