@@ -3,7 +3,7 @@ import { HabitForm, HabitFormData } from '@nx-react-native/habit/ui'
 import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import {
   NativeStackNavigationOptions,
@@ -51,10 +51,8 @@ const Component = (): JSX.Element => {
   })
   const [habitCreateMutation, { loading }] = useHabitCreateMutation()
   const {
-    data: _data,
-    loading: queryLoading,
-    error: queryError
-  } = useHabitCreateScreenQuery()
+    data: _data
+  } = useApolloResult(useHabitCreateScreenQuery())
   const groups = filterNullable(_data?.queryGroup ?? [])
 
   useEffect(() => {
@@ -66,14 +64,6 @@ const Component = (): JSX.Element => {
   useEffect(() => {
     setValue('groupId', params?.groupSelectScreen?.id)
   }, [params, reset, setValue])
-
-  if (queryError !== undefined) {
-    throw Error(queryError?.message)
-  }
-
-  if (queryLoading === true) {
-    return <Suspender />
-  }
 
   const handleHabitCreateButton = async (
     data: HabitFormData

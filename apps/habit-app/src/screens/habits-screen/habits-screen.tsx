@@ -1,6 +1,5 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { HabitsListItem, HabitsListItemProps } from '@nx-react-native/habit/ui'
-import { useAuth } from '@nx-react-native/shared/auth'
 import {
   Screen,
   SkeletonPlaceholderScreen,
@@ -8,8 +7,8 @@ import {
   View
 } from '@nx-react-native/shared/ui'
 import { filterNullable, useSort } from '@nx-react-native/shared/utils'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { formatDateRange } from '@nx-react-native/shared/utils-date'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -35,7 +34,6 @@ import { Appbar, FAB, List } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
-import { getErrorType } from '../error-screen'
 import {
   useHabitActivityCreateMutation,
   useHabitActivityDeleteMutation,
@@ -57,16 +55,15 @@ const Component = (): JSX.Element => {
   const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-  const { data, loading, error } = useHabitsSubscription({
+  const { data } = useApolloResult(useHabitsSubscription({
     variables: {
       minDate: formatISO(periodStartDate),
       maxDate: formatISO(periodEndDate)
     }
-  })
+  }))
   const [habitDeleteMutation] = useHabitDeleteMutation()
   const [habitActivityCreateMutation] = useHabitActivityCreateMutation()
   const [habitActivityDeleteMutation] = useHabitActivityDeleteMutation()
-  const { reLogin } = useAuth()
   const { set: setUserHabitSortIds, compareFn: compareUserHabitSortIds } =
     useSort('UserHabitSortIds')
 
@@ -169,18 +166,6 @@ const Component = (): JSX.Element => {
     },
     [habitActivityCreateMutation, habitActivityDeleteMutation, t]
   )
-
-  if (error !== undefined) {
-    if (getErrorType(error) === 'TOKEN_EXPIRED') {
-      void reLogin?.()
-    } else {
-      throw Error(error?.message)
-    }
-  }
-
-  if (loading === true) {
-    return <Suspender />
-  }
 
   const mappedData = filterNullable(data?.queryHabit ?? []).map((_item) => {
     const weekData = eachDayOfInterval({

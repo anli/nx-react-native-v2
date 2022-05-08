@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { HabitForm, HabitFormData } from '@nx-react-native/habit/ui'
 import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import {
   NativeStackNavigationOptions,
@@ -51,14 +51,12 @@ const Component = (): JSX.Element => {
   })
   const [habitUpdateMutation, { loading }] = useHabitUpdateMutation()
   const {
-    data: _data,
-    loading: queryLoading,
-    error: queryError
-  } = useHabitUpdateScreenQuery({
+    data: _data
+  } = useApolloResult(useHabitUpdateScreenQuery({
     variables: { habitId: params.id },
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only'
-  })
+  }))
   const groups = filterNullable(_data?.queryGroup ?? [])
   const defaultValues = _data?.getHabit
 
@@ -75,14 +73,6 @@ const Component = (): JSX.Element => {
   useEffect(() => {
     setValue('groupId', params?.groupSelectScreen?.id)
   }, [params, setValue])
-
-  if (queryError !== undefined) {
-    throw Error(queryError?.message)
-  }
-
-  if (queryLoading === true) {
-    return <Suspender />
-  }
 
   const handleHabitUpdateButton = async (
     data: HabitFormData
