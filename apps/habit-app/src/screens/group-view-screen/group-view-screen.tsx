@@ -4,7 +4,7 @@ import {
   Text,
   View
 } from '@nx-react-native/shared/ui'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
@@ -31,14 +31,12 @@ const Component = (): JSX.Element => {
     params: { id }
   } = useRoute<RouteProp<RootStackParamList, 'GroupViewScreen'>>()
   const {
-    data: _data,
-    loading,
-    error
-  } = useGroupViewScreenSubscription({
+    data: _data
+  } = useApolloResult(useGroupViewScreenSubscription({
     variables: {
       id
     }
-  })
+  }))
   const [groupDeleteMutation] = useGroupViewScreenDeleteMutation()
   const data = _data?.getGroup
 
@@ -103,14 +101,6 @@ const Component = (): JSX.Element => {
     setOptions,
     t
   ])
-
-  if (error !== undefined) {
-    throw Error(error?.message)
-  }
-
-  if (loading === true) {
-    return <Suspender />
-  }
 
   const handleViewUsers = (): void => navigate('GroupUsersScreen', { id })
 

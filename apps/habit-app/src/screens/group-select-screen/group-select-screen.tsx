@@ -4,7 +4,7 @@ import {
   Text
 } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { Suspense, useEffect } from 'react'
@@ -27,7 +27,7 @@ const Component = (): JSX.Element => {
   const {
     params: { nextScreenName }
   } = useRoute<RouteProp<RootStackParamList, 'GroupSelectScreen'>>()
-  const { data: _data, loading, error } = useGroupsQuery()
+  const { data: _data } = useApolloResult(useGroupsQuery())
   const data = filterNullable(_data?.queryGroup ?? [])
 
   useEffect(() => {
@@ -36,14 +36,6 @@ const Component = (): JSX.Element => {
       title: t('title')
     })
   }, [t, setOptions])
-
-  if (error !== undefined) {
-    throw Error(error?.message)
-  }
-
-  if (loading === true) {
-    return <Suspender />
-  }
 
   const handlePress = (id: string): void => {
     navigate({

@@ -4,7 +4,7 @@ import {
   Text
 } from '@nx-react-native/shared/ui'
 import { filterNullable } from '@nx-react-native/shared/utils'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -26,7 +26,7 @@ const Component = (): JSX.Element => {
   const { t } = useTranslation(['GroupsScreen', 'Global'])
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-  const { data, loading, error } = useGroupsScreenSubscription()
+  const { data } = useApolloResult(useGroupsScreenSubscription())
   const mappedData = filterNullable(data?.queryGroup ?? [])
 
   useEffect(() => {
@@ -35,14 +35,6 @@ const Component = (): JSX.Element => {
       title: t('title')
     })
   }, [t, setOptions])
-
-  if (error !== undefined) {
-    throw Error(error?.message)
-  }
-
-  if (loading === true) {
-    return <Suspender />
-  }
 
   const handleCreate = (): void => navigate('GroupCreateScreen')
 

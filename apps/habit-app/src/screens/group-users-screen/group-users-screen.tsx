@@ -1,6 +1,9 @@
 import { useAuth } from '@nx-react-native/shared/auth'
 import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import {
+  useApolloMutation,
+  useApolloResult
+} from '@nx-react-native/shared/utils-apollo-provider'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { Suspense, useCallback, useEffect } from 'react'
@@ -28,20 +31,14 @@ const Component = (): JSX.Element => {
   const {
     params: { id }
   } = useRoute<RouteProp<RootStackParamList, 'GroupUsersScreen'>>()
-  const {
-    data: _data,
-    loading: groupUsersScreenSubscriptionLoading,
-    error: groupUsersScreenSubscriptionError
-  } = useGroupUsersScreenSubscription({
-    variables: { id }
-  })
-  const [
-    removeAdminUserMutation,
-    {
-      loading: removeAdminUserMutationLoading,
-      error: removeAdminUserMutationError
-    }
-  ] = useRemoveAdminUserMutation()
+  const { data: _data } = useApolloResult(
+    useGroupUsersScreenSubscription({
+      variables: { id }
+    })
+  )
+  const [removeAdminUserMutation] = useApolloMutation(
+    useRemoveAdminUserMutation()
+  )
   const data = _data?.getGroup?.adminUsers
 
   useEffect(() => {
@@ -82,23 +79,6 @@ const Component = (): JSX.Element => {
     },
     [id, removeAdminUserMutation, t]
   )
-
-  if (
-    groupUsersScreenSubscriptionError !== undefined ||
-    removeAdminUserMutationError !== undefined
-  ) {
-    throw Error(
-      groupUsersScreenSubscriptionError?.message ??
-        removeAdminUserMutationError?.message
-    )
-  }
-
-  if (
-    groupUsersScreenSubscriptionLoading === true ||
-    removeAdminUserMutationLoading === true
-  ) {
-    return <Suspender />
-  }
 
   return (
     <Screen>

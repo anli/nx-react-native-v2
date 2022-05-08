@@ -453,6 +453,7 @@ describe('Given I am at Habits Screen', () => {
     jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
       reLogin: mockReLogin
     })
+    expect(mockReLogin).toBeCalledTimes(0)
     render(
       <MockedProvider
         mocks={useHabitsMockQueryErrorTokenExpired}
@@ -461,7 +462,7 @@ describe('Given I am at Habits Screen', () => {
       </MockedProvider>
     )
 
-    await waitFor(() => expect(mockReLogin).toBeCalledTimes(1))
+    await waitFor(() => expect(mockReLogin).toHaveBeenCalled())
   })
 
   it('When I long press List Item, Then I should see device Vibrate', async () => {

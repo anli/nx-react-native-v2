@@ -5,7 +5,7 @@ import {
   GroupFormData
 } from '@nx-react-native/habit/ui'
 import { Screen, SkeletonPlaceholderScreen } from '@nx-react-native/shared/ui'
-import { Suspender } from '@nx-react-native/shared/utils-suspense'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import {
   NativeStackNavigationOptions,
@@ -50,14 +50,12 @@ const Component = (): JSX.Element => {
   const [groupUpdateMutation, { loading: updateLoading }] =
     useGroupUpdateScreenUpdateMutation()
   const {
-    data: _data,
-    loading: queryLoading,
-    error
-  } = useGroupUpdateScreenQuery({
+    data: _data
+  } = useApolloResult(useGroupUpdateScreenQuery({
     variables: {
       id
     }
-  })
+  }))
   const defaultValues = _data?.getGroup
 
   useEffect(() => {
@@ -72,14 +70,6 @@ const Component = (): JSX.Element => {
       headerShown: true
     })
   }, [setOptions, t])
-
-  if (error !== undefined) {
-    throw Error(error?.message)
-  }
-
-  if (queryLoading === true) {
-    return <Suspender />
-  }
 
   const handleGroupUpdateButton = async (
     data: GroupFormData
