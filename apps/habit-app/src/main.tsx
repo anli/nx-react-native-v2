@@ -1,4 +1,5 @@
 import Heap from '@heap/react-native-heap'
+import { setup } from '@nx-react-native/shared/push-notification'
 import * as Sentry from '@sentry/react-native'
 import { AppRegistry, LogBox } from 'react-native'
 import Config from 'react-native-config'
@@ -23,6 +24,10 @@ if (Config.SENTRY_INIT === 'true') {
 
 if (Config.HEAP_INIT === 'true') {
   Heap.setAppId(Config.HEAP_APP_ID)
+}
+
+if (Config.ONE_SIGNAL_INIT === 'true') {
+  setup(Config.ONE_SIGNAL_APP_ID)
 }
 
 AppRegistry.registerComponent('main', () => Sentry.wrap(App))

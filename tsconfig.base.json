@@ -22,6 +22,9 @@
         "libs/shared/feature-flag/src/index.ts"
       ],
       "@nx-react-native/shared/i18n": ["libs/shared/i18n/src/index.ts"],
+      "@nx-react-native/shared/push-notification": [
+        "libs/shared/push-notification/src/index.ts"
+      ],
       "@nx-react-native/shared/ui": ["libs/shared/ui/src/index.ts"],
       "@nx-react-native/shared/utils": ["libs/shared/utils/src/index.ts"],
       "@nx-react-native/shared/utils-apollo-provider": [

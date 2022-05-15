@@ -14,7 +14,14 @@ HabitWeekDayProps,
 interface Item {
   id: string
   name: string
-  group?: Maybe<{ name: string }>
+  group?: Maybe<{
+    name: string
+    adminUsers?: Maybe<
+    Array<{
+      pushNotificationUserId?: Maybe<string>
+    }>
+    >
+  }>
   weekData: WeekDataItem[]
 }
 
@@ -31,6 +38,10 @@ export const HabitsListItem = ({
   onLongPress,
   disabled
 }: HabitsListItemProps): JSX.Element => {
+  const pushNotificationUserIdsString = JSON.stringify(
+    item.group?.adminUsers?.map((user) => user?.pushNotificationUserId)
+  )
+
   const handleItemPress = (): void => {
     onItemPress(item.id)
   }
@@ -62,6 +73,8 @@ export const HabitsListItem = ({
               habitId={habitId}
               habitActivityId={habitActivityId}
               onPress={onDayPress}
+              pushNotificationUserIdsString={pushNotificationUserIdsString}
+              habitName={item.name}
             />
           )
         })}

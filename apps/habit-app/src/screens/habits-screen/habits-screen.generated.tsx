@@ -1,15 +1,16 @@
+import * as Apollo from '@apollo/client';
+import { gql } from '@apollo/client';
 import * as Types from '../../graphql-types';
 
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type HabitsSubscriptionVariables = Types.Exact<{
   minDate: Types.Scalars['DateTime'];
   maxDate: Types.Scalars['DateTime'];
+  user?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 
-export type HabitsSubscription = { __typename: 'Subscription', queryHabit?: Array<{ __typename: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename: 'HabitActivity', id: string, count: number, date: any }> | null, group?: { __typename: 'Group', name: string } | null } | null> | null };
+export type HabitsSubscription = { __typename: 'Subscription', queryHabit?: Array<{ __typename: 'Habit', id: string, name: string, habitActivities?: Array<{ __typename: 'HabitActivity', id: string, count: number, date: any }> | null, group?: { __typename: 'Group', name: string, adminUsers?: Array<{ __typename: 'User', pushNotificationUserId?: string | null }> | null } | null } | null> | null };
 
 export type HabitActivityDeleteMutationVariables = Types.Exact<{
   filter: Types.HabitActivityFilter;
@@ -34,7 +35,7 @@ export type HabitDeleteMutation = { __typename: 'Mutation', deleteHabit?: { __ty
 
 
 export const HabitsDocument = gql`
-    subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
+    subscription Habits($minDate: DateTime!, $maxDate: DateTime!, $user: String) {
   queryHabit {
     habitActivities(filter: {date: {between: {min: $minDate, max: $maxDate}}}) {
       id
@@ -45,6 +46,9 @@ export const HabitsDocument = gql`
     name
     group {
       name
+      adminUsers(filter: {has: pushNotificationUserId, not: {email: {eq: $user}}}) {
+        pushNotificationUserId
+      }
     }
   }
 }
@@ -64,6 +68,7 @@ export const HabitsDocument = gql`
  *   variables: {
  *      minDate: // value for 'minDate'
  *      maxDate: // value for 'maxDate'
+ *      user: // value for 'user'
  *   },
  * });
  */

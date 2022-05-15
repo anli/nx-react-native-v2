@@ -1,0 +1,5 @@
+mutation AppAddUser($input: [AddUserInput!]!) {
+  addUser(input: $input, upsert: true) {
+    numUids
+  }
+}
