@@ -86,7 +86,9 @@ export type AddHabitPayloadHabitArgs = {
 export type AddUserInput = {
   adminGroups?: InputMaybe<Array<InputMaybe<GroupRef>>>;
   email: Scalars['String'];
+  habitSortIds?: InputMaybe<Array<Scalars['String']>>;
   habits?: InputMaybe<Array<HabitRef>>;
+  pushNotificationUserId?: InputMaybe<Scalars['String']>;
 };
 
 export type AddUserPayload = {
@@ -950,9 +952,11 @@ export type User = {
   adminGroups?: Maybe<Array<Maybe<Group>>>;
   adminGroupsAggregate?: Maybe<GroupAggregateResult>;
   email: Scalars['String'];
+  habitSortIds?: Maybe<Array<Scalars['String']>>;
   habits?: Maybe<Array<Habit>>;
   habitsAggregate?: Maybe<HabitAggregateResult>;
   id: Scalars['ID'];
+  pushNotificationUserId?: Maybe<Scalars['String']>;
 };
 
 
@@ -986,6 +990,8 @@ export type UserAggregateResult = {
   count?: Maybe<Scalars['Int']>;
   emailMax?: Maybe<Scalars['String']>;
   emailMin?: Maybe<Scalars['String']>;
+  pushNotificationUserIdMax?: Maybe<Scalars['String']>;
+  pushNotificationUserIdMin?: Maybe<Scalars['String']>;
 };
 
 export type UserFilter = {
@@ -995,12 +1001,15 @@ export type UserFilter = {
   id?: InputMaybe<Array<Scalars['ID']>>;
   not?: InputMaybe<UserFilter>;
   or?: InputMaybe<Array<InputMaybe<UserFilter>>>;
+  pushNotificationUserId?: InputMaybe<StringFullTextFilter>;
 };
 
 export enum UserHasFilter {
   AdminGroups = 'adminGroups',
   Email = 'email',
-  Habits = 'habits'
+  HabitSortIds = 'habitSortIds',
+  Habits = 'habits',
+  PushNotificationUserId = 'pushNotificationUserId'
 }
 
 export type UserOrder = {
@@ -1010,19 +1019,24 @@ export type UserOrder = {
 };
 
 export enum UserOrderable {
-  Email = 'email'
+  Email = 'email',
+  PushNotificationUserId = 'pushNotificationUserId'
 }
 
 export type UserPatch = {
   adminGroups?: InputMaybe<Array<InputMaybe<GroupRef>>>;
+  habitSortIds?: InputMaybe<Array<Scalars['String']>>;
   habits?: InputMaybe<Array<HabitRef>>;
+  pushNotificationUserId?: InputMaybe<Scalars['String']>;
 };
 
 export type UserRef = {
   adminGroups?: InputMaybe<Array<InputMaybe<GroupRef>>>;
   email?: InputMaybe<Scalars['String']>;
+  habitSortIds?: InputMaybe<Array<Scalars['String']>>;
   habits?: InputMaybe<Array<HabitRef>>;
   id?: InputMaybe<Scalars['ID']>;
+  pushNotificationUserId?: InputMaybe<Scalars['String']>;
 };
 
 export type WithinFilter = {

@@ -60,14 +60,14 @@ platform :ios do
     )
   end
 
-  lane :certificate do
+  lane :certificate do |options|
     Dotenv.overload '../../.env.production'
     puts 'LOADED ENV: ' + ENV['ENVIRONMENT']    
     
     sync_code_signing(
-      type: "development",
-      readonly: true,
+      type: options[:type] || 'development',
+      readonly: options[:write] || false,
       username: ENV['APPLE_ID_USERNAME']
     )  
-  end  
+  end
 end

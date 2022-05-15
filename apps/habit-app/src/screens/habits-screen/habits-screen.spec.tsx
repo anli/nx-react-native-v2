@@ -55,9 +55,14 @@ jest.mock('react-native/Libraries/Vibration/Vibration', () => ({
   vibrate: mockedVibrate
 }))
 
+const defaultUseAuthMockValue = {
+  user: { email: 'user@email.com' }
+}
+
 describe('Given I am at Habits Screen', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.spyOn(SharedAuth, 'useAuth').mockReturnValue(defaultUseAuthMockValue)
   })
 
   it('When loaded, Then I should see Habits', async () => {
@@ -405,6 +410,8 @@ describe('Given I am at Habits Screen', () => {
 
     fireEvent.press(getByA11yLabel('previousPeriodButtonAccessibilityLabel'))
 
+    await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
+
     expect(
       await findByText(
         formatDateRange(
@@ -451,6 +458,7 @@ describe('Given I am at Habits Screen', () => {
   it('When Error is Token Expired, Then I should re-login', async () => {
     const mockReLogin = jest.fn()
     jest.spyOn(SharedAuth, 'useAuth').mockReturnValue({
+      ...defaultUseAuthMockValue,
       reLogin: mockReLogin
     })
     expect(mockReLogin).toBeCalledTimes(0)

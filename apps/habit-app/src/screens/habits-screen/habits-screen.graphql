@@ -1,4 +1,4 @@
-subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
+subscription Habits($minDate: DateTime!, $maxDate: DateTime!, $user: String) {
   queryHabit {
     habitActivities(
       filter: { date: { between: { min: $minDate, max: $maxDate } } }
@@ -11,6 +11,11 @@ subscription Habits($minDate: DateTime!, $maxDate: DateTime!) {
     name
     group {
       name
+      adminUsers(
+        filter: { has: pushNotificationUserId, not: { email: { eq: $user } } }
+      ) {
+        pushNotificationUserId
+      }
     }
   }
 }

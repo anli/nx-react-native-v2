@@ -24,7 +24,8 @@ const habitsSubscriptionRequest = {
   query: HabitsDocument,
   variables: {
     minDate: formatISO(startOfWeek(startOfToday(), { weekStartsOn: 1 })),
-    maxDate: formatISO(endOfWeek(startOfToday(), { weekStartsOn: 1 }))
+    maxDate: formatISO(endOfWeek(startOfToday(), { weekStartsOn: 1 })),
+    user: 'user@email.com'
   }
 }
 
@@ -35,7 +36,16 @@ export const useHabitsMockData = Array.from({ length: 3 }, (_, i) => {
     id: faker.datatype.uuid(),
     name: faker.lorem.word(),
     group: faker.datatype.boolean()
-      ? { __typename: 'Group' as const, name: faker.lorem.word() }
+      ? {
+          __typename: 'Group' as const,
+          name: faker.lorem.word(),
+          adminUsers: [
+            {
+              __typename: 'User' as const,
+              pushNotificationUserId: faker.datatype.uuid()
+            }
+          ]
+        }
       : null,
     habitActivities: [
       {
@@ -114,7 +124,8 @@ const previousWeekRequest = {
     ),
     maxDate: formatISO(
       subWeeks(endOfWeek(startOfToday(), { weekStartsOn: 1 }), 1)
-    )
+    ),
+    user: 'user@email.com'
   }
 }
 
@@ -138,7 +149,8 @@ const nextWeekRequest = {
     ),
     maxDate: formatISO(
       addWeeks(endOfWeek(startOfToday(), { weekStartsOn: 1 }), 1)
-    )
+    ),
+    user: 'user@email.com'
   }
 }
 

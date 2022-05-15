@@ -12,12 +12,20 @@ export interface HabitWeekDayProps {
   onPress: ({
     id,
     habitId,
-    habitActivityId
+    habitActivityId,
+    pushNotificationUserIds,
+    habitName,
+    date
   }: {
     id: string
     habitId: string
     habitActivityId?: string
+    pushNotificationUserIds?: string[]
+    habitName: string
+    date: Date
   }) => Promise<void>
+  pushNotificationUserIdsString?: string
+  habitName: string
 }
 
 export const HabitWeekDay = React.memo(
@@ -27,7 +35,9 @@ export const HabitWeekDay = React.memo(
     count,
     habitActivityId,
     habitId,
-    onPress
+    onPress,
+    pushNotificationUserIdsString,
+    habitName
   }: HabitWeekDayProps): JSX.Element => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
@@ -38,12 +48,19 @@ export const HabitWeekDay = React.memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count])
 
+    /* istanbul ignore next */
     const handlePress = (): void => {
       setIsChecked(!isChecked)
       void onPress({
         id,
         habitActivityId,
-        habitId
+        habitId,
+        pushNotificationUserIds:
+          pushNotificationUserIdsString != null
+            ? JSON.parse(pushNotificationUserIdsString)
+            : undefined,
+        habitName,
+        date: parseISO(id)
       })
     }
 
@@ -51,7 +68,9 @@ export const HabitWeekDay = React.memo(
 
     return (
       <View justifyContent="center" alignItems="center">
-        <Text variant="footnote" color={isIdToday ? 'primary' : 'text'} >{name}</Text>
+        <Text variant="footnote" color={isIdToday ? 'primary' : 'text'}>
+          {name}
+        </Text>
         <Checkbox.Android
           testID="HabitWeekDay.Checkbox"
           onPress={handlePress}

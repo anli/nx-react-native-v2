@@ -1,5 +1,7 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { HabitsListItem, HabitsListItemProps } from '@nx-react-native/habit/ui'
+import { useAuth } from '@nx-react-native/shared/auth'
+import { postNotification } from '@nx-react-native/shared/push-notification'
 import {
   Screen,
   SkeletonPlaceholderScreen,
@@ -47,6 +49,7 @@ const options: BottomTabNavigationOptions = {
 }
 
 const Component = (): JSX.Element => {
+  const { user } = useAuth()
   const { showActionSheetWithOptions } = useActionSheet()
   const { t } = useTranslation(['HabitsScreen', 'Global'])
   const [periodStartDate, setPeriodStartDate] = useState<Date>(
@@ -55,12 +58,15 @@ const Component = (): JSX.Element => {
   const periodEndDate = endOfWeek(periodStartDate, { weekStartsOn: 1 })
   const { setOptions, navigate } =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-  const { data } = useApolloResult(useHabitsSubscription({
-    variables: {
-      minDate: formatISO(periodStartDate),
-      maxDate: formatISO(periodEndDate)
-    }
-  }))
+  const { data } = useApolloResult(
+    useHabitsSubscription({
+      variables: {
+        minDate: formatISO(periodStartDate),
+        maxDate: formatISO(periodEndDate),
+        user: user?.email
+      }
+    })
+  )
   const [habitDeleteMutation] = useHabitDeleteMutation()
   const [habitActivityCreateMutation] = useHabitActivityCreateMutation()
   const [habitActivityDeleteMutation] = useHabitActivityDeleteMutation()
@@ -95,7 +101,14 @@ const Component = (): JSX.Element => {
   }, [t, setOptions, setPeriodStartDate, periodStartDate])
 
   const handleDayPress: HabitsListItemProps['onDayPress'] = useCallback(
-    async ({ id, habitId, habitActivityId }) => {
+    async ({
+      id,
+      habitId,
+      habitActivityId,
+      pushNotificationUserIds,
+      habitName,
+      date
+    }) => {
       const transaction = Sentry.startTransaction({
         name: 'updateHabitActivity'
       })
@@ -152,6 +165,22 @@ const Component = (): JSX.Element => {
             }
           }
         })
+
+        /* istanbul ignore next */
+        if (
+          pushNotificationUserIds != null &&
+          pushNotificationUserIds.length > 0
+        ) {
+          await postNotification(
+            habitName,
+            t('habitActivityCreatedPushNotification', {
+              ns: 'Global',
+              date: format(date, 'iii, MMM d')
+            }),
+            pushNotificationUserIds
+          )
+        }
+
         return Toast.show({
           type: 'success',
           text1: t('habitActivityCreatedSuccess', { ns: 'Global' })
