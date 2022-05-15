@@ -3,7 +3,7 @@ import { format, formatISO } from 'date-fns'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import React from 'react'
 import { GestureResponderEvent, PressableProps } from 'react-native'
-import { List } from 'react-native-paper'
+import { Badge, List } from 'react-native-paper'
 import { HabitWeekDay, HabitWeekDayProps } from './habit-week-day'
 
 type WeekDataItem = { date: Date } & Pick<
@@ -57,8 +57,17 @@ export const HabitsListItem = ({
         onLongPress={handleLongPress}
         onPress={handleItemPress}
         title={item.name}
-        description={item.group?.name}
+        right={() => {
+          return (
+            <View justifyContent="center">
+              <Badge visible={item.group?.name != null}>
+                {item.group?.name}
+              </Badge>
+            </View>
+          )
+        }}
         disabled={disabled ?? false}
+        style={{ paddingBottom: 0, paddingTop: 0 }}
       />
       <View flexDirection="row" justifyContent="space-around">
         {item.weekData.map(({ date, count, habitActivityId, habitId }) => {

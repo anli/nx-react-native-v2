@@ -57,7 +57,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ client, children }) => {
       setIdToken(_idToken)
       setUser({ email: userInfo.email })
     } catch (error) {
-      // TODO: not as easy to write test with @testing-library/react-hooks API
       /* istanbul ignore next */
       const formattedError = error as {
         error?: string

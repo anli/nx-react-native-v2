@@ -11,7 +11,8 @@ export const postNotification = async (
     contents: { en: message },
     include_player_ids: userIds
   }
-  return await new Promise((resolve, reject) => {
+  // eslint-disable-next-line @typescript-eslint/return-await
+  return new Promise((resolve, reject) => {
     OneSignal.postNotification(
       JSON.stringify(notification),
       () => {

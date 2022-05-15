@@ -42,9 +42,6 @@ describe('useAuth', () => {
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith('DEFAULT', 'REFRESH_TOKEN')
 
-    // TODO: unable to correctly assert as hook runs useEffect
-    // ideally I will want
-    // expect(result.current.user).toEqual({ email: 'user@email.com' })
     expect(result.current.user).toBeNull()
   })
 
