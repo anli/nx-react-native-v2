@@ -4,7 +4,6 @@ import Heap from '@heap/react-native-heap'
 import { AuthProvider, useAuth } from '@nx-react-native/shared/auth'
 import { SplitProvider } from '@nx-react-native/shared/feature-flag'
 import { init as I18nInit } from '@nx-react-native/shared/i18n'
-import { PushNotificationProvider } from '@nx-react-native/shared/push-notification'
 import {
   SkeletonPlaceholderScreen,
   TabBarIcon,
@@ -15,7 +14,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { SplitFactory } from '@splitsoftware/splitio-react-native'
-import React, { Suspense, useCallback } from 'react'
+import React, { Suspense } from 'react'
 import Auth0 from 'react-native-auth0'
 import Config from 'react-native-config'
 import DeviceInfo from 'react-native-device-info'
@@ -37,7 +36,6 @@ import {
 import { GroupsScreen } from '../screens/groups-screen'
 import { HabitUpdateScreen } from '../screens/habit-update-screen'
 import { translations } from './../../public/locales/translations'
-import { useAppAddUserMutation } from './app.generated'
 
 // KNOWN ISSUE: type error is caused by '@heap/react-native-heap'
 // See https://github.com/heap/react-native-heap/issues/277
@@ -89,67 +87,40 @@ const RootStack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator()
 
 export const AppTabs = (): JSX.Element => {
-  const { user } = useAuth()
-  const [addUserMutation] = useAppAddUserMutation()
-
-  /* istanbul ignore next */
-  const handleSetExternalUserId = useCallback(
-    async (
-      _pushNotificationUserId: string,
-      externalUserId: string
-    ): Promise<void> => {
-      try {
-        await addUserMutation({
-          variables: {
-            input: {
-              email: externalUserId,
-              pushNotificationUserId: _pushNotificationUserId
-            }
-          }
-        })
-      } catch {}
-    },
-    [addUserMutation]
-  )
-
   return (
-    <PushNotificationProvider
-      externalUserId={user?.email}
-      onSetExternalUserId={handleSetExternalUserId}>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="HabitsScreen"
-          component={HabitsScreen.Container}
-          options={{
-            ...HabitsScreen.options,
-            tabBarIcon: ({ color, size }) => (
-              <TabBarIcon name="home-variant" color={color} size={size} />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="GroupsScreen"
-          component={GroupsScreen.Container}
-          options={{
-            ...GroupsScreen.options,
-            tabBarTestID: 'GroupsTabButton',
-            tabBarIcon: ({ color, size }) => (
-              <TabBarIcon name="account-group" color={color} size={size} />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="ProfileScreen"
-          component={ProfileScreen.Container}
-          options={{
-            ...ProfileScreen.options,
-            tabBarIcon: ({ color, size }) => (
-              <TabBarIcon name="account-circle" color={color} size={size} />
-            )
-          }}
-        />
-      </Tab.Navigator>
-    </PushNotificationProvider>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="HabitsScreen"
+        component={HabitsScreen.Container}
+        options={{
+          ...HabitsScreen.options,
+          tabBarIcon: ({ color, size }) => (
+            <TabBarIcon name="home-variant" color={color} size={size} />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="GroupsScreen"
+        component={GroupsScreen.Container}
+        options={{
+          ...GroupsScreen.options,
+          tabBarTestID: 'GroupsTabButton',
+          tabBarIcon: ({ color, size }) => (
+            <TabBarIcon name="account-group" color={color} size={size} />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="ProfileScreen"
+        component={ProfileScreen.Container}
+        options={{
+          ...ProfileScreen.options,
+          tabBarIcon: ({ color, size }) => (
+            <TabBarIcon name="account-circle" color={color} size={size} />
+          )
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 

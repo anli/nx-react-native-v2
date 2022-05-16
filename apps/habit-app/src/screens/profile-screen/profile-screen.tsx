@@ -1,17 +1,27 @@
 import { useAuth } from '@nx-react-native/shared/auth'
+import { setExternalUserId } from '@nx-react-native/shared/push-notification'
 import {
   Screen,
   SkeletonPlaceholderScreen,
   View
 } from '@nx-react-native/shared/ui'
 import { Storage } from '@nx-react-native/shared/utils'
+import { useApolloResult } from '@nx-react-native/shared/utils-apollo-provider'
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { useNavigation } from '@react-navigation/native'
 import React, { Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 import { List } from 'react-native-paper'
+import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
+import {
+  useProfileScreenAddUserMutation,
+  useProfileScreenSubscription,
+  useProfileScreenUpdateUserMutation
+} from './profile-screen.generated'
+import { Switch } from './switch'
+import { usePushNotification } from './use-push-notification'
 
 const options: BottomTabNavigationOptions = {
   title: '',
@@ -20,10 +30,20 @@ const options: BottomTabNavigationOptions = {
 }
 
 const Component = (): JSX.Element => {
-  const { logout } = useAuth()
+  const { logout, user: _user } = useAuth()
+  const user = _user as { email: string }
   const { t } = useTranslation('ProfileScreen')
-
   const { setOptions } = useNavigation()
+  const { data } = useApolloResult(
+    useProfileScreenSubscription({
+      variables: { user: user?.email }
+    })
+  )
+  const { isLocalActive: isPushActive, localPushUserId } = usePushNotification(
+    data?.getUser?.pushNotificationUserId
+  )
+  const [addUserMutation] = useProfileScreenAddUserMutation()
+  const [updateUserMutation] = useProfileScreenUpdateUserMutation()
 
   useEffect(() => {
     setOptions({
@@ -36,9 +56,55 @@ const Component = (): JSX.Element => {
     await Storage.clear()
   }
 
+  const handlePushNotification = async (value: boolean): Promise<void> => {
+    if (value) {
+      await setExternalUserId(user?.email)
+      await addUserMutation({
+        variables: {
+          input: {
+            email: user?.email,
+            pushNotificationUserId: localPushUserId
+          }
+        }
+      })
+    } else {
+      await setExternalUserId()
+      await updateUserMutation({
+        variables: {
+          patch: {
+            filter: {
+              email: { eq: user?.email }
+            },
+            remove: {
+              pushNotificationUserId: ''
+            }
+          }
+        }
+      })
+    }
+
+    return Toast.show({
+      type: 'success',
+      text1: t('pushNotificationSuccess')
+    })
+  }
+
+  const renderPushNotificationSwitch = (): JSX.Element => (
+    <Switch
+      disabled={localPushUserId == null}
+      value={isPushActive}
+      onValueChange={handlePushNotification}
+      accessibilityLabel={t('pushNotificationAccessibilityLabel')}
+    />
+  )
+
   return (
     <Screen>
       <View paddingVertical="base">
+        <List.Item
+          title={t('pushNotificationTitle')}
+          right={renderPushNotificationSwitch}
+        />
         <List.Item
           title={t('logoutTitle')}
           onPress={handleLogout}

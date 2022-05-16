@@ -1,7 +1,7 @@
-import * as Apollo from '@apollo/client';
-import { gql } from '@apollo/client';
 import * as Types from '../../graphql-types';
 
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type HabitsSubscriptionVariables = Types.Exact<{
   minDate: Types.Scalars['DateTime'];

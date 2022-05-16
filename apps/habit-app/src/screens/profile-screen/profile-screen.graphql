@@ -1,0 +1,17 @@
+subscription ProfileScreen($user: String) {
+  getUser(email: $user) {
+    pushNotificationUserId
+  }
+}
+
+mutation ProfileScreenAddUser($input: [AddUserInput!]!) {
+  addUser(input: $input, upsert: true) {
+    numUids
+  }
+}
+
+mutation ProfileScreenUpdateUser($patch: UpdateUserInput!) {
+  updateUser(input: $patch) {
+    numUids
+  }
+}
