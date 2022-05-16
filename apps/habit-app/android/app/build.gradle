@@ -146,8 +146,8 @@ android {
         applicationId "com.anlitz.habit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 47
-        versionName "2.5.0"
+        versionCode 48
+        versionName "2.5.1"
         
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
