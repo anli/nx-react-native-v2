@@ -196,7 +196,7 @@ describe('Given I am at Habits Screen', () => {
   })
 
   it('When I delete Habit Item, Then I see Habit Deleted', async () => {
-    jest.spyOn(Alert, 'alert')
+    const spyAlert = jest.spyOn(Alert, 'alert')
     const mockShowActionSheetWithOptions = jest.fn()
     jest.spyOn(ExpoActionSheet, 'useActionSheet').mockReturnValue({
       showActionSheetWithOptions: mockShowActionSheetWithOptions
@@ -216,22 +216,28 @@ describe('Given I am at Habits Screen', () => {
     await waitForElementToBeRemoved(() => getByTestId('HabitsScreenSkeleton'))
 
     fireEvent.press(getByText(useHabitDeleteMockData.name))
-
     await waitFor(() =>
       expect(mockShowActionSheetWithOptions).toBeCalledTimes(1)
     )
     const actionSheetCallback = mockShowActionSheetWithOptions.mock.calls[0][1]
-
     void act(() => {
       actionSheetCallback(1)
     })
-
-    await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
-    expect(Alert.alert).toHaveBeenCalledWith('deleteSuccess')
+    await waitFor(() => expect(spyAlert).toBeCalledTimes(1))
+    expect(spyAlert).toHaveBeenCalledWith(
+      'deleteConfirmationTitle',
+      undefined,
+      expect.anything()
+    )
+    void act(() => {
+      spyAlert.mock.calls[0][2]?.[1].onPress?.()
+    })
+    await waitFor(() => expect(spyAlert).toBeCalledTimes(2))
+    expect(spyAlert).toHaveBeenLastCalledWith('deleteSuccess')
   })
 
   it('And API has Error, When I delete Habit Item, Then I see Error Message', async () => {
-    jest.spyOn(Alert, 'alert')
+    const spyAlert = jest.spyOn(Alert, 'alert')
     const mockShowActionSheetWithOptions = jest.fn()
     jest.spyOn(ExpoActionSheet, 'useActionSheet').mockReturnValue({
       showActionSheetWithOptions: mockShowActionSheetWithOptions
@@ -258,8 +264,17 @@ describe('Given I am at Habits Screen', () => {
       actionSheetCallback(1)
     })
 
-    await waitFor(() => expect(Alert.alert).toBeCalledTimes(1))
-    expect(Alert.alert).toHaveBeenCalledWith('errorTitle')
+    await waitFor(() => expect(spyAlert).toBeCalledTimes(1))
+    expect(spyAlert).toHaveBeenCalledWith(
+      'deleteConfirmationTitle',
+      undefined,
+      expect.anything()
+    )
+    void act(() => {
+      spyAlert.mock.calls[0][2]?.[1].onPress?.()
+    })
+    await waitFor(() => expect(spyAlert).toBeCalledTimes(2))
+    expect(spyAlert).toHaveBeenLastCalledWith('errorTitle')
   })
 
   it('When I update Habit Item, Then I see Habit Update Screen', async () => {
