@@ -17,7 +17,8 @@ const base = {
     critical: '',
     primary: '',
     icon: '',
-    transparent: 'transparent'
+    transparent: 'transparent',
+    secondary: ''
   },
   spacing: {
     none: 0,
@@ -82,7 +83,10 @@ const base = {
   buttonVariants: {
     defaults: {}
   },
-  skeletonPlaceholderItemVariants: {}
+  skeletonPlaceholderItemVariants: {},
+  badgeVariants: {
+    defaults: {}
+  }
 }
 
 export const baseTheme = createTheme({
