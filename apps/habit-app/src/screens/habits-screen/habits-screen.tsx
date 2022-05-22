@@ -242,20 +242,36 @@ const Component = (): JSX.Element => {
         }
 
         if (buttonIndex === 1) {
-          try {
-            await habitDeleteMutation({
-              variables: {
-                filter: {
-                  id: [id]
+          Alert.alert(
+            t('deleteConfirmationTitle', { ns: 'Global' }),
+            undefined,
+            [
+              {
+                text: t('alertButtonCancel', { ns: 'Global' }),
+                style: 'cancel'
+              },
+              {
+                text: t('alertButtonConfirm', { ns: 'Global' }),
+                style: 'destructive',
+                onPress: async () => {
+                  try {
+                    await habitDeleteMutation({
+                      variables: {
+                        filter: {
+                          id: [id]
+                        }
+                      }
+                    })
+                    return Alert.alert(t('deleteSuccess', { ns: 'Global' }))
+                  } catch (_error) {
+                    return Alert.alert(
+                      t('errorTitle', _error.message, { ns: 'Global' })
+                    )
+                  }
                 }
               }
-            })
-            return Alert.alert(t('deleteSuccess', { ns: 'Global' }))
-          } catch (_error) {
-            return Alert.alert(
-              t('errorTitle', _error.message, { ns: 'Global' })
-            )
-          }
+            ]
+          )
         }
       }
     )
