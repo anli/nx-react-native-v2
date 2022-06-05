@@ -229,19 +229,24 @@ const Component = (): JSX.Element => {
     showActionSheetWithOptions(
       {
         options: [
+          t('detailButtonLabel', { ns: 'Global' }),
           t('updateButtonLabel', { ns: 'Global' }),
           t('deleteButtonLabel', { ns: 'Global' }),
           t('cancelButtonLabel', { ns: 'Global' })
         ],
-        cancelButtonIndex: 2,
-        destructiveButtonIndex: 1
+        cancelButtonIndex: 3,
+        destructiveButtonIndex: 2
       },
       async (buttonIndex) => {
         if (buttonIndex === 0) {
-          return navigate('HabitUpdateScreen', { id })
+          return navigate('HabitViewScreen', { id })
         }
 
         if (buttonIndex === 1) {
+          return navigate('HabitUpdateScreen', { id })
+        }
+
+        if (buttonIndex === 2) {
           Alert.alert(
             t('deleteConfirmationTitle', { ns: 'Global' }),
             undefined,
