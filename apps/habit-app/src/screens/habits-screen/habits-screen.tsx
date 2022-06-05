@@ -32,7 +32,7 @@ import { Alert, Vibration } from 'react-native'
 import DraggableFlatList, {
   ScaleDecorator
 } from 'react-native-draggable-flatlist'
-import { Appbar, FAB, List } from 'react-native-paper'
+import { Appbar, List } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import { ErrorScreen } from '..'
 import { RootStackParamList } from '../../app'
@@ -94,6 +94,11 @@ const Component = (): JSX.Element => {
             icon="chevron-right"
             onPress={handleNextPeriod}
             accessibilityLabel={t('nextPeriodButtonAccessibilityLabel')}
+          />
+          <Appbar.Action
+            icon="plus"
+            onPress={handleCreateHabit}
+            accessibilityLabel={t('createHabitButtonAccessibilityLabel')}
           />
         </View>
       )
@@ -322,17 +327,6 @@ const Component = (): JSX.Element => {
             </ScaleDecorator>
           )
         }}
-      />
-      <FAB
-        style={{
-          position: 'absolute',
-          margin: 16,
-          right: 0,
-          bottom: 0
-        }}
-        icon="plus"
-        accessibilityLabel={t('createHabitButtonAccessibilityLabel')}
-        onPress={handleCreateHabit}
       />
     </Screen>
   )
