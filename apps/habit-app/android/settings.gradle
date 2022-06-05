@@ -1,4 +1,6 @@
 rootProject.name = 'Habit'
+include ':@shopify_react-native-skia'
+project(':@shopify_react-native-skia').projectDir = new File(rootProject.projectDir, '../../../node_modules/@shopify/react-native-skia/android')
 
 include ':react-native-config'
 project(':react-native-config').projectDir = new File(rootProject.projectDir, '../../../node_modules/react-native-config/android')

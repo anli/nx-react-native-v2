@@ -1,9 +1,13 @@
 {
+  "alertButtonCancel": "Cancel",
+  "alertButtonConfirm": "Confirm",
   "cancelButtonLabel": "Cancel",
   "createdSuccess": "Updated!",
   "deleteButtonLabel": "Delete",
+  "deleteConfirmationTitle": "Are you sure?",
   "deletedSuccess": "Updated!",
   "deleteSuccess": "Deleted",
+  "detailButtonLabel": "Detail",
   "emailInputAccessibilityLabel": "Email Input",
   "emailInputLabel": "Email",
   "emailInputValidationEmail": "Email is incorrectly formatted",

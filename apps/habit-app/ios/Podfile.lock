@@ -308,6 +308,37 @@ PODS:
     - React (< 1.0.0, >= 0.13.0)
   - react-native-safe-area-context (3.1.9):
     - React-Core
+  - react-native-segmented-control (2.4.0):
+    - React-Core
+  - react-native-skia (0.1.130):
+    - React
+    - React-callinvoker
+    - React-Core
+    - react-native-skia/Api (= 0.1.130)
+    - react-native-skia/Jsi (= 0.1.130)
+    - react-native-skia/RNSkia (= 0.1.130)
+    - react-native-skia/SkiaHeaders (= 0.1.130)
+    - react-native-skia/Utils (= 0.1.130)
+  - react-native-skia/Api (0.1.130):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/Jsi (0.1.130):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/RNSkia (0.1.130):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/SkiaHeaders (0.1.130):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/Utils (0.1.130):
+    - React
+    - React-callinvoker
+    - React-Core
   - React-perflogger (0.66.4)
   - React-RCTActionSheet (0.66.4):
     - React-Core/RCTActionSheetHeaders (= 0.66.4)
@@ -481,6 +512,8 @@ DEPENDENCIES:
   - "react-native-heap (from `../../../node_modules/@heap/react-native-heap`)"
   - react-native-onesignal (from `../../../node_modules/react-native-onesignal`)
   - react-native-safe-area-context (from `../../../node_modules/react-native-safe-area-context`)
+  - "react-native-segmented-control (from `../../../node_modules/@react-native-segmented-control/segmented-control`)"
+  - "react-native-skia (from `../../../node_modules/@shopify/react-native-skia`)"
   - React-perflogger (from `../../../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../../../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../../../node_modules/react-native/Libraries/NativeAnimation`)
@@ -577,6 +610,10 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-onesignal"
   react-native-safe-area-context:
     :path: "../../../node_modules/react-native-safe-area-context"
+  react-native-segmented-control:
+    :path: "../../../node_modules/@react-native-segmented-control/segmented-control"
+  react-native-skia:
+    :path: "../../../node_modules/@shopify/react-native-skia"
   React-perflogger:
     :path: "../../../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -669,6 +706,8 @@ SPEC CHECKSUMS:
   react-native-heap: 490b0f2e26ad3d66e304ead92ee1fac365a0df2c
   react-native-onesignal: 88a38450ee225600da7fbcfcf844a8af487db919
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-segmented-control: 06607462630512ff8eef652ec560e6235a30cc3e
+  react-native-skia: ded7ec890d19a75f17b3cbd5ebf0d6459701daa9
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
   React-RCTActionSheet: 7d3041e6761b4f3044a37079ddcb156575fb6d89
   React-RCTAnimation: 743e88b55ac62511ae5c2e22803d4f503f2a3a13
