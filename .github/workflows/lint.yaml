@@ -26,6 +26,12 @@ jobs:
 
       - uses: actions/setup-node@v2
 
+      - name: Setup NPM
+        run: |
+          # using anything above this version will cause npm install to fail
+          # due to possible Conflicting peer dependency
+          npm i -g npm@8.5.5
+
       - name: Install Dependencies
         run: npm ci
 
