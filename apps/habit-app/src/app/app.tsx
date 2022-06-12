@@ -24,18 +24,17 @@ import Toast from 'react-native-toast-message'
 import {
   GroupCreateScreen,
   GroupSelectScreen,
-  GroupsScreen,
   GroupUpdateScreen,
   GroupUsersAppendScreen,
   GroupUsersScreen,
   GroupViewScreen,
   HabitCreateScreen,
   HabitsScreen,
-  HabitUpdateScreen,
-  HabitViewScreen,
   LoginScreen,
   ProfileScreen
 } from '../screens'
+import { GroupsScreen } from '../screens/groups-screen'
+import { HabitUpdateScreen } from '../screens/habit-update-screen'
 import { translations } from './../../public/locales/translations'
 
 // KNOWN ISSUE: type error is caused by '@heap/react-native-heap'
@@ -67,21 +66,20 @@ const splitFactory = SplitFactory({
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type RootStackParamList = {
   AppTabs: undefined
-  GroupCreateScreen: undefined
-  GroupViewScreen: { id: string }
-  GroupUpdateScreen: { id: string, userSelectEmail?: string }
-  GroupUsersScreen: { id: string }
-  GroupUsersAppendScreen: { id: string }
-  GroupSelectScreen: { nextScreenName: keyof RootStackParamList }
+  LoginScreen: undefined
   HabitsScreen: undefined
   HabitCreateScreen: undefined | { groupSelectScreen?: { id: string } }
   HabitUpdateScreen: {
     id: string
     groupSelectScreen?: { id: string }
   }
-  HabitViewScreen: { id: string }
-  LoginScreen: undefined
+  GroupCreateScreen: undefined
+  GroupViewScreen: { id: string }
+  GroupUpdateScreen: { id: string, userSelectEmail?: string }
   UserSelectScreen: { nextScreen: keyof RootStackParamList }
+  GroupUsersScreen: { id: string }
+  GroupUsersAppendScreen: { id: string }
+  GroupSelectScreen: { nextScreenName: keyof RootStackParamList }
 }
 
 const RootStack = createNativeStackNavigator<RootStackParamList>()
@@ -186,11 +184,6 @@ const Navigation = (): JSX.Element => {
                   name="GroupSelectScreen"
                   component={GroupSelectScreen.Container}
                   options={GroupSelectScreen.options}
-                />
-                <RootStack.Screen
-                  name="HabitViewScreen"
-                  component={HabitViewScreen.Container}
-                  options={HabitViewScreen.options}
                 />
               </>
             ) : (

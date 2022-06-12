@@ -1,9 +1,0 @@
-subscription HabitViewScreen($id: ID!, $filter: HabitActivityFilter) {
-  getHabit(id: $id) {
-    habitActivities(filter: $filter, order: { asc: date }) {
-      date
-      count
-    }
-    name
-  }
-}

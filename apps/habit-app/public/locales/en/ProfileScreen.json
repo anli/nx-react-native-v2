@@ -2,7 +2,6 @@
   "logoutAccessibilityLabel": "Logout Button",
   "logoutTitle": "Logout",
   "pushNotificationAccessibilityLabel": "Push Notification Switch",
-  "pushNotificationSuccess": "Updated!",
   "pushNotificationTitle": "Push Notification",
   "title": "Profile"
 }
