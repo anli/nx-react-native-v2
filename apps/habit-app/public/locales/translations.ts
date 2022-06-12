@@ -11,7 +11,6 @@ export const translations = {
     HabitCreateScreen: require('./en/HabitCreateScreen.json'),
     HabitsScreen: require('./en/HabitsScreen.json'),
     HabitUpdateScreen: require('./en/HabitUpdateScreen.json'),
-    HabitViewScreen: require('./en/HabitViewScreen.json'),
     LoginScreen: require('./en/LoginScreen.json'),
     ProfileScreen: require('./en/ProfileScreen.json')
   }
